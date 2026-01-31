@@ -36,11 +36,11 @@ public partial class TestModeController : CanvasLayer
 
     public override void _Ready()
     {
-        _faceRenderer = GetNode<Control>("CenterContainer/TestPanel/FaceContainer/FaceArea/FaceRenderer");
-        _maskGrid = GetNode<GridContainer>("CenterContainer/TestPanel/FaceContainer/FaceArea/MaskGrid");
-        _clickCounterLabel = GetNode<Label>("CenterContainer/TestPanel/ClickCounter");
-        _friendButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FriendButton");
-        _foeButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FoeButton");
+        _faceRenderer = GetNode<Control>("FaceArea/FaceRenderer");
+        _maskGrid = GetNode<GridContainer>("FaceArea/MaskGrid");
+        _clickCounterLabel = GetNode<Label>("ClickCounter");
+        _friendButton = GetNode<Button>("ButtonContainer/FriendButton");
+        _foeButton = GetNode<Button>("ButtonContainer/FoeButton");
 
         _friendButton.Pressed += () => OnGuess(true);
         _foeButton.Pressed += () => OnGuess(false);
@@ -97,9 +97,8 @@ public partial class TestModeController : CanvasLayer
 
         _maskGrid.Columns = GridColumns;
 
-        // Calculate tile size based on mask texture and grid
-        float tileWidth = _maskTexture.GetWidth() / (float)GridColumns;
-        float tileHeight = _maskTexture.GetHeight() / (float)GridRows;
+        int texWidth = _maskTexture.GetWidth();
+        int texHeight = _maskTexture.GetHeight();
 
         int totalSegments = GridColumns * GridRows;
         for (int i = 0; i < totalSegments; i++)
@@ -112,8 +111,13 @@ public partial class TestModeController : CanvasLayer
             _maskGrid.AddChild(segment);
             _segments.Add(segment);
 
-            // Set the mask region for this tile
-            var region = new Rect2(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
+            // Calculate exact pixel regions using integer math to avoid gaps
+            int x1 = col * texWidth / GridColumns;
+            int y1 = row * texHeight / GridRows;
+            int x2 = (col + 1) * texWidth / GridColumns;
+            int y2 = (row + 1) * texHeight / GridRows;
+
+            var region = new Rect2(x1, y1, x2 - x1, y2 - y1);
             segment.SetMaskRegion(_maskTexture, region);
         }
     }

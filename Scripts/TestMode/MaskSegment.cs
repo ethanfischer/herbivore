@@ -24,11 +24,11 @@ public partial class MaskSegment : Button
         // Create styles
         _normalStyle = new StyleBoxFlat();
         _normalStyle.BgColor = MaskColor;
-        _normalStyle.SetCornerRadiusAll(2);
+        _normalStyle.SetCornerRadiusAll(0);
 
         _hoverStyle = new StyleBoxFlat();
         _hoverStyle.BgColor = HoverColor;
-        _hoverStyle.SetCornerRadiusAll(2);
+        _hoverStyle.SetCornerRadiusAll(0);
 
         // Apply styles
         AddThemeStyleboxOverride("normal", _normalStyle);

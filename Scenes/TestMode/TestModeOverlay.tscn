@@ -37,7 +37,7 @@ layout_mode = 2
 size_flags_vertical = 3
 
 [node name="FaceRenderer" type="Control" parent="CenterContainer/TestPanel/FaceContainer"]
-custom_minimum_size = Vector2(400, 200)
+custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 script = ExtResource("3_face")
 
@@ -45,7 +45,9 @@ script = ExtResource("3_face")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-columns = 10
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 8
 
 [node name="ButtonContainer" type="HBoxContainer" parent="CenterContainer/TestPanel"]
 layout_mode = 2

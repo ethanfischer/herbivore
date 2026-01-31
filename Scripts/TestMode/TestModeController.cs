@@ -15,10 +15,10 @@ public partial class TestModeController : CanvasLayer
     public PackedScene? MaskSegmentScene { get; set; }
 
     [Export]
-    public int GridColumns { get; set; } = 10;
+    public int GridColumns { get; set; } = 8;
 
     [Export]
-    public int GridRows { get; set; } = 5;
+    public int GridRows { get; set; } = 8;
 
     private Control _faceRenderer = null!;
     private GridContainer _maskGrid = null!;

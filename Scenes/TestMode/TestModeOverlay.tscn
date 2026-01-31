@@ -23,9 +23,9 @@ anchor_bottom = 1.0
 [node name="TestPanel" type="VBoxContainer" parent="CenterContainer"]
 custom_minimum_size = Vector2(450, 350)
 
-[node name="Title" type="Label" parent="CenterContainer/TestPanel"]
+[node name="ClickCounter" type="Label" parent="CenterContainer/TestPanel"]
 layout_mode = 2
-text = "IDENTIFY THE PACK"
+text = "Clicks: 10/10"
 horizontal_alignment = 1
 
 [node name="Spacer1" type="Control" parent="CenterContainer/TestPanel"]
@@ -46,19 +46,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 10
-
-[node name="Spacer2" type="Control" parent="CenterContainer/TestPanel"]
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
-
-[node name="ClickCounter" type="Label" parent="CenterContainer/TestPanel"]
-layout_mode = 2
-text = "Clicks: 10/10"
-horizontal_alignment = 1
-
-[node name="Spacer3" type="Control" parent="CenterContainer/TestPanel"]
-custom_minimum_size = Vector2(0, 10)
-layout_mode = 2
 
 [node name="ButtonContainer" type="HBoxContainer" parent="CenterContainer/TestPanel"]
 layout_mode = 2

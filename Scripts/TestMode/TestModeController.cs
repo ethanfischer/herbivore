@@ -33,6 +33,7 @@ public partial class TestModeController : CanvasLayer
     private bool _isFriendly;
 
     private static Texture2D? _maskTexture;
+    private RandomNumberGenerator _random = new();
 
     public override void _Ready()
     {
@@ -122,16 +123,34 @@ public partial class TestModeController : CanvasLayer
         }
     }
 
-    private void OnSegmentClicked(MaskSegment segment)
+    public override void _Input(InputEvent @event)
     {
-        if (_clicksRemaining <= 0) return;
+        if (!Visible || _clicksRemaining <= 0) return;
 
-        // Allow the shatter
+        if (@event is InputEventMouseButton mouseButton &&
+            mouseButton.Pressed &&
+            mouseButton.ButtonIndex == MouseButton.Left)
+        {
+            RemoveRandomSegment();
+            GetViewport().SetInputAsHandled();
+        }
+    }
+
+    private void RemoveRandomSegment()
+    {
+        // Get all non-shattered segments
+        var availableSegments = _segments.FindAll(s => !s.IsShattered);
+        if (availableSegments.Count == 0) return;
+
+        // Pick a random one
+        var randomIndex = _random.RandiRange(0, availableSegments.Count - 1);
+        var segment = availableSegments[randomIndex];
+
         segment.Shatter();
         _clicksRemaining--;
         UpdateClickCounter();
 
-        GD.Print($"Segment clicked. Remaining: {_clicksRemaining}");
+        GD.Print($"Random segment removed. Remaining: {_clicksRemaining}");
 
         // Show buttons when clicks exhausted
         if (_clicksRemaining <= 0)
@@ -139,6 +158,11 @@ public partial class TestModeController : CanvasLayer
             _friendButton.Visible = true;
             _foeButton.Visible = true;
         }
+    }
+
+    private void OnSegmentClicked(MaskSegment segment)
+    {
+        // No longer used - clicks anywhere remove random segments
     }
 
     private void UpdateClickCounter()

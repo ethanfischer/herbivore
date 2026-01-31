@@ -32,10 +32,12 @@ public partial class TestModeController : CanvasLayer
     private NPCPack? _currentPack;
     private bool _isFriendly;
 
+    private static Texture2D? _maskTexture;
+
     public override void _Ready()
     {
-        _faceRenderer = GetNode<Control>("CenterContainer/TestPanel/FaceContainer/FaceRenderer");
-        _maskGrid = GetNode<GridContainer>("CenterContainer/TestPanel/FaceContainer/MaskGrid");
+        _faceRenderer = GetNode<Control>("CenterContainer/TestPanel/FaceContainer/FaceArea/FaceRenderer");
+        _maskGrid = GetNode<GridContainer>("CenterContainer/TestPanel/FaceContainer/FaceArea/MaskGrid");
         _clickCounterLabel = GetNode<Label>("CenterContainer/TestPanel/ClickCounter");
         _friendButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FriendButton");
         _foeButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FoeButton");
@@ -90,15 +92,29 @@ public partial class TestModeController : CanvasLayer
             return;
         }
 
+        // Load mask texture once
+        _maskTexture ??= GD.Load<Texture2D>("res://Assets/Graphics/Mask.png");
+
         _maskGrid.Columns = GridColumns;
+
+        // Calculate tile size based on mask texture and grid
+        float tileWidth = _maskTexture.GetWidth() / (float)GridColumns;
+        float tileHeight = _maskTexture.GetHeight() / (float)GridRows;
 
         int totalSegments = GridColumns * GridRows;
         for (int i = 0; i < totalSegments; i++)
         {
+            int col = i % GridColumns;
+            int row = i / GridColumns;
+
             var segment = MaskSegmentScene.Instantiate<MaskSegment>();
             segment.SegmentClicked += OnSegmentClicked;
             _maskGrid.AddChild(segment);
             _segments.Add(segment);
+
+            // Set the mask region for this tile
+            var region = new Rect2(col * tileWidth, row * tileHeight, tileWidth, tileHeight);
+            segment.SetMaskRegion(_maskTexture, region);
         }
     }
 

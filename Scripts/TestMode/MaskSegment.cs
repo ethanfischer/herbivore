@@ -7,39 +7,36 @@ public partial class MaskSegment : Button
     [Signal]
     public delegate void SegmentClickedEventHandler(MaskSegment segment);
 
-    [Export]
-    public Color MaskColor { get; set; } = new Color(0.3f, 0.3f, 0.35f);
-
-    [Export]
-    public Color HoverColor { get; set; } = new Color(0.4f, 0.4f, 0.45f);
-
     private bool _isShattered;
-    private StyleBoxFlat _normalStyle = null!;
-    private StyleBoxFlat _hoverStyle = null!;
+    private TextureRect _maskPiece = null!;
 
     public bool IsShattered => _isShattered;
 
     public override void _Ready()
     {
-        // Create styles
-        _normalStyle = new StyleBoxFlat();
-        _normalStyle.BgColor = MaskColor;
-        _normalStyle.SetCornerRadiusAll(0);
+        // Get the texture rect child
+        _maskPiece = GetNode<TextureRect>("MaskPiece");
 
-        _hoverStyle = new StyleBoxFlat();
-        _hoverStyle.BgColor = HoverColor;
-        _hoverStyle.SetCornerRadiusAll(0);
-
-        // Apply styles
-        AddThemeStyleboxOverride("normal", _normalStyle);
-        AddThemeStyleboxOverride("hover", _hoverStyle);
-        AddThemeStyleboxOverride("pressed", _hoverStyle);
+        // Make button itself transparent (texture shows through)
+        var transparentStyle = new StyleBoxEmpty();
+        AddThemeStyleboxOverride("normal", transparentStyle);
+        AddThemeStyleboxOverride("hover", transparentStyle);
+        AddThemeStyleboxOverride("pressed", transparentStyle);
+        AddThemeStyleboxOverride("focus", transparentStyle);
 
         // Remove text
         Text = "";
 
         // Connect click
         Pressed += OnPressed;
+    }
+
+    public void SetMaskRegion(Texture2D maskTexture, Rect2 region)
+    {
+        var atlas = new AtlasTexture();
+        atlas.Atlas = maskTexture;
+        atlas.Region = region;
+        _maskPiece.Texture = atlas;
     }
 
     private void OnPressed()
@@ -54,14 +51,8 @@ public partial class MaskSegment : Button
     {
         _isShattered = true;
 
-        // Make transparent
-        var transparentStyle = new StyleBoxFlat();
-        transparentStyle.BgColor = new Color(0, 0, 0, 0);
-
-        AddThemeStyleboxOverride("normal", transparentStyle);
-        AddThemeStyleboxOverride("hover", transparentStyle);
-        AddThemeStyleboxOverride("pressed", transparentStyle);
-        AddThemeStyleboxOverride("disabled", transparentStyle);
+        // Hide the mask piece to reveal face underneath
+        _maskPiece.Visible = false;
 
         Disabled = true;
         MouseFilter = MouseFilterEnum.Ignore;
@@ -73,8 +64,6 @@ public partial class MaskSegment : Button
         Disabled = false;
         MouseFilter = MouseFilterEnum.Stop;
 
-        AddThemeStyleboxOverride("normal", _normalStyle);
-        AddThemeStyleboxOverride("hover", _hoverStyle);
-        AddThemeStyleboxOverride("pressed", _hoverStyle);
+        _maskPiece.Visible = true;
     }
 }

@@ -11,8 +11,8 @@ config_version=5
 [application]
 
 config/name="Herbivore"
-config/features=PackedStringArray("4.6", "Mobile")
 run/main_scene="res://Scenes/Main.tscn"
+config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [display]
@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 window/size/viewport_width=800
 window/size/viewport_height=600
 window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [autoload]
 
@@ -58,5 +59,7 @@ move_right={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
+viewport/hdr_2d=true

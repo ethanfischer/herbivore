@@ -7,23 +7,12 @@ public partial class PlayerDot : CharacterBody2D
     [Export]
     public float Speed { get; set; } = 200.0f;
 
-    [Export]
-    public Color DotColor { get; set; } = new Color(0.2f, 0.8f, 0.3f); // Green
-
-    [Export]
-    public float DotRadius { get; set; } = 8.0f;
-
     private Area2D _approachArea = null!;
 
     public override void _Ready()
     {
         _approachArea = GetNode<Area2D>("ApproachArea");
         _approachArea.AreaEntered += OnApproachAreaEntered;
-    }
-
-    public override void _Draw()
-    {
-        DrawCircle(Vector2.Zero, DotRadius, DotColor);
     }
 
     public override void _PhysicsProcess(double delta)

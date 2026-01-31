@@ -191,6 +191,13 @@ public partial class Main : Node2D
 		var gm = GameManager.Instance;
 		if (gm == null) return;
 
+		// Game over if player is already alone and trusts a foe
+		if (gm.PackSize <= 1 && count > 0)
+		{
+			gm.ChangeState(GameState.GameOver);
+			return;
+		}
+
 		// Remove members from the end of the pack
 		for (int i = 0; i < count && gm.PackSize > 1; i++)
 		{
@@ -200,12 +207,6 @@ public partial class Main : Node2D
 				gm.RemoveFromPlayerPack(lastMember);
 				lastMember.QueueFree();
 			}
-		}
-
-		// Check for game over (only player left and wrong guess)
-		if (gm.PackSize <= 1 && count > 0)
-		{
-			gm.ChangeState(GameState.GameOver);
 		}
 	}
 

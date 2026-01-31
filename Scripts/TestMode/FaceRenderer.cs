@@ -7,10 +7,8 @@ public partial class FaceRenderer : Control
     private bool _isFriendly;
     private bool _hasFace;
 
-    // Face parameters (will be expanded in Phase 5)
-    private float _eyeSize = 8.0f;
-    private float _eyeSpacing = 40.0f;
-    private float _mouthWidth = 50.0f;
+    // Expression parameters
+    private float _mouthWidth = 60.0f;
     private float _browAngle;
 
     public override void _Draw()
@@ -18,23 +16,33 @@ public partial class FaceRenderer : Control
         if (!_hasFace) return;
 
         var center = Size / 2;
-        var faceColor = _isFriendly ? new Color(1.0f, 0.9f, 0.2f) : new Color(0.9f, 0.3f, 0.3f); // Yellow for friend, red for foe
-        var featureColor = new Color(0.1f, 0.1f, 0.1f);
+        var featureColor = new Color(0.15f, 0.1f, 0.05f);
 
-        // Face circle
-        DrawCircle(center, 80, faceColor);
+        // Eyes (simple dots on top of Face.png)
+        DrawCircle(center + new Vector2(-30, -15), 8, featureColor);
+        DrawCircle(center + new Vector2(30, -15), 8, featureColor);
 
-        // Eyes
-        DrawCircle(center + new Vector2(-25, -20), 10, featureColor);
-        DrawCircle(center + new Vector2(25, -20), 10, featureColor);
+        // Eyebrows
+        if (_isFriendly)
+        {
+            // Neutral/raised eyebrows
+            DrawLine(center + new Vector2(-45, -35), center + new Vector2(-15, -35), featureColor, 4);
+            DrawLine(center + new Vector2(15, -35), center + new Vector2(45, -35), featureColor, 4);
+        }
+        else
+        {
+            // Angry angled eyebrows
+            DrawLine(center + new Vector2(-45, -30), center + new Vector2(-15, -40), featureColor, 4);
+            DrawLine(center + new Vector2(15, -40), center + new Vector2(45, -30), featureColor, 4);
+        }
 
         // Mouth
         if (_isFriendly)
         {
             // Big smile
             DrawArc(
-                center + new Vector2(0, 10),
-                40,
+                center + new Vector2(0, 25),
+                _mouthWidth * 0.6f,
                 Mathf.DegToRad(200),
                 Mathf.DegToRad(340),
                 16,
@@ -46,8 +54,8 @@ public partial class FaceRenderer : Control
         {
             // Big frown
             DrawArc(
-                center + new Vector2(0, 50),
-                40,
+                center + new Vector2(0, 55),
+                _mouthWidth * 0.6f,
                 Mathf.DegToRad(20),
                 Mathf.DegToRad(160),
                 16,
@@ -66,9 +74,7 @@ public partial class FaceRenderer : Control
         var random = new RandomNumberGenerator();
         random.Randomize();
 
-        _eyeSize = random.RandfRange(6.0f, 10.0f);
-        _eyeSpacing = random.RandfRange(35.0f, 50.0f);
-        _mouthWidth = random.RandfRange(40.0f, 60.0f);
+        _mouthWidth = random.RandfRange(50.0f, 70.0f);
 
         QueueRedraw();
     }

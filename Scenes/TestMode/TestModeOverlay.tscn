@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://test_mode_overlay"]
+[gd_scene load_steps=6 format=3 uid="uid://test_mode_overlay"]
 
 [ext_resource type="Script" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
 [ext_resource type="PackedScene" uid="uid://mask_segment" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
 [ext_resource type="Script" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Face.png" id="4_face_texture"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
 
 [node name="TestModeOverlay" type="CanvasLayer"]
 layer = 10
@@ -36,18 +38,62 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="FaceRenderer" type="Control" parent="CenterContainer/TestPanel/FaceContainer"]
-custom_minimum_size = Vector2(160, 160)
+[node name="FaceArea" type="Control" parent="CenterContainer/TestPanel/FaceContainer"]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
+
+[node name="FaceSprite" type="TextureRect" parent="CenterContainer/TestPanel/FaceContainer/FaceArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+texture = ExtResource("4_face_texture")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="FaceRenderer" type="Control" parent="CenterContainer/TestPanel/FaceContainer/FaceArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource("3_face")
 
-[node name="MaskGrid" type="GridContainer" parent="CenterContainer/TestPanel/FaceContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+[node name="MaskGrid" type="GridContainer" parent="CenterContainer/TestPanel/FaceContainer/FaceArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 8
+
+[node name="FrameSprite" type="TextureRect" parent="CenterContainer/TestPanel/FaceContainer/FaceArea"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -110.0
+offset_right = 110.0
+offset_bottom = 110.0
+mouse_filter = 2
+texture = ExtResource("6_frame_texture")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="ButtonContainer" type="HBoxContainer" parent="CenterContainer/TestPanel"]
 layout_mode = 2

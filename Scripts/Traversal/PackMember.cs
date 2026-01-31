@@ -9,36 +9,41 @@ public partial class PackMember : CharacterBody2D
     public DotType Type { get; set; } = DotType.Herbivore;
 
     [Export]
-    public float DotRadius { get; set; } = 6.0f;
-
-    [Export]
-    public Color PlayerPackColor { get; set; } = new Color(0.2f, 0.8f, 0.3f); // Green
-
-    [Export]
-    public Color NPCPackColor { get; set; } = new Color(0.9f, 0.2f, 0.2f); // Red
-
-    [Export]
     public float FollowSpeed { get; set; } = 180.0f;
 
     [Export]
     public float FollowDistance { get; set; } = 25.0f;
 
+    private static Texture2D? _playerTexture;
+    private static Texture2D? _enemyTexture;
+
     private Node2D? _leader;
     private bool _isTested;
     private bool _isRecruited;
+    private Sprite2D _sprite = null!;
 
     public bool IsTested => _isTested;
 
-    public override void _Draw()
+    public override void _Ready()
     {
-        var color = _isRecruited ? PlayerPackColor : NPCPackColor;
-        DrawCircle(Vector2.Zero, DotRadius, color);
+        _sprite = GetNode<Sprite2D>("Sprite2D");
+
+        // Load textures once (static cache)
+        _playerTexture ??= GD.Load<Texture2D>("res://Assets/Graphics/player.png");
+        _enemyTexture ??= GD.Load<Texture2D>("res://Assets/Graphics/enemy.png");
+
+        UpdateSprite();
+    }
+
+    private void UpdateSprite()
+    {
+        _sprite.Texture = _isRecruited ? _playerTexture : _enemyTexture;
     }
 
     public void MarkRecruited()
     {
         _isRecruited = true;
-        QueueRedraw();
+        UpdateSprite();
     }
 
     public override void _PhysicsProcess(double delta)
@@ -73,6 +78,5 @@ public partial class PackMember : CharacterBody2D
     public void SetType(DotType type)
     {
         Type = type;
-        QueueRedraw();
     }
 }

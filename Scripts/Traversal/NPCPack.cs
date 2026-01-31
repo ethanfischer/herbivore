@@ -20,7 +20,7 @@ public partial class NPCPack : Node2D
     public int MaxMembers { get; set; } = 6;
 
     [Export]
-    public float SpawnRadius { get; set; } = 30.0f;
+    public float SpawnRadius { get; set; } = 120.0f;
 
     private readonly List<PackMember> _members = new();
     private Area2D _detectionArea = null!;
@@ -43,6 +43,8 @@ public partial class NPCPack : Node2D
         SpawnMembers();
     }
 
+    private const float MemberSpacing = 60.0f;
+
     private void SpawnMembers()
     {
         if (PackMemberScene == null)
@@ -56,18 +58,32 @@ public partial class NPCPack : Node2D
 
         int count = random.RandiRange(MinMembers, MaxMembers);
         int herbivoreCount = 0;
+        var positions = new List<Vector2>();
 
+        // First member at center
+        positions.Add(Vector2.Zero);
+
+        // Each subsequent member spawns adjacent to a random existing member
+        for (int i = 1; i < count; i++)
+        {
+            // Pick a random existing member to spawn next to
+            var basePosition = positions[random.RandiRange(0, positions.Count - 1)];
+
+            // Random direction outward from that member
+            var angle = random.RandfRange(0, Mathf.Tau);
+            var newPosition = basePosition + new Vector2(
+                Mathf.Cos(angle) * MemberSpacing,
+                Mathf.Sin(angle) * MemberSpacing
+            );
+
+            positions.Add(newPosition);
+        }
+
+        // Create members at calculated positions
         for (int i = 0; i < count; i++)
         {
             var member = PackMemberScene.Instantiate<PackMember>();
-
-            // Random position within spawn radius
-            var angle = random.RandfRange(0, Mathf.Tau);
-            var distance = random.RandfRange(0, SpawnRadius);
-            member.Position = new Vector2(
-                Mathf.Cos(angle) * distance,
-                Mathf.Sin(angle) * distance
-            );
+            member.Position = positions[i];
 
             // Random type
             var type = random.Randf() > 0.5f ? DotType.Herbivore : DotType.Carnivore;

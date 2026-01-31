@@ -115,6 +115,9 @@ public partial class NPCPack : Node2D
             member.SetLeader(currentLeader);
             currentLeader = member;
 
+            // Mark as recruited (turns green)
+            member.MarkRecruited();
+
             // Add to GameManager
             GameManager.Instance?.AddToPlayerPack(member);
         }

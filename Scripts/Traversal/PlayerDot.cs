@@ -8,7 +8,7 @@ public partial class PlayerDot : CharacterBody2D
     public float Speed { get; set; } = 200.0f;
 
     [Export]
-    public Color DotColor { get; set; } = new Color(0.2f, 0.6f, 1.0f); // Blue
+    public Color DotColor { get; set; } = new Color(0.2f, 0.8f, 0.3f); // Green
 
     [Export]
     public float DotRadius { get; set; } = 8.0f;

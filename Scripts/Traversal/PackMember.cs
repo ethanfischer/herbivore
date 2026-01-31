@@ -12,10 +12,10 @@ public partial class PackMember : CharacterBody2D
     public float DotRadius { get; set; } = 6.0f;
 
     [Export]
-    public Color HerbivoreColor { get; set; } = new Color(0.2f, 0.8f, 0.3f); // Green
+    public Color PlayerPackColor { get; set; } = new Color(0.2f, 0.8f, 0.3f); // Green
 
     [Export]
-    public Color CarnivoreColor { get; set; } = new Color(0.9f, 0.2f, 0.2f); // Red
+    public Color NPCPackColor { get; set; } = new Color(0.9f, 0.2f, 0.2f); // Red
 
     [Export]
     public float FollowSpeed { get; set; } = 180.0f;
@@ -25,13 +25,20 @@ public partial class PackMember : CharacterBody2D
 
     private Node2D? _leader;
     private bool _isTested;
+    private bool _isRecruited;
 
     public bool IsTested => _isTested;
 
     public override void _Draw()
     {
-        var color = Type == DotType.Herbivore ? HerbivoreColor : CarnivoreColor;
+        var color = _isRecruited ? PlayerPackColor : NPCPackColor;
         DrawCircle(Vector2.Zero, DotRadius, color);
+    }
+
+    public void MarkRecruited()
+    {
+        _isRecruited = true;
+        QueueRedraw();
     }
 
     public override void _PhysicsProcess(double delta)

@@ -46,7 +46,7 @@ public partial class MaskSegment : Button
     {
         if (_isShattered) return;
 
-        Shatter();
+        // Emit signal first - controller decides whether to allow shatter
         EmitSignal(SignalName.SegmentClicked, this);
     }
 

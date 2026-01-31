@@ -13,7 +13,7 @@ MaskSegmentScene = ExtResource("2_segment")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.7)
+color = Color(0.15, 0.15, 0.2, 1.0)
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchors_preset = 15

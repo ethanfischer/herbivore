@@ -34,8 +34,8 @@ public partial class TestModeController : CanvasLayer
 
     public override void _Ready()
     {
-        _faceRenderer = GetNode<Control>("CenterContainer/TestPanel/FaceRenderer");
-        _maskGrid = GetNode<GridContainer>("CenterContainer/TestPanel/MaskGrid");
+        _faceRenderer = GetNode<Control>("CenterContainer/TestPanel/FaceContainer/FaceRenderer");
+        _maskGrid = GetNode<GridContainer>("CenterContainer/TestPanel/FaceContainer/MaskGrid");
         _clickCounterLabel = GetNode<Label>("CenterContainer/TestPanel/ClickCounter");
         _friendButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FriendButton");
         _foeButton = GetNode<Button>("CenterContainer/TestPanel/ButtonContainer/FoeButton");
@@ -49,6 +49,8 @@ public partial class TestModeController : CanvasLayer
 
     public void StartTest(NPCPack pack, int allowedClicks)
     {
+        GD.Print($"TestModeController.StartTest called. Clicks: {allowedClicks}");
+
         _currentPack = pack;
         _isFriendly = pack.IsFriendly;
         _clicksRemaining = allowedClicks;
@@ -66,6 +68,7 @@ public partial class TestModeController : CanvasLayer
 
         // Show
         Visible = true;
+        GD.Print($"TestModeController now visible: {Visible}");
     }
 
     private void SetupMaskGrid()
@@ -99,6 +102,8 @@ public partial class TestModeController : CanvasLayer
     {
         if (_clicksRemaining <= 0) return;
 
+        // Allow the shatter
+        segment.Shatter();
         _clicksRemaining--;
         UpdateClickCounter();
 

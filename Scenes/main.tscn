@@ -1,21 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://main_scene"]
+[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
 
 [ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
 [ext_resource type="PackedScene" uid="uid://player_dot" path="res://Scenes/Traversal/PlayerDot.tscn" id="2_player"]
 [ext_resource type="Script" path="res://Scripts/Traversal/CameraFollow.cs" id="3_camera"]
 [ext_resource type="PackedScene" uid="uid://npc_pack" path="res://Scenes/Traversal/NPCPack.tscn" id="4_npcpack"]
 [ext_resource type="PackedScene" uid="uid://test_mode_overlay" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_testmode"]
-[ext_resource type="Texture2D" uid="uid://bljsdt2f3rp7y" path="res://Assets/Graphics/background.tres" id="6_background"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
 NPCPackScene = ExtResource("4_npcpack")
 
 [node name="TraversalMode" type="Node2D" parent="."]
-
-[node name="Background" type="Sprite2D" parent="TraversalMode"]
-scale = Vector2(5, 5)
-texture = ExtResource("6_background")
 
 [node name="Camera2D" type="Camera2D" parent="TraversalMode"]
 script = ExtResource("3_camera")

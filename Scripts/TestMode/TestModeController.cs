@@ -36,8 +36,8 @@ public partial class TestModeController : CanvasLayer
 
     public override void _Ready()
     {
-        _faceRenderer = GetNode<Control>("FaceArea/FaceRenderer");
-        _maskGrid = GetNode<GridContainer>("FaceArea/MaskGrid");
+        _faceRenderer = GetNode<Control>("FaceRenderer");
+        _maskGrid = GetNode<GridContainer>("MaskGrid");
         _clickCounterLabel = GetNode<Label>("ClickCounter");
         _friendButton = GetNode<Button>("ButtonContainer/FriendButton");
         _foeButton = GetNode<Button>("ButtonContainer/FoeButton");

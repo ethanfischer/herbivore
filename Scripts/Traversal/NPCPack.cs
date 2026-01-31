@@ -79,6 +79,12 @@ public partial class NPCPack : Node2D
             positions.Add(newPosition);
         }
 
+        // Calculate center of all positions
+        var center = Vector2.Zero;
+        foreach (var pos in positions)
+            center += pos;
+        center /= positions.Count;
+
         // Create members at calculated positions
         for (int i = 0; i < count; i++)
         {
@@ -98,6 +104,22 @@ public partial class NPCPack : Node2D
 
         // Majority determines if friendly
         _isFriendly = herbivoreCount > count / 2;
+
+        // Center detection area on the group and resize to cover all members
+        float maxDistance = 0;
+        foreach (var pos in positions)
+        {
+            var dist = pos.DistanceTo(center);
+            if (dist > maxDistance)
+                maxDistance = dist;
+        }
+
+        _detectionArea.Position = center;
+        var collisionShape = _detectionArea.GetNode<CollisionShape2D>("CollisionShape2D");
+        if (collisionShape.Shape is CircleShape2D circleShape)
+        {
+            circleShape.Radius = maxDistance + 50.0f; // Add padding for approach distance
+        }
     }
 
     private void OnBodyEntered(Node2D body)

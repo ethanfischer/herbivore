@@ -14,11 +14,13 @@ public partial class PlayerDot : CharacterBody2D
 	public float DotRadius { get; set; } = 8.0f;
 
 	private Area2D _approachArea = null!;
+	private Sprite2D _sprite = null!;
 
 	public override void _Ready()
 	{
 		_approachArea = GetNode<Area2D>("ApproachArea");
 		_approachArea.AreaEntered += OnApproachAreaEntered;
+		_sprite = GetNode<Sprite2D>("Sprite2D");
 	}
 
 	public override void _Draw()
@@ -42,6 +44,8 @@ public partial class PlayerDot : CharacterBody2D
 		if (velocity != Vector2.Zero)
 		{
 			velocity = velocity.Normalized() * Speed;
+			// Rotate sprite to face movement direction
+			_sprite.Rotation = velocity.Angle();
 		}
 
 		Velocity = velocity;

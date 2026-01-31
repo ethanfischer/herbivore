@@ -66,6 +66,10 @@ public partial class TestModeController : CanvasLayer
         // Update UI
         UpdateClickCounter();
 
+        // Hide buttons until clicks exhausted
+        _friendButton.Visible = false;
+        _foeButton.Visible = false;
+
         // Show
         Visible = true;
         GD.Print($"TestModeController now visible: {Visible}");
@@ -108,6 +112,13 @@ public partial class TestModeController : CanvasLayer
         UpdateClickCounter();
 
         GD.Print($"Segment clicked. Remaining: {_clicksRemaining}");
+
+        // Show buttons when clicks exhausted
+        if (_clicksRemaining <= 0)
+        {
+            _friendButton.Visible = true;
+            _foeButton.Visible = true;
+        }
     }
 
     private void UpdateClickCounter()

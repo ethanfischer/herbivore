@@ -160,7 +160,7 @@ public partial class Main : Node2D
 			else
 			{
 				// Trusted foes - lose pack members
-				LosePackMembers(_currentTestPack.MemberCount);
+				LosePackMember();
 				_failSound.Play();
 				GD.Print("Wrong! Foe pack attacked.");
 			}
@@ -186,28 +186,23 @@ public partial class Main : Node2D
 		pack.TransferOneMemberToPlayer(_playerPackContainer, lastLeader);
 	}
 
-	private void LosePackMembers(int count)
+	private void LosePackMember()
 	{
 		var gm = GameManager.Instance;
 		if (gm == null) return;
 
 		// Game over if player is already alone and trusts a foe
-		if (gm.PackSize <= 1 && count > 0)
+		if (gm.PackSize <= 1)
 		{
 			gm.ChangeState(GameState.GameOver);
 			return;
 		}
 
-		// Remove members from the end of the pack
-		for (int i = 0; i < count && gm.PackSize > 1; i++)
-		{
-			var lastMember = gm.GetLastPackMember();
-			if (lastMember != null)
-			{
-				gm.RemoveFromPlayerPack(lastMember);
-				lastMember.QueueFree();
-			}
-		}
+		var lastMember = gm.GetLastPackMember();
+		if (lastMember == null) return;
+
+		gm.RemoveFromPlayerPack(lastMember);
+		lastMember.QueueFree();
 	}
 
 	private void OnGameStateChanged(int stateInt)

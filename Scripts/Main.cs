@@ -37,6 +37,8 @@ public partial class Main : Node2D
 
 	public override void _Ready()
 	{
+		_random.Randomize();
+
 		// Get references
 		_traversalMode = GetNode<Node2D>("TraversalMode");
 		_testMode = GetNode<TestModeController>("TestMode");
@@ -70,6 +72,18 @@ public partial class Main : Node2D
 
 		// Initial UI update
 		UpdateUI();
+	}
+
+	public override void _ExitTree()
+	{
+		// Disconnect signals to avoid issues on scene reload
+		var gm = GameManager.Instance;
+		if (gm != null)
+		{
+			gm.StateChanged -= OnGameStateChanged;
+			gm.PackSizeChanged -= OnPackSizeChanged;
+			gm.ScoreChanged -= OnScoreChanged;
+		}
 	}
 
 	private void ConnectNPCPacks()
@@ -108,17 +122,16 @@ public partial class Main : Node2D
 		{
 			if (_currentTestPack.IsFriendly)
 			{
-				// Recruit the NPC pack
+				// Recruit one member from the pack
 				RecruitPack(_currentTestPack);
-				gm.AddScore(10 * _currentTestPack.MemberCount);
-				GD.Print("Correct! Recruited friendly pack.");
+				gm.AddScore(10);
+				GD.Print("Correct! Recruited one friendly.");
 			}
 			else
 			{
-				// Successfully identified foe - they leave
+				// Successfully identified foe
 				gm.AddScore(20);
-				_currentTestPack.RemovePackFromGame();
-				GD.Print("Correct! Foe pack driven away.");
+				GD.Print("Correct! Identified foe.");
 			}
 		}
 		else
@@ -126,23 +139,25 @@ public partial class Main : Node2D
 			// Wrong guess
 			if (_currentTestPack.IsFriendly)
 			{
-				// Attacked friends - they leave angry
-				_currentTestPack.RemovePackFromGame();
-				GD.Print("Wrong! Friendly pack left in disgust.");
+				GD.Print("Wrong! They were friendly.");
 			}
 			else
 			{
 				// Trusted foes - lose pack members
 				LosePackMembers(_currentTestPack.MemberCount);
-				_currentTestPack.RemovePackFromGame();
-				GD.Print("Wrong! Foe pack attacked and left.");
+				GD.Print("Wrong! Foe pack attacked.");
 			}
 		}
 
 		_currentTestPack = null;
 
-		// Spawn new packs to maintain minimum
-		EnsureMinimumPacks();
+		// Return to traversal if not game over
+		if (gm.CurrentState != GameState.GameOver)
+		{
+			gm.ChangeState(GameState.Traversal);
+			// Spawn new packs to maintain minimum
+			EnsureMinimumPacks();
+		}
 	}
 
 	private void RecruitPack(NPCPack pack)

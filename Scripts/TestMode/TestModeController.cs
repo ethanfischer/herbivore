@@ -136,9 +136,8 @@ public partial class TestModeController : CanvasLayer
 
         EmitSignal(SignalName.TestCompleted, correct);
 
-        // Hide and return to traversal
+        // Hide test mode (Main.cs handles state transitions)
         Visible = false;
-        GameManager.Instance?.ChangeState(GameState.Traversal);
     }
 
     public void EndTest()

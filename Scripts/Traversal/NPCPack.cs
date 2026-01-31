@@ -109,9 +109,15 @@ public partial class NPCPack : Node2D
         var member = _members[0];
         _members.RemoveAt(0);
 
+        // Remember global position before reparenting
+        var globalPos = member.GlobalPosition;
+
         // Reparent to player pack container
         member.GetParent().RemoveChild(member);
         playerPackContainer.AddChild(member);
+
+        // Restore global position so they start from where the pack was
+        member.GlobalPosition = globalPos;
 
         // Set up following chain
         member.SetLeader(lastLeader);
@@ -122,8 +128,7 @@ public partial class NPCPack : Node2D
         // Add to GameManager
         GameManager.Instance?.AddToPlayerPack(member);
 
-        // Remove the rest of the pack
-        RemovePackFromGame();
+        // Pack stays but is now tested (can't be approached again)
     }
 
     public void RemovePackFromGame()

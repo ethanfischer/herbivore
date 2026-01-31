@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+.idea/.idea.herbivore.dir/.idea
+Folder.DotSettings.user

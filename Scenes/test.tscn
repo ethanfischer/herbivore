@@ -1,0 +1,93 @@
+[gd_scene format=3 uid="uid://y33bx1okk4wg"]
+
+[ext_resource type="Texture2D" uid="uid://bljsdt2f3rp7y" path="res://Assets/Graphics/background.tres" id="1_lc1oi"]
+[ext_resource type="Texture2D" uid="uid://yssktnatwuv0" path="res://Assets/Graphics/Mask.png" id="2_qc4db"]
+[ext_resource type="Texture2D" uid="uid://dk71pgs0mbssh" path="res://Assets/Graphics/Face.png" id="2_ys1qc"]
+[ext_resource type="Texture2D" uid="uid://cltji7brs2chx" path="res://Assets/Graphics/Frame.png" id="3_ys1qc"]
+
+[node name="Test" type="Node2D" unique_id=1263056745]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=25282453]
+layer = 0
+
+[node name="The Test" type="Control" parent="UI" unique_id=969633466]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Content" type="Control" parent="UI/The Test" unique_id=730148138]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -229.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/The Test/Content" unique_id=540094669]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="HBoxContainer" parent="UI/The Test/Content/MarginContainer" unique_id=1617676053]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+
+[node name="Friendly" type="Button" parent="UI/The Test/Content/MarginContainer/VBoxContainer" unique_id=1842356142]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+text = "Friendly
+"
+
+[node name="NotFriendly" type="Button" parent="UI/The Test/Content/MarginContainer/VBoxContainer" unique_id=887975079]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+text = "Enemy
+"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=2139249434]
+scale = Vector2(1.953125, 1.953125)
+texture = ExtResource("1_lc1oi")
+centered = false
+
+[node name="Mask" type="Node2D" parent="." unique_id=465994016]
+position = Vector2(-18, -43)
+metadata/_edit_group_ = true
+
+[node name="Face" type="Sprite2D" parent="Mask" unique_id=837065571]
+position = Vector2(511, 488)
+scale = Vector2(0.68711656, 0.6871165)
+texture = ExtResource("2_ys1qc")
+
+[node name="Mask" type="Sprite2D" parent="Mask" unique_id=920806757]
+position = Vector2(512, 480)
+scale = Vector2(0.3916449, 0.3916449)
+texture = ExtResource("2_qc4db")
+
+[node name="Frame" type="Sprite2D" parent="Mask" unique_id=1333561524]
+position = Vector2(508.99994, 478.99997)
+scale = Vector2(0.97999984, 0.97999984)
+texture = ExtResource("3_ys1qc")

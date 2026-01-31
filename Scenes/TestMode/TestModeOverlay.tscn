@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://test_mode_overlay"]
+
+[ext_resource type="Script" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
+[ext_resource type="PackedScene" uid="uid://mask_segment" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
+[ext_resource type="Script" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Face.png" id="4_face_texture"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Mask.png" id="5_mask_texture"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
+[ext_resource type="Texture2D" uid="uid://bljsdt2f3rp7y" path="res://Assets/Graphics/background.tres" id="7_background"]
+
+[node name="TestModeOverlay" type="CanvasLayer"]
+visible = false
+layer = 10
+script = ExtResource("1_controller")
+MaskSegmentScene = ExtResource("2_segment")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(1.953125, 1.953125)
+texture = ExtResource("7_background")
+centered = false
+
+[node name="FaceArea" type="Node2D" parent="."]
+position = Vector2(-18, -43)
+
+[node name="FaceSprite" type="Sprite2D" parent="FaceArea"]
+position = Vector2(511, 488)
+scale = Vector2(0.687, 0.687)
+texture = ExtResource("4_face_texture")
+
+[node name="FrameSprite" type="Sprite2D" parent="FaceArea"]
+position = Vector2(509, 479)
+scale = Vector2(0.98, 0.98)
+texture = ExtResource("6_frame_texture")
+
+[node name="MaskGrid" type="GridContainer" parent="."]
+offset_left = 344.0
+offset_top = 287.0
+offset_right = 644.0
+offset_bottom = 587.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 8
+
+[node name="FaceRenderer" type="Control" parent="."]
+offset_left = 344.0
+offset_top = 287.0
+offset_right = 644.0
+offset_bottom = 587.0
+mouse_filter = 2
+script = ExtResource("3_face")
+
+[node name="ClickCounter" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 40.0
+text = "Clicks: 10/10"
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="HBoxContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = -30.0
+alignment = 1
+
+[node name="FriendButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(150, 60)
+text = "Friendly"
+
+[node name="Spacer" type="Control" parent="ButtonContainer"]
+custom_minimum_size = Vector2(40, 0)
+
+[node name="FoeButton" type="Button" parent="ButtonContainer"]
+custom_minimum_size = Vector2(150, 60)
+text = "Enemy"

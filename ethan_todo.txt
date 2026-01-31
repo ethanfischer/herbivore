@@ -1,0 +1,4 @@
+[ ] more distance between group members
+[ ] random rotations
+[ ] orient towards direciton moving
+[ ] randomly reveal mask

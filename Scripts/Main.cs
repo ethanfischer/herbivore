@@ -8,6 +8,18 @@ namespace Herbivore;
 
 public partial class Main : Node2D
 {
+	[Export]
+	public PackedScene? NPCPackScene { get; set; }
+
+	[Export]
+	public int MinActivePacks { get; set; } = 4;
+
+	[Export]
+	public float SpawnDistanceFromPlayer { get; set; } = 200.0f;
+
+	[Export]
+	public float WorldRadius { get; set; } = 500.0f;
+
 	private Node2D _traversalMode = null!;
 	private TestModeController _testMode = null!;
 	private Node2D _playerPackContainer = null!;
@@ -21,6 +33,7 @@ public partial class Main : Node2D
 	private Button _restartButton = null!;
 
 	private NPCPack? _currentTestPack;
+	private RandomNumberGenerator _random = new();
 
 	public override void _Ready()
 	{
@@ -127,6 +140,9 @@ public partial class Main : Node2D
 		}
 
 		_currentTestPack = null;
+
+		// Spawn new packs to maintain minimum
+		EnsureMinimumPacks();
 	}
 
 	private void RecruitPack(NPCPack pack)
@@ -218,6 +234,55 @@ public partial class Main : Node2D
 		{
 			_packSizeLabel.Text = $"Pack: {gm.PackSize}";
 			_scoreLabel.Text = $"Score: {gm.Score}";
+		}
+	}
+
+	private void SpawnNewPack()
+	{
+		if (NPCPackScene == null)
+		{
+			GD.PrintErr("Main: NPCPackScene not set!");
+			return;
+		}
+
+		var pack = NPCPackScene.Instantiate<NPCPack>();
+
+		// Find a position away from the player
+		Vector2 spawnPos;
+		int attempts = 0;
+		do
+		{
+			var angle = _random.RandfRange(0, Mathf.Tau);
+			var distance = _random.RandfRange(SpawnDistanceFromPlayer, WorldRadius);
+			spawnPos = _playerDot.GlobalPosition + new Vector2(
+				Mathf.Cos(angle) * distance,
+				Mathf.Sin(angle) * distance
+			);
+			attempts++;
+		} while (attempts < 10 && spawnPos.DistanceTo(_playerDot.GlobalPosition) < SpawnDistanceFromPlayer);
+
+		pack.Position = spawnPos;
+		pack.PlayerApproached += OnPlayerApproachedPack;
+		_npcPackContainer.AddChild(pack);
+
+		GD.Print($"Spawned new NPC pack at {spawnPos}");
+	}
+
+	private void EnsureMinimumPacks()
+	{
+		int activePacks = 0;
+		foreach (var child in _npcPackContainer.GetChildren())
+		{
+			if (child is NPCPack pack && !pack.IsTested)
+			{
+				activePacks++;
+			}
+		}
+
+		while (activePacks < MinActivePacks)
+		{
+			SpawnNewPack();
+			activePacks++;
 		}
 	}
 }

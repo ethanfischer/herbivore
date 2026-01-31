@@ -8,6 +8,7 @@
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_main")
+NPCPackScene = ExtResource("4_npcpack")
 
 [node name="TraversalMode" type="Node2D" parent="."]
 

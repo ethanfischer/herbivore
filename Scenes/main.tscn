@@ -1,0 +1,144 @@
+[gd_scene format=3 uid="uid://dqadce7jbj1b7"]
+
+[ext_resource type="Texture2D" uid="uid://bljsdt2f3rp7y" path="res://Assets/Graphics/background.tres" id="1_jjgbg"]
+[ext_resource type="Texture2D" uid="uid://0pcurxgg6g1n" path="res://Assets/Graphics/player.png" id="2_bo1nx"]
+[ext_resource type="Texture2D" uid="uid://i7aurklqs11w" path="res://Assets/Graphics/enemy.png" id="3_8gbba"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bo1nx"]
+font_size = 68
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.6745098)
+shadow_offset = Vector2(0, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8gbba"]
+font_size = 27
+
+[sub_resource type="Gradient" id="Gradient_0kxxq"]
+colors = PackedColorArray(0.5545593, 0.29930246, 0.054323405, 1, 0.92316365, 0.8376818, 0.78723806, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_57s6h"]
+noise_type = 0
+frequency = 0.0263
+fractal_type = 2
+fractal_octaves = 10
+fractal_lacunarity = 0.865
+fractal_gain = 1.225
+fractal_ping_pong_strength = 2.105
+domain_warp_enabled = true
+domain_warp_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_jjgbg"]
+width = 3000
+height = 3000
+generate_mipmaps = false
+noise = SubResource("FastNoiseLite_57s6h")
+color_ramp = SubResource("Gradient_0kxxq")
+seamless = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8gbba"]
+size = Vector2(44, 76)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjvhh"]
+size = Vector2(64, 98)
+
+[node name="Main" type="Node2D" unique_id=1263056745]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=25282453]
+
+[node name="Start" type="Control" parent="UI" unique_id=708175784]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="UI/Start" unique_id=1964365545]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_jjgbg")
+
+[node name="Content" type="Control" parent="UI/Start" unique_id=894916952]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -592.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Start/Content" unique_id=688786443]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Start/Content/MarginContainer" unique_id=794617526]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Title" type="Label" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=1888968696]
+layout_mode = 2
+text = "Are You Friendly?"
+label_settings = SubResource("LabelSettings_bo1nx")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=533698934]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Explore the desert. Interact with stranger. Grow your tribe."
+label_settings = SubResource("LabelSettings_8gbba")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=354608233]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+text = "Play"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=767205305]
+scale = Vector2(5, 5)
+texture = SubResource("NoiseTexture2D_jjgbg")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1714404641]
+position = Vector2(247, 192)
+motion_mode = 1
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="Sprite2D" parent="Player" unique_id=1497449751]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_bo1nx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=322454550]
+show_behind_parent = true
+shape = SubResource("RectangleShape2D_8gbba")
+
+[node name="Enemy" type="Area2D" parent="." unique_id=360759908]
+position = Vector2(566, 209)
+metadata/_edit_group_ = true
+
+[node name="Sprite" type="Sprite2D" parent="Enemy" unique_id=1042135911]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_8gbba")
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy" unique_id=1426876328]
+show_behind_parent = true
+shape = SubResource("RectangleShape2D_jjvhh")

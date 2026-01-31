@@ -101,28 +101,29 @@ public partial class NPCPack : Node2D
         _isTested = true;
     }
 
-    public void TransferMembersToPlayer(Node2D playerPackContainer, Node2D lastLeader)
+    public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D lastLeader)
     {
-        var currentLeader = lastLeader;
+        if (_members.Count == 0) return;
 
-        foreach (var member in _members)
-        {
-            // Reparent to player pack container
-            member.GetParent().RemoveChild(member);
-            playerPackContainer.AddChild(member);
+        // Take one member
+        var member = _members[0];
+        _members.RemoveAt(0);
 
-            // Set up following chain
-            member.SetLeader(currentLeader);
-            currentLeader = member;
+        // Reparent to player pack container
+        member.GetParent().RemoveChild(member);
+        playerPackContainer.AddChild(member);
 
-            // Mark as recruited (turns green)
-            member.MarkRecruited();
+        // Set up following chain
+        member.SetLeader(lastLeader);
 
-            // Add to GameManager
-            GameManager.Instance?.AddToPlayerPack(member);
-        }
+        // Mark as recruited (turns green)
+        member.MarkRecruited();
 
-        _members.Clear();
+        // Add to GameManager
+        GameManager.Instance?.AddToPlayerPack(member);
+
+        // Remove the rest of the pack
+        RemovePackFromGame();
     }
 
     public void RemovePackFromGame()

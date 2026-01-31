@@ -150,7 +150,8 @@ public partial class Main : Node2D
 		// Get the last member in player's chain (or player if empty)
 		Node2D lastLeader = GameManager.Instance?.GetLastPackMember() as Node2D ?? _playerDot;
 
-		pack.TransferMembersToPlayer(_playerPackContainer, lastLeader);
+		// Only recruit one member
+		pack.TransferOneMemberToPlayer(_playerPackContainer, lastLeader);
 	}
 
 	private void LosePackMembers(int count)

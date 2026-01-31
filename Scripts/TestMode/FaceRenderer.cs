@@ -18,77 +18,41 @@ public partial class FaceRenderer : Control
         if (!_hasFace) return;
 
         var center = Size / 2;
-        var faceColor = new Color(0.95f, 0.85f, 0.7f); // Skin tone
-        var featureColor = new Color(0.2f, 0.2f, 0.2f); // Dark features
+        var faceColor = _isFriendly ? new Color(1.0f, 0.9f, 0.2f) : new Color(0.9f, 0.3f, 0.3f); // Yellow for friend, red for foe
+        var featureColor = new Color(0.1f, 0.1f, 0.1f);
 
-        // Face oval
+        // Face circle
         DrawCircle(center, 80, faceColor);
 
         // Eyes
-        var leftEyePos = center + new Vector2(-_eyeSpacing / 2, -20);
-        var rightEyePos = center + new Vector2(_eyeSpacing / 2, -20);
-        DrawCircle(leftEyePos, _eyeSize, featureColor);
-        DrawCircle(rightEyePos, _eyeSize, featureColor);
-
-        // Eyebrows
-        var browLength = 15.0f;
-        var browY = -35.0f;
-
-        if (_isFriendly)
-        {
-            // Neutral/friendly brows
-            DrawLine(
-                center + new Vector2(-_eyeSpacing / 2 - browLength / 2, browY),
-                center + new Vector2(-_eyeSpacing / 2 + browLength / 2, browY),
-                featureColor, 2
-            );
-            DrawLine(
-                center + new Vector2(_eyeSpacing / 2 - browLength / 2, browY),
-                center + new Vector2(_eyeSpacing / 2 + browLength / 2, browY),
-                featureColor, 2
-            );
-        }
-        else
-        {
-            // Angry angled brows
-            DrawLine(
-                center + new Vector2(-_eyeSpacing / 2 - browLength / 2, browY - 5),
-                center + new Vector2(-_eyeSpacing / 2 + browLength / 2, browY + 5),
-                featureColor, 3
-            );
-            DrawLine(
-                center + new Vector2(_eyeSpacing / 2 - browLength / 2, browY + 5),
-                center + new Vector2(_eyeSpacing / 2 + browLength / 2, browY - 5),
-                featureColor, 3
-            );
-        }
+        DrawCircle(center + new Vector2(-25, -20), 10, featureColor);
+        DrawCircle(center + new Vector2(25, -20), 10, featureColor);
 
         // Mouth
-        var mouthY = center.Y + 30;
         if (_isFriendly)
         {
-            // Smile - arc upward
+            // Big smile
             DrawArc(
-                new Vector2(center.X, mouthY + 10),
-                _mouthWidth / 2,
+                center + new Vector2(0, 10),
+                40,
                 Mathf.DegToRad(200),
                 Mathf.DegToRad(340),
                 16,
                 featureColor,
-                3
+                5
             );
         }
         else
         {
-            // Frown - arc downward
+            // Big frown
             DrawArc(
-                new Vector2(center.X, mouthY - 10),
-                _mouthWidth / 2,
+                center + new Vector2(0, 50),
+                40,
                 Mathf.DegToRad(20),
                 Mathf.DegToRad(160),
                 16,
                 featureColor,
-                3
+                5
             );
         }
     }

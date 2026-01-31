@@ -44,6 +44,10 @@ public partial class PackMember : CharacterBody2D
     {
         _isRecruited = true;
         UpdateSprite();
+
+        // Disable collision with player so recruited members don't block movement
+        CollisionLayer = 0;
+        CollisionMask = 0;
     }
 
     public override void _PhysicsProcess(double delta)

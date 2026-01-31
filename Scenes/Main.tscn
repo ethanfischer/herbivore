@@ -94,3 +94,11 @@ offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 50.0
 text = "Restart"
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="FailSound" type="AudioStreamPlayer" parent="Sounds"]
+
+[node name="IdentifyFoeSound" type="AudioStreamPlayer" parent="Sounds"]

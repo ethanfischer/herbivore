@@ -20,6 +20,11 @@ public partial class Main : Node2D
 	[Export]
 	public float WorldRadius { get; set; } = 500.0f;
 
+	// Sound effects
+	private AudioStreamPlayer _successSound = null!;
+	private AudioStreamPlayer _failSound = null!;
+	private AudioStreamPlayer _identifyFoeSound = null!;
+
 	private Node2D _traversalMode = null!;
 	private TestModeController _testMode = null!;
 	private Node2D _playerPackContainer = null!;
@@ -51,6 +56,15 @@ public partial class Main : Node2D
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
 		_restartButton = GetNode<Button>("UI/GameOverPanel/RestartButton");
+
+		// Sound references and generation
+		_successSound = GetNode<AudioStreamPlayer>("Sounds/SuccessSound");
+		_failSound = GetNode<AudioStreamPlayer>("Sounds/FailSound");
+		_identifyFoeSound = GetNode<AudioStreamPlayer>("Sounds/IdentifyFoeSound");
+
+		_successSound.Stream = SoundGenerator.CreateSuccessSound();
+		_failSound.Stream = SoundGenerator.CreateFailSound();
+		_identifyFoeSound.Stream = SoundGenerator.CreateIdentifyFoeSound();
 
 		// Connect to GameManager signals
 		var gm = GameManager.Instance;
@@ -125,12 +139,14 @@ public partial class Main : Node2D
 				// Recruit one member from the pack
 				RecruitPack(_currentTestPack);
 				gm.AddScore(10);
+				_successSound.Play();
 				GD.Print("Correct! Recruited one friendly.");
 			}
 			else
 			{
 				// Successfully identified foe
 				gm.AddScore(20);
+				_identifyFoeSound.Play();
 				GD.Print("Correct! Identified foe.");
 			}
 		}
@@ -145,6 +161,7 @@ public partial class Main : Node2D
 			{
 				// Trusted foes - lose pack members
 				LosePackMembers(_currentTestPack.MemberCount);
+				_failSound.Play();
 				GD.Print("Wrong! Foe pack attacked.");
 			}
 		}

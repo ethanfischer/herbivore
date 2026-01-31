@@ -1,0 +1,223 @@
+using Godot;
+using Herbivore.Autoloads;
+using Herbivore.Data;
+using Herbivore.TestMode;
+using Herbivore.Traversal;
+
+namespace Herbivore;
+
+public partial class Main : Node2D
+{
+	private Node2D _traversalMode = null!;
+	private TestModeController _testMode = null!;
+	private Node2D _playerPackContainer = null!;
+	private Node2D _npcPackContainer = null!;
+	private PlayerDot _playerDot = null!;
+
+	// UI elements
+	private Label _packSizeLabel = null!;
+	private Label _scoreLabel = null!;
+	private Panel _gameOverPanel = null!;
+	private Button _restartButton = null!;
+
+	private NPCPack? _currentTestPack;
+
+	public override void _Ready()
+	{
+		// Get references
+		_traversalMode = GetNode<Node2D>("TraversalMode");
+		_testMode = GetNode<TestModeController>("TestMode");
+		_playerPackContainer = GetNode<Node2D>("TraversalMode/PlayerPackContainer");
+		_npcPackContainer = GetNode<Node2D>("TraversalMode/World/NPCPackContainer");
+		_playerDot = GetNode<PlayerDot>("TraversalMode/PlayerDot");
+
+		// UI references
+		_packSizeLabel = GetNode<Label>("UI/PackSizeLabel");
+		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
+		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
+		_restartButton = GetNode<Button>("UI/GameOverPanel/RestartButton");
+
+		// Connect to GameManager signals
+		var gm = GameManager.Instance;
+		if (gm != null)
+		{
+			gm.StateChanged += OnGameStateChanged;
+			gm.PackSizeChanged += OnPackSizeChanged;
+			gm.ScoreChanged += OnScoreChanged;
+		}
+
+		// Connect test mode completion
+		_testMode.TestCompleted += OnTestCompleted;
+
+		// Connect restart button
+		_restartButton.Pressed += OnRestartPressed;
+
+		// Connect all NPC packs
+		ConnectNPCPacks();
+
+		// Initial UI update
+		UpdateUI();
+	}
+
+	private void ConnectNPCPacks()
+	{
+		foreach (var child in _npcPackContainer.GetChildren())
+		{
+			if (child is NPCPack pack)
+			{
+				pack.PlayerApproached += OnPlayerApproachedPack;
+			}
+		}
+	}
+
+	private void OnPlayerApproachedPack(NPCPack pack)
+	{
+		if (pack.IsTested) return;
+
+		_currentTestPack = pack;
+
+		// Calculate allowed clicks based on pack sizes
+		int clicks = GameManager.Instance?.CalculateClicks(pack.MemberCount) ?? 10;
+
+		GD.Print($"Starting test. Player pack: {GameManager.Instance?.PackSize}, NPC pack: {pack.MemberCount}, Clicks: {clicks}");
+
+		_testMode.StartTest(pack, clicks);
+	}
+
+	private void OnTestCompleted(bool guessedCorrectly)
+	{
+		if (_currentTestPack == null) return;
+
+		var gm = GameManager.Instance;
+		if (gm == null) return;
+
+		if (guessedCorrectly)
+		{
+			if (_currentTestPack.IsFriendly)
+			{
+				// Recruit the NPC pack
+				RecruitPack(_currentTestPack);
+				gm.AddScore(10 * _currentTestPack.MemberCount);
+				GD.Print("Correct! Recruited friendly pack.");
+			}
+			else
+			{
+				// Successfully identified foe - they leave
+				gm.AddScore(20);
+				_currentTestPack.RemovePackFromGame();
+				GD.Print("Correct! Foe pack driven away.");
+			}
+		}
+		else
+		{
+			// Wrong guess
+			if (_currentTestPack.IsFriendly)
+			{
+				// Attacked friends - they leave angry
+				_currentTestPack.RemovePackFromGame();
+				GD.Print("Wrong! Friendly pack left in disgust.");
+			}
+			else
+			{
+				// Trusted foes - lose pack members
+				LosePackMembers(_currentTestPack.MemberCount);
+				_currentTestPack.RemovePackFromGame();
+				GD.Print("Wrong! Foe pack attacked and left.");
+			}
+		}
+
+		_currentTestPack = null;
+	}
+
+	private void RecruitPack(NPCPack pack)
+	{
+		// Get the last member in player's chain (or player if empty)
+		Node2D lastLeader = GameManager.Instance?.GetLastPackMember() as Node2D ?? _playerDot;
+
+		pack.TransferMembersToPlayer(_playerPackContainer, lastLeader);
+	}
+
+	private void LosePackMembers(int count)
+	{
+		var gm = GameManager.Instance;
+		if (gm == null) return;
+
+		// Remove members from the end of the pack
+		for (int i = 0; i < count && gm.PackSize > 1; i++)
+		{
+			var lastMember = gm.GetLastPackMember();
+			if (lastMember != null)
+			{
+				gm.RemoveFromPlayerPack(lastMember);
+				lastMember.QueueFree();
+			}
+		}
+
+		// Check for game over (only player left and wrong guess)
+		if (gm.PackSize <= 1 && count > 0)
+		{
+			gm.ChangeState(GameState.GameOver);
+		}
+	}
+
+	private void OnGameStateChanged(int stateInt)
+	{
+		var newState = (GameState)stateInt;
+		switch (newState)
+		{
+			case GameState.Traversal:
+				_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
+				_gameOverPanel.Visible = false;
+				break;
+
+			case GameState.Testing:
+				// Pause traversal while testing
+				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				break;
+
+			case GameState.GameOver:
+				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				_testMode.EndTest();
+				_gameOverPanel.Visible = true;
+				break;
+		}
+	}
+
+	private void OnPackSizeChanged(int newSize)
+	{
+		_packSizeLabel.Text = $"Pack: {newSize}";
+	}
+
+	private void OnScoreChanged(int newScore)
+	{
+		_scoreLabel.Text = $"Score: {newScore}";
+	}
+
+	private void OnRestartPressed()
+	{
+		// Reset game
+		GameManager.Instance?.ResetGame();
+
+		// Clear player pack visually
+		foreach (var child in _playerPackContainer.GetChildren())
+		{
+			child.QueueFree();
+		}
+
+		// Reset player position
+		_playerDot.Position = new Vector2(400, 300);
+
+		// Reload scene to reset NPC packs
+		GetTree().ReloadCurrentScene();
+	}
+
+	private void UpdateUI()
+	{
+		var gm = GameManager.Instance;
+		if (gm != null)
+		{
+			_packSizeLabel.Text = $"Pack: {gm.PackSize}";
+			_scoreLabel.Text = $"Score: {gm.Score}";
+		}
+	}
+}

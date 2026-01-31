@@ -1,0 +1,93 @@
+[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://player_dot" path="res://Scenes/Traversal/PlayerDot.tscn" id="2_player"]
+[ext_resource type="Script" path="res://Scripts/Traversal/CameraFollow.cs" id="3_camera"]
+[ext_resource type="PackedScene" uid="uid://npc_pack" path="res://Scenes/Traversal/NPCPack.tscn" id="4_npcpack"]
+[ext_resource type="PackedScene" uid="uid://test_mode_overlay" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_testmode"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="TraversalMode" type="Node2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="TraversalMode"]
+script = ExtResource("3_camera")
+TargetPath = NodePath("../PlayerDot")
+SmoothSpeed = 8.0
+
+[node name="World" type="Node2D" parent="TraversalMode"]
+
+[node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World"]
+
+[node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+position = Vector2(200, 150)
+
+[node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+position = Vector2(600, 200)
+
+[node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+position = Vector2(300, 450)
+
+[node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+position = Vector2(550, 400)
+
+[node name="PlayerDot" parent="TraversalMode" instance=ExtResource("2_player")]
+position = Vector2(400, 300)
+
+[node name="PlayerPackContainer" type="Node2D" parent="TraversalMode"]
+
+[node name="TestMode" parent="." instance=ExtResource("5_testmode")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PackSizeLabel" type="Label" parent="UI"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 150.0
+offset_bottom = 30.0
+text = "Pack: 1"
+
+[node name="ScoreLabel" type="Label" parent="UI"]
+offset_left = 10.0
+offset_top = 35.0
+offset_right = 150.0
+offset_bottom = 55.0
+text = "Score: 0"
+
+[node name="GameOverPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -50.0
+offset_top = 30.0
+offset_right = 50.0
+offset_bottom = 53.0
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 50.0
+text = "Restart"

@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://test_mode_overlay"]
+
+[ext_resource type="Script" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
+[ext_resource type="PackedScene" uid="uid://mask_segment" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
+[ext_resource type="Script" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
+
+[node name="TestModeOverlay" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_controller")
+MaskSegmentScene = ExtResource("2_segment")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.7)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="TestPanel" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(450, 350)
+
+[node name="Title" type="Label" parent="CenterContainer/TestPanel"]
+layout_mode = 2
+text = "IDENTIFY THE PACK"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="CenterContainer/TestPanel"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="FaceContainer" type="CenterContainer" parent="CenterContainer/TestPanel"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="FaceRenderer" type="Control" parent="CenterContainer/TestPanel/FaceContainer"]
+custom_minimum_size = Vector2(400, 200)
+layout_mode = 2
+script = ExtResource("3_face")
+
+[node name="MaskGrid" type="GridContainer" parent="CenterContainer/TestPanel/FaceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 10
+
+[node name="Spacer2" type="Control" parent="CenterContainer/TestPanel"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ClickCounter" type="Label" parent="CenterContainer/TestPanel"]
+layout_mode = 2
+text = "Clicks: 10/10"
+horizontal_alignment = 1
+
+[node name="Spacer3" type="Control" parent="CenterContainer/TestPanel"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="ButtonContainer" type="HBoxContainer" parent="CenterContainer/TestPanel"]
+layout_mode = 2
+alignment = 1
+
+[node name="FriendButton" type="Button" parent="CenterContainer/TestPanel/ButtonContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "FRIEND"
+
+[node name="Spacer" type="Control" parent="CenterContainer/TestPanel/ButtonContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="FoeButton" type="Button" parent="CenterContainer/TestPanel/ButtonContainer"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "FOE"

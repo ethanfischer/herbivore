@@ -28,6 +28,7 @@ public partial class Main : Node2D
 	// Music
 	private AudioStreamPlayer _introMusic = null!;
 	private AudioStreamPlayer _encounterMusic = null!;
+	private AudioStreamPlayer _walkSound = null!;
 
 	private Node2D _traversalMode = null!;
 	private TestModeController _testMode = null!;
@@ -77,6 +78,7 @@ public partial class Main : Node2D
 		// Music references
 		_introMusic = GetNode<AudioStreamPlayer>("Sounds/Intro");
 		_encounterMusic = GetNode<AudioStreamPlayer>("Sounds/Main");
+		_walkSound = GetNode<AudioStreamPlayer>("Sounds/SandWalk");
 		_introMusic.Play();
 
 		// Connect to GameManager signals
@@ -253,7 +255,8 @@ public partial class Main : Node2D
 			case GameState.Testing:
 				// Pause traversal while testing
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
-				// Switch to encounter music
+				// Stop walk sound and switch to encounter music
+				_walkSound.Stop();
 				_introMusic.Stop();
 				_encounterMusic.Play();
 				break;

@@ -1,16 +1,37 @@
-[gd_scene load_steps=2 format=3 uid="uid://mask_segment"]
+[gd_scene format=3 uid="uid://ban1igxiigc5i"]
 
-[ext_resource type="Script" path="res://Scripts/TestMode/MaskSegment.cs" id="1_segment"]
+[ext_resource type="Script" uid="uid://b0i55yjs1jh7d" path="res://Scripts/TestMode/MaskSegment.cs" id="1_segment"]
 
-[node name="MaskSegment" type="Button"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qs0id"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mak1w"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rovi8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l5sag"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hap2e"]
+
+[node name="MaskSegment" type="Button" unique_id=1697895112]
 custom_minimum_size = Vector2(30.25, 38.75)
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qs0id")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mak1w")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rovi8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_l5sag")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hap2e")
 script = ExtResource("1_segment")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_qs0id")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_mak1w")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_rovi8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_l5sag")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_hap2e")
 
-[node name="MaskPiece" type="TextureRect" parent="."]
+[node name="MaskPiece" type="TextureRect" parent="." unique_id=562169766]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 expand_mode = 1
-stretch_mode = 0

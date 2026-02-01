@@ -26,8 +26,8 @@ public partial class TestModeController : CanvasLayer
 	private Label _clicksRemainingLabel = null!;
 	private Button _friendButton = null!;
 	private Button _foeButton = null!;
-	private Sprite2D _faceFriend = null!;
-	private Sprite2D _faceFoe = null!;
+	private readonly List<Sprite2D> _faceFriends = new();
+	private readonly List<Sprite2D> _faceFoes = new();
 	private Sprite2D _faceBase = null!;
 
 	private readonly List<MaskSegment> _segments = new();
@@ -36,8 +36,10 @@ public partial class TestModeController : CanvasLayer
 	private static readonly Color[] SkinTones = new[]
 	{
 		new Color(1.0f, 1.0f, 1.0f),   
-		new Color(1.0f, 0.82f, 0.68f),   
-		new Color(0.87f, 0.67f, 0.49f)
+		// new Color(1.0f, 0.82f, 0.68f),   
+		new Color(0.87f, 0.67f, 0.49f),
+		new Color(0.67f, 0.47f, 0.29f),
+		// new Color(0.1f, 0.1f, 0.1f)
 	};
 	private int _clicksRemaining;
 	private int _totalClicks;
@@ -47,6 +49,7 @@ public partial class TestModeController : CanvasLayer
 	private static Texture2D? _maskTexture;
 	private static bool _hasShownClickInstruction;
 	private RandomNumberGenerator _random = new();
+	private Vector2 _maskGridOriginalPosition;
 
 	public override void _Ready()
 	{
@@ -56,12 +59,29 @@ public partial class TestModeController : CanvasLayer
 		_clicksRemainingLabel = GetNode<Label>("ClicksRemaining");
 		_friendButton = GetNode<Button>("ButtonContainer/FriendButton");
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
-		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
-		_faceFoe = GetNode<Sprite2D>("NPC/NpcFaceFoe");
 		_faceBase = GetNode<Sprite2D>("NPC/FaceBase");
+
+		// Gather all friend and foe face sprites
+		var npcNode = GetNode("NPC");
+		foreach (var child in npcNode.GetChildren())
+		{
+			if (child is Sprite2D sprite)
+			{
+				var name = sprite.Name.ToString();
+				GD.Print($"Found sprite: {name}");
+				if (name.Contains("Friend"))
+					_faceFriends.Add(sprite);
+				else if (name.Contains("Foe"))
+					_faceFoes.Add(sprite);
+			}
+		}
+		GD.Print($"Found {_faceFriends.Count} friend faces, {_faceFoes.Count} foe faces");
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
+
+		// Store original mask grid position
+		_maskGridOriginalPosition = _maskGrid.Position;
 
 		// Start hidden
 		Visible = false;
@@ -80,14 +100,34 @@ public partial class TestModeController : CanvasLayer
 		var faceRenderer = _faceRenderer as FaceRenderer;
 		faceRenderer?.GenerateFace(_isFriendly);
 
-		// Toggle face sprites based on friendly/foe
-		_faceFriend.Visible = _isFriendly;
-		_faceFoe.Visible = !_isFriendly;
+		// Hide all faces, then show one random face based on friendly/foe
+		foreach (var face in _faceFriends) face.Visible = false;
+		foreach (var face in _faceFoes) face.Visible = false;
+
+		GD.Print($"StartTest: isFriendly={_isFriendly}, friends={_faceFriends.Count}, foes={_faceFoes.Count}");
+
+		if (_isFriendly && _faceFriends.Count > 0)
+		{
+			var idx = _random.RandiRange(0, _faceFriends.Count - 1);
+			_faceFriends[idx].Visible = true;
+			GD.Print($"Showing friend face index {idx}");
+		}
+		else if (!_isFriendly && _faceFoes.Count > 0)
+		{
+			var idx = _random.RandiRange(0, _faceFoes.Count - 1);
+			_faceFoes[idx].Visible = true;
+			GD.Print($"Showing foe face index {idx}");
+		}
+		else
+		{
+			GD.PrintErr("No face to show!");
+		}
 
 		// Randomize skin tone
 		_faceBase.Modulate = SkinTones[_random.RandiRange(0, SkinTones.Length - 1)];
 
-		// Setup mask grid
+		// Reset mask grid position and setup
+		_maskGrid.Position = _maskGridOriginalPosition;
 		SetupMaskGrid();
 
 		// Update UI
@@ -180,6 +220,7 @@ public partial class TestModeController : CanvasLayer
 		var segment = availableSegments[randomIndex];
 
 		segment.Shatter();
+		ShakeMask();
 		_clicksRemaining--;
 		UpdateClickCounter();
 
@@ -191,6 +232,22 @@ public partial class TestModeController : CanvasLayer
 			_friendButton.Visible = true;
 			_foeButton.Visible = true;
 		}
+	}
+
+	private void ShakeMask()
+	{
+		var tween = CreateTween();
+		tween.SetTrans(Tween.TransitionType.Sine);
+		tween.SetEase(Tween.EaseType.Out);
+
+		// Quick shake sequence using stored original position
+		float intensity = 8f;
+		float duration = 0.05f;
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(-intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(0, intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(0, -intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition, duration);
 	}
 
 	private bool IsEdgeSegment(int index)

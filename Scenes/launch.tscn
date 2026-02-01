@@ -336,18 +336,18 @@ text = "Play"
 
 [node name="Intro" type="AudioStreamPlayer" parent="Sounds" unique_id=69838213]
 stream = ExtResource("11_uae0t")
-volume_db = -3.0
+volume_db = -20.0
 autoplay = true
 parameters/looping = true
 
 [node name="Main" type="AudioStreamPlayer" parent="Sounds" unique_id=1254705279]
 stream = ExtResource("12_dfyxd")
-volume_db = -3.0
+volume_db = -20.0
 parameters/looping = true
 
 [node name="SandWalk" type="AudioStreamPlayer" parent="Sounds" unique_id=614952515]
 stream = ExtResource("13_1wri0")
-volume_db = -3.0
+volume_db = -20.0
 parameters/looping = true
 
 [node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds" unique_id=916984234]

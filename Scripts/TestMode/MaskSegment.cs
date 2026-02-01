@@ -105,15 +105,16 @@ public partial class MaskSegment : Button
 		particles.Gravity = new Vector2(0, 250);
 
 		// Particle sizes
-		particles.ScaleAmountMin = 0.3f;
-		particles.ScaleAmountMax = 0.7f;
+		particles.ScaleAmountMin = 0.8f;
+		particles.ScaleAmountMax = 1.5f;
 
 		// Warm tan/cream colors
-		particles.Color = new Color(0.9f, 0.8f, 0.65f);
+		// particles.Color = new Color(0.9f, 0.8f, 0.65f);
+		particles.Color = new Color("EFA453");
 
 		// Fade out
 		var gradient = new Gradient();
-		gradient.SetColor(0, Colors.White);
+		gradient.SetColor(0, new Color("EFA453"));
 		gradient.SetColor(1, new Color(1, 1, 1, 0));
 		particles.ColorRamp = gradient;
 
@@ -134,9 +135,9 @@ public partial class MaskSegment : Button
 			for (int x = 0; x < size; x++)
 			{
 				var dist = new Vector2(x - center + 0.5f, y - center + 0.5f).Length();
-				var alpha = Mathf.Clamp(1f - (dist / radius), 0f, 1f);
-				alpha = alpha * alpha; // Softer falloff
-				image.SetPixel(x, y, new Color(1, 1, 1, alpha));
+				// var alpha = Mathf.Clamp(1f - (dist / radius), 0f, 1f);
+				// alpha = alpha * alpha; // Softer falloff
+				image.SetPixel(x, y, new Color(1, 1, 1, 1));
 			}
 		}
 

@@ -104,6 +104,9 @@ public partial class Main : Node2D
 		// Connect restart button
 		_restartButton.Pressed += OnRestartPressed;
 
+		// Create quit button programmatically
+		CreateQuitButton();
+
 		// Connect play button
 		_playButton.Pressed += OnPlayPressed;
 
@@ -161,8 +164,9 @@ public partial class Main : Node2D
 
 		_currentTestPack = pack;
 
-		// Calculate allowed clicks based on pack sizes
-		int clicks = 7;
+		// Calculate allowed clicks - fewer clicks as player pack grows (harder)
+		int packSize = GameManager.Instance?.PackSize ?? 1;
+		int clicks = Mathf.Clamp(11 - packSize, 3, 10);
 
 		GD.Print($"Starting test. Player pack: {GameManager.Instance?.PackSize}, NPC pack: {pack.MemberCount}, Clicks: {clicks}");
 
@@ -201,18 +205,10 @@ public partial class Main : Node2D
 		}
 		else
 		{
-			// Wrong guess
-			if (_currentTestPack.IsFriendly)
-			{
-				GD.Print("Wrong! They were friendly.");
-			}
-			else
-			{
-				// Trusted foes - lose pack members
-				LosePackMember();
-				_failSound.Play();
-				GD.Print("Wrong! Foe pack attacked.");
-			}
+			// Wrong guess - always lose a pack member
+			LosePackMember();
+			_failSound.Play();
+			GD.Print($"Wrong! They were {(_currentTestPack.IsFriendly ? "friendly" : "foes")}.");
 		}
 
 		// Mark pack as tested (darkens remaining members)
@@ -254,7 +250,22 @@ public partial class Main : Node2D
 		if (lastMember == null) return;
 
 		gm.RemoveFromPlayerPack(lastMember);
-		lastMember.QueueFree();
+
+		// Animate the member walking away before removing
+		var walkDirection = (lastMember.GlobalPosition - _playerDot.GlobalPosition).Normalized();
+		var targetPos = lastMember.GlobalPosition + walkDirection * 200f;
+
+		// Face the direction they're walking
+		var sprite = lastMember.GetNodeOrNull<Sprite2D>("Sprite2D");
+		if (sprite != null)
+		{
+			sprite.FlipH = walkDirection.X < 0;
+		}
+
+		var tween = CreateTween();
+		tween.TweenProperty(lastMember, "global_position", targetPos, 3f)
+			.SetEase(Tween.EaseType.Out);
+		tween.TweenCallback(Callable.From(() => lastMember.QueueFree()));
 	}
 
 	private void OnGameStateChanged(int stateInt)
@@ -324,6 +335,40 @@ public partial class Main : Node2D
 
 		// Reload scene to reset NPC packs
 		GetTree().ReloadCurrentScene();
+	}
+
+	private void CreateQuitButton()
+	{
+		var quitButton = new Button();
+		quitButton.Text = "Quit";
+
+		// Copy styling from restart button
+		quitButton.AddThemeFontSizeOverride("font_size", 46);
+		if (_restartButton.HasThemeStyleboxOverride("normal"))
+			quitButton.AddThemeStyleboxOverride("normal", _restartButton.GetThemeStylebox("normal"));
+		if (_restartButton.HasThemeStyleboxOverride("pressed"))
+			quitButton.AddThemeStyleboxOverride("pressed", _restartButton.GetThemeStylebox("pressed"));
+		if (_restartButton.HasThemeStyleboxOverride("hover"))
+			quitButton.AddThemeStyleboxOverride("hover", _restartButton.GetThemeStylebox("hover"));
+		if (_restartButton.HasThemeStyleboxOverride("focus"))
+			quitButton.AddThemeStyleboxOverride("focus", _restartButton.GetThemeStylebox("focus"));
+
+		// Position below restart button
+		quitButton.SetAnchorsPreset(Control.LayoutPreset.Center);
+		quitButton.OffsetLeft = -159.5f;
+		quitButton.OffsetRight = 159.5f;
+		quitButton.OffsetTop = 305.0f;
+		quitButton.OffsetBottom = 395.0f;
+
+		quitButton.Pressed += OnQuitPressed;
+
+		// Add to same parent as restart button
+		_restartButton.GetParent().AddChild(quitButton);
+	}
+
+	private void OnQuitPressed()
+	{
+		GetTree().Quit();
 	}
 
 	private void OnPlayPressed()

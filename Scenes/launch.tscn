@@ -127,30 +127,57 @@ texture_scale = 0.5
 [node name="World" type="Node2D" parent="TraversalMode" unique_id=359146570]
 
 [node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World" unique_id=1192922978]
+position = Vector2(-459, -438)
 
 [node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" unique_id=731774 instance=ExtResource("2_s4o75")]
-position = Vector2(184, 115)
+position = Vector2(164, 136)
 
 [node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" unique_id=438447666 instance=ExtResource("2_s4o75")]
-position = Vector2(481, 117)
+position = Vector2(478, -16)
 
 [node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" unique_id=1646812556 instance=ExtResource("2_s4o75")]
-position = Vector2(160, 418)
+position = Vector2(-258, 452)
 
 [node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" unique_id=1263575752 instance=ExtResource("2_s4o75")]
-position = Vector2(544, 403)
+position = Vector2(1166, 484)
 
 [node name="NPCPack5" parent="TraversalMode/World/NPCPackContainer" unique_id=1624241316 instance=ExtResource("2_s4o75")]
-position = Vector2(345, 622)
+position = Vector2(154, 893)
 
 [node name="NPCPack6" parent="TraversalMode/World/NPCPackContainer" unique_id=574322629 instance=ExtResource("2_s4o75")]
-position = Vector2(713, 236)
+position = Vector2(911, 149)
 
 [node name="NPCPack7" parent="TraversalMode/World/NPCPackContainer" unique_id=1933755422 instance=ExtResource("2_s4o75")]
-position = Vector2(637, 773)
+position = Vector2(500, 1133)
+
+[node name="NPCPack8" parent="TraversalMode/World/NPCPackContainer" unique_id=792946107 instance=ExtResource("2_s4o75")]
+position = Vector2(-395, 1489)
+
+[node name="NPCPack9" parent="TraversalMode/World/NPCPackContainer" unique_id=722367650 instance=ExtResource("2_s4o75")]
+position = Vector2(-1073, -412)
+
+[node name="NPCPack10" parent="TraversalMode/World/NPCPackContainer" unique_id=4422483 instance=ExtResource("2_s4o75")]
+position = Vector2(1247, -1063)
+
+[node name="NPCPack11" parent="TraversalMode/World/NPCPackContainer" unique_id=2135074753 instance=ExtResource("2_s4o75")]
+position = Vector2(1890, -347)
+
+[node name="NPCPack12" parent="TraversalMode/World/NPCPackContainer" unique_id=1814689581 instance=ExtResource("2_s4o75")]
+position = Vector2(1939, 1045)
+
+[node name="NPCPack13" parent="TraversalMode/World/NPCPackContainer" unique_id=589575694 instance=ExtResource("2_s4o75")]
+position = Vector2(1296, 1997)
+
+[node name="NPCPack14" parent="TraversalMode/World/NPCPackContainer" unique_id=672043558 instance=ExtResource("2_s4o75")]
+position = Vector2(-1089, 2013)
+
+[node name="NPCPack15" parent="TraversalMode/World/NPCPackContainer" unique_id=949074878 instance=ExtResource("2_s4o75")]
+position = Vector2(-1187, 963)
+
+[node name="NPCPack16" parent="TraversalMode/World/NPCPackContainer" unique_id=1698035525 instance=ExtResource("2_s4o75")]
+position = Vector2(-137, -1137)
 
 [node name="PlayerDot" parent="TraversalMode" unique_id=490778616 instance=ExtResource("4_ulsxu")]
-position = Vector2(400, 300)
 
 [node name="PlayerPackContainer" type="Node2D" parent="TraversalMode" unique_id=357382252]
 

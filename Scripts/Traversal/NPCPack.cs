@@ -34,7 +34,7 @@ public partial class NPCPack : Node2D
 	public int MemberCount => _members.Count;
 	public IReadOnlyList<PackMember> Members => _members;
 
-	private const float AwarenessRadius = 300.0f;
+	private const float AwarenessRadius = 250.0f;
 
 	public override void _Ready()
 	{

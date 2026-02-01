@@ -13,6 +13,12 @@ public partial class PlayerDot : CharacterBody2D
 	[Export]
 	public float DotRadius { get; set; } = 8.0f;
 
+	[Export]
+	public Vector2 BoundaryMin { get; set; } = new Vector2(-1500, -1500);
+
+	[Export]
+	public Vector2 BoundaryMax { get; set; } = new Vector2(1500, 1500);
+
 	private Area2D _approachArea = null!;
 	private Sprite2D _sprite = null!;
 	private AudioStreamPlayer _walkSound = null!;
@@ -82,6 +88,12 @@ public partial class PlayerDot : CharacterBody2D
 
 		Velocity = velocity;
 		MoveAndSlide();
+
+		// Clamp position to boundaries
+		GlobalPosition = new Vector2(
+			Mathf.Clamp(GlobalPosition.X, BoundaryMin.X, BoundaryMax.X),
+			Mathf.Clamp(GlobalPosition.Y, BoundaryMin.Y, BoundaryMax.Y)
+		);
 	}
 
 	private void OnApproachAreaEntered(Area2D area)

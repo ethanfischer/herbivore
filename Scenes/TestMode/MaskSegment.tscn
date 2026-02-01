@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/TestMode/MaskSegment.cs" id="1_segment"]
 
 [node name="MaskSegment" type="Button"]
-custom_minimum_size = Vector2(38, 38)
+custom_minimum_size = Vector2(30.25, 38.75)
 script = ExtResource("1_segment")
 
 [node name="MaskPiece" type="TextureRect" parent="."]

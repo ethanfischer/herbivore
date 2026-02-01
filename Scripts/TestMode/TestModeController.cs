@@ -49,6 +49,7 @@ public partial class TestModeController : CanvasLayer
 	private static Texture2D? _maskTexture;
 	private static bool _hasShownClickInstruction;
 	private RandomNumberGenerator _random = new();
+	private Vector2 _maskGridOriginalPosition;
 
 	public override void _Ready()
 	{
@@ -64,6 +65,9 @@ public partial class TestModeController : CanvasLayer
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
+
+		// Store original mask grid position
+		_maskGridOriginalPosition = _maskGrid.Position;
 
 		// Start hidden
 		Visible = false;
@@ -89,7 +93,8 @@ public partial class TestModeController : CanvasLayer
 		// Randomize skin tone
 		_faceBase.Modulate = SkinTones[_random.RandiRange(0, SkinTones.Length - 1)];
 
-		// Setup mask grid
+		// Reset mask grid position and setup
+		_maskGrid.Position = _maskGridOriginalPosition;
 		SetupMaskGrid();
 
 		// Update UI
@@ -198,19 +203,18 @@ public partial class TestModeController : CanvasLayer
 
 	private void ShakeMask()
 	{
-		var originalPos = _maskGrid.Position;
 		var tween = CreateTween();
 		tween.SetTrans(Tween.TransitionType.Sine);
 		tween.SetEase(Tween.EaseType.Out);
 
-		// Quick shake sequence
+		// Quick shake sequence using stored original position
 		float intensity = 8f;
 		float duration = 0.05f;
-		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(intensity, 0), duration);
-		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(-intensity, 0), duration);
-		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(0, intensity), duration);
-		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(0, -intensity), duration);
-		tween.TweenProperty(_maskGrid, "position", originalPos, duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(-intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(0, intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition + new Vector2(0, -intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", _maskGridOriginalPosition, duration);
 	}
 
 	private bool IsEdgeSegment(int index)

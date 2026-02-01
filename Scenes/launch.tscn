@@ -297,7 +297,7 @@ theme_override_constants/separation = 15
 [node name="Title" type="Label" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=1077527088]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Are You Friendly?"
+text = "SHATTER"
 label_settings = SubResource("LabelSettings_68h0b")
 horizontal_alignment = 1
 

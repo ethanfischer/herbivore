@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Herbivore"
+config/name="Shatter"
 run/main_scene="res://Scenes/launch.tscn"
 config/features=PackedStringArray("4.6", "C#", "Mobile")
 config/icon="res://icon.svg"

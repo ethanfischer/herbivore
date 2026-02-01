@@ -61,7 +61,7 @@ public partial class Main : Node2D
 		_packSizeLabel = GetNode<Label>("UI/PackSizeLabel");
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
-		_restartButton = GetNode<Button>("UI/GameOverPanel/RestartButton");
+		_restartButton = GetNode<Button>("UI/GameOverPanel/Content/RestartButton");
 		_startScreen = GetNode<Control>("UI/Start");
 		_playButton = GetNode<Button>("UI/Start/Content/MarginContainer/VBoxContainer/Button");
 

@@ -25,6 +25,10 @@ public partial class Main : Node2D
 	private AudioStreamPlayer _failSound = null!;
 	private AudioStreamPlayer _identifyFoeSound = null!;
 
+	// Music
+	private AudioStreamPlayer _introMusic = null!;
+	private AudioStreamPlayer _encounterMusic = null!;
+
 	private Node2D _traversalMode = null!;
 	private TestModeController _testMode = null!;
 	private Node2D _playerPackContainer = null!;
@@ -69,6 +73,18 @@ public partial class Main : Node2D
 		_successSound.Stream = SoundGenerator.CreateSuccessSound();
 		_failSound.Stream = SoundGenerator.CreateFailSound();
 		_identifyFoeSound.Stream = SoundGenerator.CreateIdentifyFoeSound();
+
+		// Create music players programmatically
+		var soundsNode = GetNode("Sounds");
+
+		_introMusic = new AudioStreamPlayer();
+		_introMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Intro.mp3");
+		soundsNode.AddChild(_introMusic);
+		_introMusic.Play();
+
+		_encounterMusic = new AudioStreamPlayer();
+		_encounterMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Main.mp3");
+		soundsNode.AddChild(_encounterMusic);
 
 		// Connect to GameManager signals
 		var gm = GameManager.Instance;
@@ -235,11 +251,18 @@ public partial class Main : Node2D
 			case GameState.Traversal:
 				_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
 				_gameOverPanel.Visible = false;
+				// Switch to intro/traversal music
+				_encounterMusic.Stop();
+				if (!_introMusic.Playing)
+					_introMusic.Play();
 				break;
 
 			case GameState.Testing:
 				// Pause traversal while testing
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				// Switch to encounter music
+				_introMusic.Stop();
+				_encounterMusic.Play();
 				break;
 
 			case GameState.GameOver:

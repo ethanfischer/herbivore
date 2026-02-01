@@ -61,7 +61,7 @@ public partial class MaskSegment : Button
 			_crackSound ??= GD.Load<AudioStream>("res://Assets/Sound/crack.wav");
 			var player = new AudioStreamPlayer();
 			player.Stream = _crackSound;
-			player.VolumeDb = -10f;
+			player.VolumeDb = -20f;
 			AddChild(player);
 			player.Play();
 			player.Finished += () => player.QueueFree();

@@ -2,3 +2,11 @@
 [x] random rotations
 [x] orient towards direciton moving
 [x] randomly reveal mask
+
+[ ] intro screen (hookup)
+[ ] integrate sound
+    walking loop, background music (traversal and encounter)
+[ ] encounter, switch between friend/foe (update sprites)
+[ ] reveal face after choice made
+[ ] skin tone variations (swtich between 3)
+[ ] make box fully transparent when clicked

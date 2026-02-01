@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/ButtonNormal.png" id="7_ak8ot"]
 [ext_resource type="Texture2D" uid="uid://ccmwkd0cryae3" path="res://Assets/Graphics/ButtonPressed.png" id="8_1b3uw"]
 [ext_resource type="Texture2D" uid="uid://stvempouskqq" path="res://Assets/Graphics/ButtonHover.png" id="10_2043i"]
+[ext_resource type="AudioStream" uid="uid://frcv55og6e2a" path="res://Assets/Sound/Intro.mp3" id="11_uae0t"]
+[ext_resource type="AudioStream" uid="uid://3cl77wjos3lk" path="res://Assets/Sound/Main.mp3" id="12_dfyxd"]
+[ext_resource type="AudioStream" uid="uid://cmlflycsj5qr5" path="res://Assets/Sound/sand_walk.mp3" id="13_1wri0"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bodta"]
 texture = ExtResource("7_ak8ot")
@@ -301,6 +304,22 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_dfyxd")
 text = "Play"
 
 [node name="Sounds" type="Node" parent="." unique_id=768776348]
+
+[node name="Intro" type="AudioStreamPlayer" parent="Sounds" unique_id=69838213]
+stream = ExtResource("11_uae0t")
+volume_db = -3.0
+autoplay = true
+parameters/looping = true
+
+[node name="Main" type="AudioStreamPlayer" parent="Sounds" unique_id=1254705279]
+stream = ExtResource("12_dfyxd")
+volume_db = -3.0
+parameters/looping = true
+
+[node name="SandWalk" type="AudioStreamPlayer" parent="Sounds" unique_id=614952515]
+stream = ExtResource("13_1wri0")
+volume_db = -3.0
+parameters/looping = true
 
 [node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds" unique_id=916984234]
 

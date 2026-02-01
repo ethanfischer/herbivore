@@ -20,3 +20,4 @@
 [ ] 7 clicks
 [ ] skin tone variations starker
 [ ] quit game button
+[ ] make particles bigger (half the size of the tiles)

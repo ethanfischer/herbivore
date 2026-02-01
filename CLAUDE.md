@@ -19,7 +19,7 @@ dotnet build                   # Build C# solution
 - **Engine**: Godot 4.6, Mobile renderer, Jolt Physics
 - **Language**: C# (.NET 8.0), nullable enabled
 - **Root Namespace**: `Herbivore`
-- **Main Scene**: `res://Scenes/Main.tscn`
+- **Main Scene**: `res://Scenes/launch.tscn`
 
 ## Architecture
 
@@ -31,6 +31,11 @@ dotnet build                   # Build C# solution
 **GameManager (Autoload Singleton)**: Central state manager with signals `StateChanged`, `PackSizeChanged`, `ScoreChanged`. Tracks player pack, calculates test difficulty based on pack size ratio.
 
 **Main.cs**: Scene orchestrator. Spawns NPC packs within world radius, handles recruitment, manages UI, triggers state transitions when player approaches an NPC pack.
+
+**Scene Structure**:
+- `launch.tscn`: Main scene containing traversal mode, UI, and the intro screen (`UI/Start` node)
+- `encounter.tscn`: Invoked when player approaches an NPC pack
+- `TestModeOverlay.tscn`: Used during encounters for the mask/reveal mechanic
 
 **Traversal System** (`Scripts/Traversal/`):
 - `PlayerDot.cs`: Player-controlled CharacterBody2D (WASD/arrows)

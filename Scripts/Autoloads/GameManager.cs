@@ -26,6 +26,7 @@ public partial class GameManager : Node
     public int PackSize => _playerPack.Count + 1; // +1 for player
     public int Score => _score;
     public IReadOnlyList<PackMember> PlayerPack => _playerPack;
+    public bool IsRestart { get; set; }
 
     public override void _Ready()
     {
@@ -81,6 +82,7 @@ public partial class GameManager : Node
     {
         _score = 0;
         _playerPack.Clear();
+        IsRestart = true;
         ChangeState(GameState.Traversal);
         EmitSignal(SignalName.ScoreChanged, 0);
         EmitSignal(SignalName.PackSizeChanged, 1);

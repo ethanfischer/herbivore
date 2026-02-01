@@ -15,12 +15,18 @@ public partial class PlayerDot : CharacterBody2D
 
 	private Area2D _approachArea = null!;
 	private Sprite2D _sprite = null!;
+	private AudioStreamPlayer _walkSound = null!;
 
 	public override void _Ready()
 	{
 		_approachArea = GetNode<Area2D>("ApproachArea");
 		_approachArea.AreaEntered += OnApproachAreaEntered;
 		_sprite = GetNode<Sprite2D>("Sprite2D");
+
+		// Create walk sound programmatically
+		_walkSound = new AudioStreamPlayer();
+		_walkSound.Stream = GD.Load<AudioStream>("res://Assets/Sound/sand_walk.mp3");
+		AddChild(_walkSound);
 	}
 
 	public override void _Draw()
@@ -46,6 +52,15 @@ public partial class PlayerDot : CharacterBody2D
 			velocity = velocity.Normalized() * Speed;
 			// Rotate sprite to face movement direction
 			_sprite.Rotation = velocity.Angle();
+
+			// Play walk sound if not already playing
+			if (!_walkSound.Playing)
+				_walkSound.Play();
+		}
+		else
+		{
+			// Stop walk sound when not moving
+			_walkSound.Stop();
 		}
 
 		Velocity = velocity;

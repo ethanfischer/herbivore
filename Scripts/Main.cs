@@ -250,7 +250,22 @@ public partial class Main : Node2D
 		if (lastMember == null) return;
 
 		gm.RemoveFromPlayerPack(lastMember);
-		lastMember.QueueFree();
+
+		// Animate the member walking away before removing
+		var walkDirection = (lastMember.GlobalPosition - _playerDot.GlobalPosition).Normalized();
+		var targetPos = lastMember.GlobalPosition + walkDirection * 200f;
+
+		// Face the direction they're walking
+		var sprite = lastMember.GetNodeOrNull<Sprite2D>("Sprite2D");
+		if (sprite != null)
+		{
+			sprite.FlipH = walkDirection.X < 0;
+		}
+
+		var tween = CreateTween();
+		tween.TweenProperty(lastMember, "global_position", targetPos, 3f)
+			.SetEase(Tween.EaseType.Out);
+		tween.TweenCallback(Callable.From(() => lastMember.QueueFree()));
 	}
 
 	private void OnGameStateChanged(int stateInt)

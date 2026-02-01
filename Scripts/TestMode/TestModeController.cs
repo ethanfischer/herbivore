@@ -25,6 +25,8 @@ public partial class TestModeController : CanvasLayer
 	private Label _clickCounterLabel = null!;
 	private Button _friendButton = null!;
 	private Button _foeButton = null!;
+	private Sprite2D _faceFriend = null!;
+	private Sprite2D _faceFoe = null!;
 
 	private readonly List<MaskSegment> _segments = new();
 	private int _clicksRemaining;
@@ -42,6 +44,8 @@ public partial class TestModeController : CanvasLayer
 		_clickCounterLabel = GetNode<Label>("ClickCounter");
 		_friendButton = GetNode<Button>("ButtonContainer/FriendButton");
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
+		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
+		_faceFoe = GetNode<Sprite2D>("NPC/NpcFaceFoe");
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
@@ -62,6 +66,10 @@ public partial class TestModeController : CanvasLayer
 		// Generate face based on friendly/foe
 		var faceRenderer = _faceRenderer as FaceRenderer;
 		faceRenderer?.GenerateFace(_isFriendly);
+
+		// Toggle face sprites based on friendly/foe
+		_faceFriend.Visible = _isFriendly;
+		_faceFoe.Visible = !_isFriendly;
 
 		// Setup mask grid
 		SetupMaskGrid();
@@ -170,11 +178,25 @@ public partial class TestModeController : CanvasLayer
 		_clickCounterLabel.Text = $"Clicks: {_clicksRemaining}/{_totalClicks}";
 	}
 
-	private void OnGuess(bool guessedFriendly)
+	private async void OnGuess(bool guessedFriendly)
 	{
 		bool correct = guessedFriendly == _isFriendly;
 
 		GD.Print($"Guessed: {(guessedFriendly ? "Friend" : "Foe")}, Actual: {(_isFriendly ? "Friend" : "Foe")}, Correct: {correct}");
+
+		// Hide buttons
+		_friendButton.Visible = false;
+		_foeButton.Visible = false;
+
+		// Reveal face by shattering all remaining mask segments
+		foreach (var segment in _segments)
+		{
+			if (!segment.IsShattered)
+				segment.Shatter();
+		}
+
+		// Wait for player to see the revealed face
+		await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
 
 		_currentPack?.MarkTested();
 

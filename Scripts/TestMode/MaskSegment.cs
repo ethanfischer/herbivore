@@ -47,11 +47,25 @@ public partial class MaskSegment : Button
 		EmitSignal(SignalName.SegmentClicked, this);
 	}
 
-	public async void Shatter()
+	private static AudioStream? _crackSound;
+
+	public async void Shatter(bool playSound = true)
 	{
 		_isShattered = true;
 		Disabled = true;
 		MouseFilter = MouseFilterEnum.Ignore;
+
+		// Play crack sound
+		if (playSound)
+		{
+			_crackSound ??= GD.Load<AudioStream>("res://Assets/Sound/crack.wav");
+			var player = new AudioStreamPlayer();
+			player.Stream = _crackSound;
+			player.VolumeDb = -10f;
+			AddChild(player);
+			player.Play();
+			player.Finished += () => player.QueueFree();
+		}
 
 		// Spawn shatter particles
 		SpawnShatterParticles();

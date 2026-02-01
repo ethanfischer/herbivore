@@ -220,11 +220,15 @@ public partial class TestModeController : CanvasLayer
 		otherButton.Visible = false;
 		selectedButton.Modulate = correct ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f);
 
-		// Reveal face by shattering all remaining mask segments
+		// Reveal face by shattering all remaining mask segments (sound plays once)
+		bool playedSound = false;
 		foreach (var segment in _segments)
 		{
 			if (!segment.IsShattered)
-				segment.Shatter();
+			{
+				segment.Shatter(playSound: !playedSound);
+				playedSound = true;
+			}
 		}
 
 		// Wait for player to see the revealed face

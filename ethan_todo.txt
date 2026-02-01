@@ -3,7 +3,7 @@
 [x] make npcs look at player
 [x] make npcs darker when you've interacted
 [ ] more text when you win: flavor text
-[ ] 10 friends, you win
+[x] 10 friends, you win
 [ ] mask particles
 
 [x] up clicks to 10

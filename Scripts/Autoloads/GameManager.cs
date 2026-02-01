@@ -49,7 +49,7 @@ public partial class GameManager : Node
         EmitSignal(SignalName.PackSizeChanged, PackSize);
 
         // Check for win condition
-        if (PackSize >= 3)
+        if (PackSize >= 10)
         {
             ChangeState(GameState.GameWon);
         }

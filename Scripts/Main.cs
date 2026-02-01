@@ -151,7 +151,7 @@ public partial class Main : Node2D
 		_currentTestPack = pack;
 
 		// Calculate allowed clicks based on pack sizes
-		int clicks = 5; // Hardcoded for now
+		int clicks = 10;
 
 		GD.Print($"Starting test. Player pack: {GameManager.Instance?.PackSize}, NPC pack: {pack.MemberCount}, Clicks: {clicks}");
 

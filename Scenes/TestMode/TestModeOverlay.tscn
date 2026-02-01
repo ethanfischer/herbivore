@@ -4,12 +4,31 @@
 [ext_resource type="PackedScene" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
 [ext_resource type="Script" uid="uid://cgjkd45lovuuj" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
 [ext_resource type="Texture2D" uid="uid://yssktnatwuv0" path="res://Assets/Graphics/Mask.png" id="5_mask_texture"]
+[ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="6_5juj6"]
 [ext_resource type="Texture2D" uid="uid://cltji7brs2chx" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="6_rpdai"]
 [ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="7_5juj6"]
 [ext_resource type="Texture2D" uid="uid://b2hjq5wclffdq" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
 [ext_resource type="Texture2D" uid="uid://gx817d2rj6nx" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
 [ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="11_2qu1f"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lp08y"]
+texture = ExtResource("6_5juj6")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rpdai"]
+texture = ExtResource("6_5juj6")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [node name="TestModeOverlay" type="CanvasLayer" unique_id=343691941]
 layer = 10
@@ -66,6 +85,9 @@ alignment = 1
 [node name="FriendButton" type="Button" parent="ButtonContainer" unique_id=1135749381]
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxTexture_lp08y")
 text = "Friendly"
 
 [node name="Spacer" type="Control" parent="ButtonContainer" unique_id=1066767893]
@@ -75,6 +97,9 @@ layout_mode = 2
 [node name="FoeButton" type="Button" parent="ButtonContainer" unique_id=290234872]
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxTexture_rpdai")
 text = "Enemy"
 
 [node name="NPC" type="Node2D" parent="." unique_id=759593285]
@@ -94,6 +119,7 @@ position = Vector2(516, 511)
 texture = ExtResource("9_q811u")
 
 [node name="Mask" type="Sprite2D" parent="NPC" unique_id=2131034779]
+visible = false
 position = Vector2(511, 464)
 texture = ExtResource("5_mask_texture")
 

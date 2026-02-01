@@ -47,15 +47,19 @@ public partial class MaskSegment : Button
 		EmitSignal(SignalName.SegmentClicked, this);
 	}
 
-	public void Shatter()
+	public async void Shatter()
 	{
 		_isShattered = true;
+		Disabled = true;
+		MouseFilter = MouseFilterEnum.Ignore;
+
+		// Flash white
+		_maskPiece.Modulate = Colors.White;
+		_maskPiece.SelfModulate = new Color(3f, 3f, 3f);
+		await ToSignal(GetTree().CreateTimer(0.2), SceneTreeTimer.SignalName.Timeout);
 
 		// Hide the mask piece to reveal face underneath
 		_maskPiece.Visible = false;
-
-		Disabled = true;
-		MouseFilter = MouseFilterEnum.Ignore;
 	}
 
 	public void Reset()

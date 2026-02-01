@@ -148,8 +148,15 @@ public partial class TestModeController : CanvasLayer
 
 	private void RemoveRandomSegment()
 	{
-		// Get all non-shattered segments
-		var availableSegments = _segments.FindAll(s => !s.IsShattered);
+		// Get all non-shattered, non-edge segments
+		var availableSegments = new System.Collections.Generic.List<MaskSegment>();
+		for (int i = 0; i < _segments.Count; i++)
+		{
+			if (_segments[i].IsShattered) continue;
+			if (IsEdgeSegment(i)) continue;
+			availableSegments.Add(_segments[i]);
+		}
+
 		if (availableSegments.Count == 0) return;
 
 		// Pick a random one
@@ -168,6 +175,13 @@ public partial class TestModeController : CanvasLayer
 			_friendButton.Visible = true;
 			_foeButton.Visible = true;
 		}
+	}
+
+	private bool IsEdgeSegment(int index)
+	{
+		int col = index % GridColumns;
+		int row = index / GridColumns;
+		return col == 0 || col == GridColumns - 1 || row == 0 || row == GridRows - 1;
 	}
 
 	private void OnSegmentClicked(MaskSegment segment)
@@ -202,8 +216,6 @@ public partial class TestModeController : CanvasLayer
 
 		// Wait for player to see the revealed face
 		await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
-
-		_currentPack?.MarkTested();
 
 		EmitSignal(SignalName.TestCompleted, correct);
 

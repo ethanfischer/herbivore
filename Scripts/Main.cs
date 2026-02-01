@@ -199,6 +199,8 @@ public partial class Main : Node2D
 			}
 		}
 
+		// Mark pack as tested (darkens remaining members)
+		_currentTestPack.MarkTested();
 		_currentTestPack = null;
 
 		// Return to traversal if not game over

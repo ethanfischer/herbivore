@@ -36,6 +36,8 @@ public partial class Main : Node2D
 	private Label _scoreLabel = null!;
 	private Panel _gameOverPanel = null!;
 	private Button _restartButton = null!;
+	private Control _startScreen = null!;
+	private Button _playButton = null!;
 
 	private NPCPack? _currentTestPack;
 	private RandomNumberGenerator _random = new();
@@ -56,6 +58,8 @@ public partial class Main : Node2D
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
 		_restartButton = GetNode<Button>("UI/GameOverPanel/RestartButton");
+		_startScreen = GetNode<Control>("UI/Start");
+		_playButton = GetNode<Button>("UI/Start/Content/MarginContainer/VBoxContainer/Button");
 
 		// Sound references and generation
 		_successSound = GetNode<AudioStreamPlayer>("Sounds/SuccessSound");
@@ -81,11 +85,18 @@ public partial class Main : Node2D
 		// Connect restart button
 		_restartButton.Pressed += OnRestartPressed;
 
+		// Connect play button
+		_playButton.Pressed += OnPlayPressed;
+
 		// Connect all NPC packs
 		ConnectNPCPacks();
 
 		// Initial UI update
 		UpdateUI();
+
+		// Start with intro screen visible and game paused
+		_startScreen.Visible = true;
+		_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
 	}
 
 	public override void _ExitTree()
@@ -254,6 +265,12 @@ public partial class Main : Node2D
 
 		// Reload scene to reset NPC packs
 		GetTree().ReloadCurrentScene();
+	}
+
+	private void OnPlayPressed()
+	{
+		_startScreen.Visible = false;
+		_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
 	private void UpdateUI()

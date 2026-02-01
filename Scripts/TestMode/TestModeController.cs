@@ -36,8 +36,10 @@ public partial class TestModeController : CanvasLayer
 	private static readonly Color[] SkinTones = new[]
 	{
 		new Color(1.0f, 1.0f, 1.0f),   
-		new Color(1.0f, 0.82f, 0.68f),   
-		new Color(0.87f, 0.67f, 0.49f)
+		// new Color(1.0f, 0.82f, 0.68f),   
+		new Color(0.87f, 0.67f, 0.49f),
+		new Color(0.67f, 0.47f, 0.29f),
+		// new Color(0.1f, 0.1f, 0.1f)
 	};
 	private int _clicksRemaining;
 	private int _totalClicks;

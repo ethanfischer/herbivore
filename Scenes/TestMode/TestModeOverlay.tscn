@@ -1,16 +1,22 @@
 [gd_scene format=3 uid="uid://3afib7g3kdys"]
 
 [ext_resource type="Script" uid="uid://bnalgbsf3icwq" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
-[ext_resource type="PackedScene" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
+[ext_resource type="PackedScene" uid="uid://ban1igxiigc5i" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
 [ext_resource type="Script" uid="uid://cgjkd45lovuuj" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
 [ext_resource type="Texture2D" uid="uid://yssktnatwuv0" path="res://Assets/Graphics/Mask.png" id="5_mask_texture"]
-[ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="6_5juj6"]
+[ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/ButtonNormal.png" id="6_5juj6"]
 [ext_resource type="Texture2D" uid="uid://cltji7brs2chx" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
+[ext_resource type="Texture2D" uid="uid://ccmwkd0cryae3" path="res://Assets/Graphics/ButtonPressed.png" id="6_lp08y"]
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="6_rpdai"]
 [ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="7_5juj6"]
+[ext_resource type="Texture2D" uid="uid://stvempouskqq" path="res://Assets/Graphics/ButtonHover.png" id="7_q811u"]
 [ext_resource type="Texture2D" uid="uid://b2hjq5wclffdq" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
 [ext_resource type="Texture2D" uid="uid://gx817d2rj6nx" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
 [ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="11_2qu1f"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_rpdai"]
+font_size = 22
+font_color = Color(0, 0.23539895, 0.23586756, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lp08y"]
 texture = ExtResource("6_5juj6")
@@ -21,6 +27,26 @@ texture_margin_bottom = 45.0
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2qu1f"]
+texture = ExtResource("6_lp08y")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_m46hb"]
+texture = ExtResource("7_q811u")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y1ofy"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rpdai"]
 texture = ExtResource("6_5juj6")
 texture_margin_left = 45.0
@@ -29,6 +55,26 @@ texture_margin_right = 45.0
 texture_margin_bottom = 45.0
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q811u"]
+texture = ExtResource("6_lp08y")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_y1ofy"]
+texture = ExtResource("7_q811u")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sk0fk"]
 
 [node name="TestModeOverlay" type="CanvasLayer" unique_id=343691941]
 layer = 10
@@ -55,10 +101,12 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
-offset_top = 10.0
+offset_top = 19.0
 offset_right = 100.0
-offset_bottom = 40.0
+offset_bottom = 49.0
+grow_horizontal = 2
 text = "Clicks: 10/10"
+label_settings = SubResource("LabelSettings_rpdai")
 horizontal_alignment = 1
 
 [node name="ButtonContainer" type="HBoxContainer" parent="." unique_id=1946640204]
@@ -82,6 +130,9 @@ layout_mode = 2
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/font_size = 46
 theme_override_styles/normal = SubResource("StyleBoxTexture_lp08y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_2qu1f")
+theme_override_styles/hover = SubResource("StyleBoxTexture_m46hb")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_y1ofy")
 text = "Friendly"
 
 [node name="Spacer" type="Control" parent="ButtonContainer" unique_id=1066767893]
@@ -94,6 +145,9 @@ layout_mode = 2
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/font_size = 46
 theme_override_styles/normal = SubResource("StyleBoxTexture_rpdai")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_q811u")
+theme_override_styles/hover = SubResource("StyleBoxTexture_y1ofy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_sk0fk")
 text = "Enemy"
 
 [node name="NPC" type="Node2D" parent="." unique_id=759593285]

@@ -203,8 +203,6 @@ public partial class TestModeController : CanvasLayer
 		// Wait for player to see the revealed face
 		await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
 
-		_currentPack?.MarkTested();
-
 		EmitSignal(SignalName.TestCompleted, correct);
 
 		// Hide test mode (Main.cs handles state transitions)

@@ -169,6 +169,12 @@ public partial class NPCPack : Node2D
 	public void MarkTested()
 	{
 		_isTested = true;
+
+		// Darken all members to show they've been tested
+		foreach (var member in _members)
+		{
+			member.Modulate = new Color(0.25f, 0.25f, 0.25f);
+		}
 	}
 
 	public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D lastLeader)

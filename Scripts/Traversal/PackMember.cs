@@ -74,6 +74,12 @@ public partial class PackMember : CharacterBody2D
 		var direction = _leader.GlobalPosition - GlobalPosition;
 		var distance = direction.Length();
 
+		// Always face toward the leader when recruited
+		if (_isRecruited && direction != Vector2.Zero)
+		{
+			_sprite.Rotation = direction.Angle();
+		}
+
 		if (distance > FollowDistance)
 		{
 			var velocity = direction.Normalized() * FollowSpeed;

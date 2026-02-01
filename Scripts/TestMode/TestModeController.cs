@@ -44,6 +44,7 @@ public partial class TestModeController : CanvasLayer
 	private bool _isFriendly;
 
 	private static Texture2D? _maskTexture;
+	private static bool _hasShownClickInstruction;
 	private RandomNumberGenerator _random = new();
 
 	public override void _Ready()
@@ -204,7 +205,20 @@ public partial class TestModeController : CanvasLayer
 
 	private void UpdateClickCounter()
 	{
-		_clickCounterLabel.Text = $"Clicks: {_clicksRemaining}/{_totalClicks}";
+		// Show instruction only on first encounter, before first click
+		if (!_hasShownClickInstruction && _clicksRemaining == _totalClicks)
+		{
+			_clickCounterLabel.Text = "click the mask";
+			_clickCounterLabel.Visible = true;
+		}
+		else
+		{
+			if (_clicksRemaining < _totalClicks)
+			{
+				_hasShownClickInstruction = true;
+			}
+			_clickCounterLabel.Visible = false;
+		}
 	}
 
 	private async void OnGuess(bool guessedFriendly)

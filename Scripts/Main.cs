@@ -218,11 +218,8 @@ public partial class Main : Node2D
 
 	private void RecruitPack(NPCPack pack)
 	{
-		// Get the last member in player's chain (or player if empty)
-		Node2D lastLeader = GameManager.Instance?.GetLastPackMember() as Node2D ?? _playerDot;
-
-		// Only recruit one member
-		pack.TransferOneMemberToPlayer(_playerPackContainer, lastLeader);
+		// Recruit one member with triangle formation
+		pack.TransferOneMemberToPlayer(_playerPackContainer, _playerDot);
 	}
 
 	private void LosePackMember()

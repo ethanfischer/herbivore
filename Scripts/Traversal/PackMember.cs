@@ -18,6 +18,8 @@ public partial class PackMember : CharacterBody2D
 	private static Texture2D? _enemyTexture;
 
 	private Node2D? _leader;
+	private Node2D? _player;
+	private int _formationIndex = -1;
 	private bool _isTested;
 	private bool _isRecruited;
 	private Sprite2D _sprite = null!;
@@ -69,32 +71,93 @@ public partial class PackMember : CharacterBody2D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (_leader == null) return;
-
-		var direction = _leader.GlobalPosition - GlobalPosition;
-		var distance = direction.Length();
-
-		// Always face toward the leader when recruited
-		if (_isRecruited && direction != Vector2.Zero)
+		if (_isRecruited && _player != null)
 		{
-			_sprite.Rotation = direction.Angle();
+			// Formation-based movement
+			var targetPos = GetFormationPosition();
+			var direction = targetPos - GlobalPosition;
+			var distance = direction.Length();
+
+			// Face toward the player
+			var toPlayer = _player.GlobalPosition - GlobalPosition;
+			if (toPlayer != Vector2.Zero)
+			{
+				_sprite.Rotation = toPlayer.Angle();
+			}
+
+			if (distance > 5f)
+			{
+				var velocity = direction.Normalized() * FollowSpeed;
+				Velocity = velocity;
+				MoveAndSlide();
+			}
+			else
+			{
+				Velocity = Vector2.Zero;
+			}
+		}
+		else if (_leader != null)
+		{
+			// Original chain-following for non-recruited members
+			var direction = _leader.GlobalPosition - GlobalPosition;
+			var distance = direction.Length();
+
+			if (distance > FollowDistance)
+			{
+				var velocity = direction.Normalized() * FollowSpeed;
+				Velocity = velocity;
+				MoveAndSlide();
+			}
+			else
+			{
+				Velocity = Vector2.Zero;
+			}
+		}
+	}
+
+	private Vector2 GetFormationPosition()
+	{
+		if (_player == null || _player is not PlayerDot playerDot) return GlobalPosition;
+
+		// Triangle formation: row 0 has 2, row 1 has 3, row 2 has 4, etc.
+		int row = 0;
+		int indexInRow = _formationIndex;
+		int rowSize = 2;
+
+		while (indexInRow >= rowSize)
+		{
+			indexInRow -= rowSize;
+			row++;
+			rowSize = row + 2;
 		}
 
-		if (distance > FollowDistance)
-		{
-			var velocity = direction.Normalized() * FollowSpeed;
-			Velocity = velocity;
-			MoveAndSlide();
-		}
-		else
-		{
-			Velocity = Vector2.Zero;
-		}
+		float spacing = 35f;
+		float rowDistance = 40f;
+
+		// Calculate horizontal offset for this position in the row
+		float rowWidth = (rowSize - 1) * spacing;
+		float xOffset = -rowWidth / 2 + indexInRow * spacing;
+		float yOffset = rowDistance * (row + 1);
+
+		// Get player's facing direction (persists when stopped)
+		Vector2 facing = playerDot.FacingDirection;
+
+		// Calculate perpendicular vector for horizontal spread
+		Vector2 perpendicular = new Vector2(-facing.Y, facing.X);
+
+		// Position behind player relative to movement direction
+		return _player.GlobalPosition - facing * yOffset + perpendicular * xOffset;
 	}
 
 	public void SetLeader(Node2D leader)
 	{
 		_leader = leader;
+	}
+
+	public void SetFormation(Node2D player, int formationIndex)
+	{
+		_player = player;
+		_formationIndex = formationIndex;
 	}
 
 	public void MarkTested()

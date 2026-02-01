@@ -16,6 +16,9 @@ public partial class PlayerDot : CharacterBody2D
 	private Area2D _approachArea = null!;
 	private Sprite2D _sprite = null!;
 	private AudioStreamPlayer _walkSound = null!;
+	private Vector2 _lastFacingDirection = Vector2.Down;
+
+	public Vector2 FacingDirection => _lastFacingDirection;
 
 	public override void _Ready()
 	{
@@ -64,6 +67,8 @@ public partial class PlayerDot : CharacterBody2D
 			velocity = velocity.Normalized() * Speed;
 			// Rotate sprite to face movement direction
 			_sprite.Rotation = velocity.Angle();
+			// Track facing direction
+			_lastFacingDirection = velocity.Normalized();
 
 			// Play walk sound if not already playing
 			if (!_walkSound.Playing)

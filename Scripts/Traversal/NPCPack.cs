@@ -226,7 +226,7 @@ public partial class NPCPack : Node2D
 		}
 	}
 
-	public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D lastLeader)
+	public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D player)
 	{
 		if (_members.Count == 0) return;
 
@@ -244,14 +244,18 @@ public partial class NPCPack : Node2D
 		// Restore global position so they start from where the pack was
 		member.GlobalPosition = globalPos;
 
-		// Set up following chain
-		member.SetLeader(lastLeader);
+		// Get formation index (current pack size before adding this member)
+		var gm = GameManager.Instance;
+		int formationIndex = gm != null ? gm.PackSize - 1 : 0; // -1 because PackSize includes player
+
+		// Set up formation following
+		member.SetFormation(player, formationIndex);
 
 		// Mark as recruited (turns green)
 		member.MarkRecruited();
 
 		// Add to GameManager
-		GameManager.Instance?.AddToPlayerPack(member);
+		gm?.AddToPlayerPack(member);
 
 		// Pack stays but is now tested (can't be approached again)
 	}

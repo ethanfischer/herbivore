@@ -94,9 +94,20 @@ public partial class Main : Node2D
 		// Initial UI update
 		UpdateUI();
 
-		// Start with intro screen visible and game paused
-		_startScreen.Visible = true;
-		_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+		// Check if this is a restart or fresh start
+		if (gm != null && gm.IsRestart)
+		{
+			// Skip intro on restart
+			_startScreen.Visible = false;
+			_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
+			gm.IsRestart = false;
+		}
+		else
+		{
+			// Show intro screen on fresh start
+			_startScreen.Visible = true;
+			_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+		}
 	}
 
 	public override void _ExitTree()

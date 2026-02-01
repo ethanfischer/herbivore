@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://y33bx1okk4wg"]
 
+[ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="1_0c07c"]
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="1_5wyu1"]
 [ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="2_5wyu1"]
 [ext_resource type="Texture2D" uid="uid://yssktnatwuv0" path="res://Assets/Graphics/Mask.png" id="2_qc4db"]
@@ -7,6 +8,24 @@
 [ext_resource type="Texture2D" uid="uid://cltji7brs2chx" path="res://Assets/Graphics/Frame.png" id="3_ys1qc"]
 [ext_resource type="Texture2D" uid="uid://gx817d2rj6nx" path="res://Assets/Graphics/NPC_FaceFriend.png" id="4_2cgwh"]
 [ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="6_iaow0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2cgwh"]
+texture = ExtResource("1_0c07c")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iaow0"]
+texture = ExtResource("1_0c07c")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
 
 [node name="Test" type="Node2D" unique_id=1263056745]
 
@@ -20,7 +39,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="Content" type="Control" parent="UI/The Test" unique_id=730148138]
@@ -58,6 +76,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxTexture_2cgwh")
 text = "Friendly
 "
 
@@ -68,6 +87,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/outline_size = 9
 theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxTexture_iaow0")
 text = "Enemy
 "
 
@@ -75,6 +95,7 @@ text = "Enemy
 scale = Vector2(15.703125, 15.703125)
 texture = ExtResource("1_5wyu1")
 centered = false
+metadata/_edit_lock_ = true
 
 [node name="NPC" type="Node2D" parent="." unique_id=465994016]
 position = Vector2(-18, -43)

@@ -101,6 +101,7 @@ NPCPackScene = ExtResource("2_s4o75")
 [node name="TraversalMode" type="Node2D" parent="." unique_id=2134761853]
 
 [node name="Camera2D" type="Camera2D" parent="TraversalMode" unique_id=104340314]
+zoom = Vector2(1.75, 1.75)
 script = ExtResource("3_janrd")
 TargetPath = NodePath("../PlayerDot")
 SmoothSpeed = 8.0

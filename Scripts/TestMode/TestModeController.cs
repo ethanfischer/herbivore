@@ -235,9 +235,7 @@ public partial class TestModeController : CanvasLayer
 		await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
 
 		EmitSignal(SignalName.TestCompleted, correct);
-
-		// Hide test mode (Main.cs handles state transitions)
-		Visible = false;
+		// Note: Main.cs handles hiding via fade transition
 	}
 
 	public void EndTest()

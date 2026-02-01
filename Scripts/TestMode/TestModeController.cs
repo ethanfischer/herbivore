@@ -182,6 +182,7 @@ public partial class TestModeController : CanvasLayer
 		var segment = availableSegments[randomIndex];
 
 		segment.Shatter();
+		ShakeMask();
 		_clicksRemaining--;
 		UpdateClickCounter();
 
@@ -193,6 +194,23 @@ public partial class TestModeController : CanvasLayer
 			_friendButton.Visible = true;
 			_foeButton.Visible = true;
 		}
+	}
+
+	private void ShakeMask()
+	{
+		var originalPos = _maskGrid.Position;
+		var tween = CreateTween();
+		tween.SetTrans(Tween.TransitionType.Sine);
+		tween.SetEase(Tween.EaseType.Out);
+
+		// Quick shake sequence
+		float intensity = 8f;
+		float duration = 0.05f;
+		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(-intensity, 0), duration);
+		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(0, intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", originalPos + new Vector2(0, -intensity), duration);
+		tween.TweenProperty(_maskGrid, "position", originalPos, duration);
 	}
 
 	private bool IsEdgeSegment(int index)

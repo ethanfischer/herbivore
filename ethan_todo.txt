@@ -1,12 +1,15 @@
+[ ] encounter, switch between friend/foe (update sprites)
+[ ] reveal face after choice made
+[ ] skin tone variations (swtich between 3)
+[ ] make npcs look at player
+[ ] make npcs darker when you've interacted
+[ ] up clicks to 10
+[ ] more text when you win: flavor text
+
 [x] more distance between group members
 [x] random rotations
 [x] orient towards direciton moving
 [x] randomly reveal mask
-
-[ ] intro screen (hookup)
-[ ] integrate sound
-    walking loop, background music (traversal and encounter)
-[ ] encounter, switch between friend/foe (update sprites)
-[ ] reveal face after choice made
-[ ] skin tone variations (swtich between 3)
-[ ] make box fully transparent when clicked
+[x] intro screen (hookup)
+[x] integrate sound: walking loop, background music (traversal and encounter)
+[x] make box fully transparent when clicked

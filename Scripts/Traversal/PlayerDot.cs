@@ -23,10 +23,8 @@ public partial class PlayerDot : CharacterBody2D
 		_approachArea.AreaEntered += OnApproachAreaEntered;
 		_sprite = GetNode<Sprite2D>("Sprite2D");
 
-		// Create walk sound programmatically
-		_walkSound = new AudioStreamPlayer();
-		_walkSound.Stream = GD.Load<AudioStream>("res://Assets/Sound/sand_walk.mp3");
-		AddChild(_walkSound);
+		// Get walk sound from main scene
+		_walkSound = GetTree().CurrentScene.GetNode<AudioStreamPlayer>("Sounds/SandWalk");
 	}
 
 	public override void _Draw()

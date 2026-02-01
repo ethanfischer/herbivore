@@ -104,6 +104,9 @@ public partial class Main : Node2D
 		// Connect restart button
 		_restartButton.Pressed += OnRestartPressed;
 
+		// Create quit button programmatically
+		CreateQuitButton();
+
 		// Connect play button
 		_playButton.Pressed += OnPlayPressed;
 
@@ -324,6 +327,40 @@ public partial class Main : Node2D
 
 		// Reload scene to reset NPC packs
 		GetTree().ReloadCurrentScene();
+	}
+
+	private void CreateQuitButton()
+	{
+		var quitButton = new Button();
+		quitButton.Text = "Quit";
+
+		// Copy styling from restart button
+		quitButton.AddThemeFontSizeOverride("font_size", 46);
+		if (_restartButton.HasThemeStyleboxOverride("normal"))
+			quitButton.AddThemeStyleboxOverride("normal", _restartButton.GetThemeStylebox("normal"));
+		if (_restartButton.HasThemeStyleboxOverride("pressed"))
+			quitButton.AddThemeStyleboxOverride("pressed", _restartButton.GetThemeStylebox("pressed"));
+		if (_restartButton.HasThemeStyleboxOverride("hover"))
+			quitButton.AddThemeStyleboxOverride("hover", _restartButton.GetThemeStylebox("hover"));
+		if (_restartButton.HasThemeStyleboxOverride("focus"))
+			quitButton.AddThemeStyleboxOverride("focus", _restartButton.GetThemeStylebox("focus"));
+
+		// Position below restart button
+		quitButton.SetAnchorsPreset(Control.LayoutPreset.Center);
+		quitButton.OffsetLeft = -159.5f;
+		quitButton.OffsetRight = 159.5f;
+		quitButton.OffsetTop = 305.0f;
+		quitButton.OffsetBottom = 395.0f;
+
+		quitButton.Pressed += OnQuitPressed;
+
+		// Add to same parent as restart button
+		_restartButton.GetParent().AddChild(quitButton);
+	}
+
+	private void OnQuitPressed()
+	{
+		GetTree().Quit();
 	}
 
 	private void OnPlayPressed()

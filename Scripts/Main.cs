@@ -40,6 +40,8 @@ public partial class Main : Node2D
 	private Label _packSizeLabel = null!;
 	private Label _scoreLabel = null!;
 	private Panel _gameOverPanel = null!;
+	private Label _gameOverLabel = null!;
+	private Label _flavorTextLabel = null!;
 	private Button _restartButton = null!;
 	private Control _startScreen = null!;
 	private Button _playButton = null!;
@@ -62,6 +64,8 @@ public partial class Main : Node2D
 		_packSizeLabel = GetNode<Label>("UI/PackSizeLabel");
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
+		_gameOverLabel = GetNode<Label>("UI/GameOverPanel/Content/GameOverLabel");
+		_flavorTextLabel = GetNode<Label>("UI/GameOverPanel/Content/FlavorText");
 		_restartButton = GetNode<Button>("UI/GameOverPanel/Content/RestartButton");
 		_startScreen = GetNode<Control>("UI/Start");
 		_playButton = GetNode<Button>("UI/Start/Content/MarginContainer/VBoxContainer/Button");
@@ -203,8 +207,8 @@ public partial class Main : Node2D
 		_currentTestPack.MarkTested();
 		_currentTestPack = null;
 
-		// Return to traversal if not game over
-		if (gm.CurrentState != GameState.GameOver)
+		// Return to traversal if not game over or won
+		if (gm.CurrentState != GameState.GameOver && gm.CurrentState != GameState.GameWon)
 		{
 			gm.ChangeState(GameState.Traversal);
 			// Spawn new packs to maintain minimum
@@ -266,6 +270,16 @@ public partial class Main : Node2D
 			case GameState.GameOver:
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
 				_testMode.EndTest();
+				_gameOverLabel.Text = "YOU HAVE FAILED!";
+				_flavorTextLabel.Text = "You roam the desert alone\nwondering what it might have\nfelt like having friends....";
+				_gameOverPanel.Visible = true;
+				break;
+
+			case GameState.GameWon:
+				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				_testMode.EndTest();
+				_gameOverLabel.Text = "YOU WIN!";
+				_flavorTextLabel.Text = "Your pack roams the desert\ntogether, safe and happy.\nTrue friendship prevails!";
 				_gameOverPanel.Visible = true;
 				break;
 		}

@@ -1,3 +1,14 @@
+[x] skin tone variations starker
+[x] quit game button
+[ ] make particles bigger (half the size of the tiles)
+[ ] volume slider
+[ ] more faces?
+[ ] option to show buttons early
+[ ] sometimes get multiple followers
+[ ] does it skew towards enemy?
+[x] make mask shake
+
+
 [x] mask particles
 [x] more text when you win: flavor text
 [x] tweak which tiles disappear
@@ -18,7 +29,3 @@
 [x] make box fully transparent when clicked
 
 [x] 7 clicks
-[ ] skin tone variations starker
-[ ] quit game button
-[ ] make particles bigger (half the size of the tiles)
-[ ] make mask shake

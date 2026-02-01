@@ -35,6 +35,23 @@ public partial class PackMember : CharacterBody2D
 		UpdateSprite();
 	}
 
+	public override void _Draw()
+	{
+		// Draw shadow
+		DrawEllipse(new Vector2(0, 5), new Vector2(25, 25), new Color(0, 0, 0, 0.5f));
+	}
+
+	private void DrawEllipse(Vector2 center, Vector2 size, Color color)
+	{
+		var points = new Vector2[32];
+		for (int i = 0; i < 32; i++)
+		{
+			float angle = i * Mathf.Tau / 32;
+			points[i] = center + new Vector2(Mathf.Cos(angle) * size.X / 2, Mathf.Sin(angle) * size.Y / 2);
+		}
+		DrawColoredPolygon(points, color);
+	}
+
 	private void UpdateSprite()
 	{
 		_sprite.Texture = _isRecruited ? _playerTexture : _enemyTexture;

@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dqadce7jbj1b7"]
+[gd_scene format=3 uid="uid://dwdb8i4rormt5"]
 
 [ext_resource type="Texture2D" uid="uid://d0fp0ihrrp3gn" path="res://Assets/Graphics/IntroBG.png" id="1_kry3j"]
 [ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="2_21xkr"]
@@ -35,6 +35,7 @@ size = Vector2(46, 82)
 [node name="UI" type="CanvasLayer" parent="." unique_id=25282453]
 
 [node name="Start" type="Control" parent="UI" unique_id=708175784]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,48 +1,74 @@
-[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+[gd_scene format=3 uid="uid://cipuon4mom3ei"]
 
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://player_dot" path="res://Scenes/Traversal/PlayerDot.tscn" id="2_player"]
-[ext_resource type="Script" path="res://Scripts/Traversal/CameraFollow.cs" id="3_camera"]
-[ext_resource type="PackedScene" uid="uid://npc_pack" path="res://Scenes/Traversal/NPCPack.tscn" id="4_npcpack"]
-[ext_resource type="PackedScene" uid="uid://test_mode_overlay" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_testmode"]
+[ext_resource type="Script" uid="uid://co83jdiawacpy" path="res://Scripts/Main.cs" id="1_hf0u4"]
+[ext_resource type="PackedScene" path="res://Scenes/Traversal/NPCPack.tscn" id="2_s4o75"]
+[ext_resource type="Script" uid="uid://yqoxkx5o1bum" path="res://Scripts/Traversal/CameraFollow.cs" id="3_janrd"]
+[ext_resource type="PackedScene" path="res://Scenes/Traversal/PlayerDot.tscn" id="4_ulsxu"]
+[ext_resource type="Texture2D" uid="uid://58edkh2j40qc" path="res://Assets/Graphics/ground.png" id="5_s4o75"]
+[ext_resource type="PackedScene" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_wrwdd"]
+[ext_resource type="Texture2D" uid="uid://d0fp0ihrrp3gn" path="res://Assets/Graphics/IntroBG.png" id="6_6vn7f"]
+[ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="7_ak8ot"]
 
-[node name="Main" type="Node2D"]
-script = ExtResource("1_main")
-NPCPackScene = ExtResource("4_npcpack")
+[sub_resource type="LabelSettings" id="LabelSettings_68h0b"]
+font_size = 68
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.6745098)
+shadow_offset = Vector2(0, 5)
 
-[node name="TraversalMode" type="Node2D" parent="."]
+[sub_resource type="LabelSettings" id="LabelSettings_u0fso"]
+font_size = 27
 
-[node name="Camera2D" type="Camera2D" parent="TraversalMode"]
-script = ExtResource("3_camera")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nw5kd"]
+texture = ExtResource("7_ak8ot")
+texture_margin_left = 45.0
+texture_margin_top = 45.0
+texture_margin_right = 45.0
+texture_margin_bottom = 45.0
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="Main" type="Node2D" unique_id=308477182]
+script = ExtResource("1_hf0u4")
+NPCPackScene = ExtResource("2_s4o75")
+
+[node name="TraversalMode" type="Node2D" parent="." unique_id=2134761853]
+
+[node name="Camera2D" type="Camera2D" parent="TraversalMode" unique_id=104340314]
+script = ExtResource("3_janrd")
 TargetPath = NodePath("../PlayerDot")
 SmoothSpeed = 8.0
 
-[node name="World" type="Node2D" parent="TraversalMode"]
+[node name="World" type="Node2D" parent="TraversalMode" unique_id=359146570]
 
-[node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World"]
+[node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World" unique_id=1192922978]
 
-[node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+[node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" unique_id=731774 instance=ExtResource("2_s4o75")]
 position = Vector2(200, 150)
 
-[node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+[node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" unique_id=438447666 instance=ExtResource("2_s4o75")]
 position = Vector2(600, 200)
 
-[node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+[node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" unique_id=1646812556 instance=ExtResource("2_s4o75")]
 position = Vector2(300, 450)
 
-[node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+[node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" unique_id=1263575752 instance=ExtResource("2_s4o75")]
 position = Vector2(550, 400)
 
-[node name="PlayerDot" parent="TraversalMode" instance=ExtResource("2_player")]
+[node name="PlayerDot" parent="TraversalMode" unique_id=490778616 instance=ExtResource("4_ulsxu")]
 position = Vector2(400, 300)
 
-[node name="PlayerPackContainer" type="Node2D" parent="TraversalMode"]
+[node name="PlayerPackContainer" type="Node2D" parent="TraversalMode" unique_id=357382252]
 
-[node name="TestMode" parent="." instance=ExtResource("5_testmode")]
+[node name="Background" type="Sprite2D" parent="TraversalMode" unique_id=542480535]
+z_index = -1
+scale = Vector2(4, 4)
+texture = ExtResource("5_s4o75")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="TestMode" parent="." unique_id=674302844 instance=ExtResource("5_wrwdd")]
 
-[node name="PackSizeLabel" type="Label" parent="UI"]
+[node name="UI" type="CanvasLayer" parent="." unique_id=693327339]
+
+[node name="PackSizeLabel" type="Label" parent="UI" unique_id=29735415]
 visible = false
 offset_left = 10.0
 offset_top = 10.0
@@ -50,7 +76,7 @@ offset_right = 150.0
 offset_bottom = 30.0
 text = "Pack: 1"
 
-[node name="ScoreLabel" type="Label" parent="UI"]
+[node name="ScoreLabel" type="Label" parent="UI" unique_id=2083592192]
 visible = false
 offset_left = 10.0
 offset_top = 35.0
@@ -58,7 +84,7 @@ offset_right = 150.0
 offset_bottom = 55.0
 text = "Score: 0"
 
-[node name="GameOverPanel" type="Panel" parent="UI"]
+[node name="GameOverPanel" type="Panel" parent="UI" unique_id=790778458]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,7 +96,7 @@ offset_top = -100.0
 offset_right = 150.0
 offset_bottom = 100.0
 
-[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel" unique_id=1408553977]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -79,10 +105,11 @@ offset_left = -50.0
 offset_top = 30.0
 offset_right = 50.0
 offset_bottom = 53.0
+grow_horizontal = 2
 text = "GAME OVER"
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="UI/GameOverPanel"]
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel" unique_id=1699869598]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -93,12 +120,85 @@ offset_left = -60.0
 offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Restart"
 
-[node name="Sounds" type="Node" parent="."]
+[node name="Start" type="Control" parent="UI" unique_id=1932888986]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="Background" type="TextureRect" parent="UI/Start" unique_id=403835033]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_6vn7f")
 
-[node name="FailSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="Content" type="Control" parent="UI/Start" unique_id=1296134883]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -592.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="IdentifyFoeSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/Start/Content" unique_id=1359629433]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 180.82007
+offset_bottom = 2.8200684
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Start/Content/MarginContainer" unique_id=22261174]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Title" type="Label" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=1077527088]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Are You Friendly?"
+label_settings = SubResource("LabelSettings_68h0b")
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=195881707]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Explore the desert. Interact with stranger. Grow your tribe."
+label_settings = SubResource("LabelSettings_u0fso")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Button" type="Button" parent="UI/Start/Content/MarginContainer/VBoxContainer" unique_id=87612205]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/outline_size = 9
+theme_override_font_sizes/font_size = 46
+theme_override_styles/normal = SubResource("StyleBoxTexture_nw5kd")
+text = "Play"
+
+[node name="Sounds" type="Node" parent="." unique_id=768776348]
+
+[node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds" unique_id=916984234]
+
+[node name="FailSound" type="AudioStreamPlayer" parent="Sounds" unique_id=537294239]
+
+[node name="IdentifyFoeSound" type="AudioStreamPlayer" parent="Sounds" unique_id=88129279]

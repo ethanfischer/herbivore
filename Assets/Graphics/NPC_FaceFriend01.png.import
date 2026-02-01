@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://gx817d2rj6nx"
-path="res://.godot/imported/NPC_FaceFriend.png-af74442120e29ad1840173d73531c789.ctex"
+uid="uid://dy3wsteag3its"
+path="res://.godot/imported/NPC_FaceFriend01.png-43a7bc17e749190f8c7877989adc354c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Graphics/NPC_FaceFriend.png"
-dest_files=["res://.godot/imported/NPC_FaceFriend.png-af74442120e29ad1840173d73531c789.ctex"]
+source_file="res://Assets/Graphics/NPC_FaceFriend01.png"
+dest_files=["res://.godot/imported/NPC_FaceFriend01.png-43a7bc17e749190f8c7877989adc354c.ctex"]
 
 [params]
 

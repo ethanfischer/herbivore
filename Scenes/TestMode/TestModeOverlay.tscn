@@ -10,9 +10,13 @@
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="6_rpdai"]
 [ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="7_5juj6"]
 [ext_resource type="Texture2D" uid="uid://stvempouskqq" path="res://Assets/Graphics/ButtonHover.png" id="7_q811u"]
-[ext_resource type="Texture2D" uid="uid://b2hjq5wclffdq" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
-[ext_resource type="Texture2D" uid="uid://gx817d2rj6nx" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
+[ext_resource type="Texture2D" uid="uid://q4t23lovx4ri" path="res://Assets/Graphics/NPC_FaceFoe02.png" id="10_y1ofy"]
 [ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="11_2qu1f"]
+[ext_resource type="Texture2D" uid="uid://drhfakf6do2cp" path="res://Assets/Graphics/NPC_FaceFoe03.png" id="11_sk0fk"]
+[ext_resource type="Texture2D" uid="uid://bt0m1nmsjj2rm" path="res://Assets/Graphics/NPC_FaceFriend02.png" id="13_rwx0c"]
+[ext_resource type="Texture2D" uid="uid://by6ns7n7o2ea5" path="res://Assets/Graphics/NPC_FaceFriend03.png" id="14_fibyd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_rpdai"]
 font_size = 22
@@ -109,7 +113,7 @@ text = "Click the mask"
 label_settings = SubResource("LabelSettings_rpdai")
 horizontal_alignment = 1
 
-[node name="ClicksRemaining" type="Label" parent="."]
+[node name="ClicksRemaining" type="Label" parent="." unique_id=1520573774]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -170,14 +174,34 @@ position = Vector2(-18, -43)
 position = Vector2(488, 505)
 texture = ExtResource("7_5juj6")
 
-[node name="NpcFaceFoe" type="Sprite2D" parent="NPC" unique_id=80802793]
+[node name="NpcFaceFoe01" type="Sprite2D" parent="NPC" unique_id=80802793]
+visible = false
 position = Vector2(513, 498)
 texture = ExtResource("8_lp08y")
 
-[node name="NpcFaceFriend" type="Sprite2D" parent="NPC" unique_id=2020344183]
+[node name="NpcFaceFoe02" type="Sprite2D" parent="NPC" unique_id=1236878728]
+visible = false
+position = Vector2(513, 509)
+texture = ExtResource("10_y1ofy")
+
+[node name="NpcFaceFoe03" type="Sprite2D" parent="NPC" unique_id=1884652788]
+visible = false
+position = Vector2(513, 502)
+texture = ExtResource("11_sk0fk")
+
+[node name="NpcFaceFriend01" type="Sprite2D" parent="NPC" unique_id=2020344183]
 visible = false
 position = Vector2(516, 511)
 texture = ExtResource("9_q811u")
+
+[node name="NpcFaceFriend02" type="Sprite2D" parent="NPC" unique_id=1684357072]
+visible = false
+position = Vector2(516, 507)
+texture = ExtResource("13_rwx0c")
+
+[node name="NpcFaceFriend03" type="Sprite2D" parent="NPC" unique_id=579507513]
+position = Vector2(510, 506)
+texture = ExtResource("14_fibyd")
 
 [node name="Mask" type="Sprite2D" parent="NPC" unique_id=2131034779]
 visible = false

@@ -205,18 +205,10 @@ public partial class Main : Node2D
 		}
 		else
 		{
-			// Wrong guess
-			if (_currentTestPack.IsFriendly)
-			{
-				GD.Print("Wrong! They were friendly.");
-			}
-			else
-			{
-				// Trusted foes - lose pack members
-				LosePackMember();
-				_failSound.Play();
-				GD.Print("Wrong! Foe pack attacked.");
-			}
+			// Wrong guess - always lose a pack member
+			LosePackMember();
+			_failSound.Play();
+			GD.Print($"Wrong! They were {(_currentTestPack.IsFriendly ? "friendly" : "foes")}.");
 		}
 
 		// Mark pack as tested (darkens remaining members)

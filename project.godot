@@ -23,6 +23,7 @@ GameManager="*res://Scripts/Autoloads/GameManager.cs"
 
 window/size/viewport_width=1000
 window/size/viewport_height=1000
+window/size/resizable=false
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 

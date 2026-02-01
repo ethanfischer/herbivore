@@ -25,6 +25,10 @@ public partial class Main : Node2D
 	private AudioStreamPlayer _failSound = null!;
 	private AudioStreamPlayer _identifyFoeSound = null!;
 
+	// Music
+	private AudioStreamPlayer _introMusic = null!;
+	private AudioStreamPlayer _encounterMusic = null!;
+
 	private Node2D _traversalMode = null!;
 	private TestModeController _testMode = null!;
 	private Node2D _playerPackContainer = null!;
@@ -36,6 +40,8 @@ public partial class Main : Node2D
 	private Label _scoreLabel = null!;
 	private Panel _gameOverPanel = null!;
 	private Button _restartButton = null!;
+	private Control _startScreen = null!;
+	private Button _playButton = null!;
 
 	private NPCPack? _currentTestPack;
 	private RandomNumberGenerator _random = new();
@@ -56,6 +62,8 @@ public partial class Main : Node2D
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
 		_restartButton = GetNode<Button>("UI/GameOverPanel/RestartButton");
+		_startScreen = GetNode<Control>("UI/Start");
+		_playButton = GetNode<Button>("UI/Start/Content/MarginContainer/VBoxContainer/Button");
 
 		// Sound references and generation
 		_successSound = GetNode<AudioStreamPlayer>("Sounds/SuccessSound");
@@ -65,6 +73,18 @@ public partial class Main : Node2D
 		_successSound.Stream = SoundGenerator.CreateSuccessSound();
 		_failSound.Stream = SoundGenerator.CreateFailSound();
 		_identifyFoeSound.Stream = SoundGenerator.CreateIdentifyFoeSound();
+
+		// Create music players programmatically
+		var soundsNode = GetNode("Sounds");
+
+		_introMusic = new AudioStreamPlayer();
+		_introMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Intro.mp3");
+		soundsNode.AddChild(_introMusic);
+		_introMusic.Play();
+
+		_encounterMusic = new AudioStreamPlayer();
+		_encounterMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Main.mp3");
+		soundsNode.AddChild(_encounterMusic);
 
 		// Connect to GameManager signals
 		var gm = GameManager.Instance;
@@ -81,11 +101,29 @@ public partial class Main : Node2D
 		// Connect restart button
 		_restartButton.Pressed += OnRestartPressed;
 
+		// Connect play button
+		_playButton.Pressed += OnPlayPressed;
+
 		// Connect all NPC packs
 		ConnectNPCPacks();
 
 		// Initial UI update
 		UpdateUI();
+
+		// Check if this is a restart or fresh start
+		if (gm != null && gm.IsRestart)
+		{
+			// Skip intro on restart
+			_startScreen.Visible = false;
+			_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
+			gm.IsRestart = false;
+		}
+		else
+		{
+			// Show intro screen on fresh start
+			_startScreen.Visible = true;
+			_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+		}
 	}
 
 	public override void _ExitTree()
@@ -213,11 +251,18 @@ public partial class Main : Node2D
 			case GameState.Traversal:
 				_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
 				_gameOverPanel.Visible = false;
+				// Switch to intro/traversal music
+				_encounterMusic.Stop();
+				if (!_introMusic.Playing)
+					_introMusic.Play();
 				break;
 
 			case GameState.Testing:
 				// Pause traversal while testing
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				// Switch to encounter music
+				_introMusic.Stop();
+				_encounterMusic.Play();
 				break;
 
 			case GameState.GameOver:
@@ -254,6 +299,12 @@ public partial class Main : Node2D
 
 		// Reload scene to reset NPC packs
 		GetTree().ReloadCurrentScene();
+	}
+
+	private void OnPlayPressed()
+	{
+		_startScreen.Visible = false;
+		_traversalMode.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
 	private void UpdateUI()

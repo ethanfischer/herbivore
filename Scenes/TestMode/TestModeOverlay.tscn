@@ -1,47 +1,38 @@
-[gd_scene load_steps=8 format=3 uid="uid://test_mode_overlay"]
+[gd_scene format=3 uid="uid://3afib7g3kdys"]
 
-[ext_resource type="Script" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
-[ext_resource type="PackedScene" uid="uid://mask_segment" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
-[ext_resource type="Script" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
-[ext_resource type="Texture2D" path="res://Assets/Graphics/Face.png" id="4_face_texture"]
-[ext_resource type="Texture2D" path="res://Assets/Graphics/Mask.png" id="5_mask_texture"]
-[ext_resource type="Texture2D" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
-[ext_resource type="Texture2D" uid="uid://bljsdt2f3rp7y" path="res://Assets/Graphics/background.tres" id="7_background"]
+[ext_resource type="Script" uid="uid://bnalgbsf3icwq" path="res://Scripts/TestMode/TestModeController.cs" id="1_controller"]
+[ext_resource type="PackedScene" path="res://Scenes/TestMode/MaskSegment.tscn" id="2_segment"]
+[ext_resource type="Script" uid="uid://cgjkd45lovuuj" path="res://Scripts/TestMode/FaceRenderer.cs" id="3_face"]
+[ext_resource type="Texture2D" uid="uid://yssktnatwuv0" path="res://Assets/Graphics/Mask.png" id="5_mask_texture"]
+[ext_resource type="Texture2D" uid="uid://cltji7brs2chx" path="res://Assets/Graphics/Frame.png" id="6_frame_texture"]
+[ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="6_rpdai"]
+[ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="7_5juj6"]
+[ext_resource type="Texture2D" uid="uid://b2hjq5wclffdq" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
+[ext_resource type="Texture2D" uid="uid://gx817d2rj6nx" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
+[ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="11_2qu1f"]
 
-[node name="TestModeOverlay" type="CanvasLayer"]
-visible = false
+[node name="TestModeOverlay" type="CanvasLayer" unique_id=343691941]
 layer = 10
+visible = false
 script = ExtResource("1_controller")
 MaskSegmentScene = ExtResource("2_segment")
 
-[node name="Background" type="Sprite2D" parent="."]
-scale = Vector2(1.953125, 1.953125)
-texture = ExtResource("7_background")
-centered = false
-
-[node name="FaceArea" type="Node2D" parent="."]
+[node name="FaceArea" type="Node2D" parent="." unique_id=1326239894]
 position = Vector2(-18, -43)
 
-[node name="FaceSprite" type="Sprite2D" parent="FaceArea"]
-position = Vector2(511, 488)
-scale = Vector2(0.687, 0.687)
-texture = ExtResource("4_face_texture")
-
-[node name="FrameSprite" type="Sprite2D" parent="FaceArea"]
+[node name="FrameSprite" type="Sprite2D" parent="FaceArea" unique_id=1041562284]
 position = Vector2(509, 479)
 scale = Vector2(0.98, 0.98)
 texture = ExtResource("6_frame_texture")
 
-[node name="MaskGrid" type="GridContainer" parent="."]
-offset_left = 344.0
-offset_top = 287.0
-offset_right = 644.0
-offset_bottom = 587.0
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-columns = 8
+[node name="Background" type="Sprite2D" parent="." unique_id=130612485]
+scale = Vector2(15.703125, 15.703125)
+texture = ExtResource("6_rpdai")
+centered = false
 
-[node name="FaceRenderer" type="Control" parent="."]
+[node name="FaceRenderer" type="Control" parent="." unique_id=614791127]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 344.0
 offset_top = 287.0
 offset_right = 644.0
@@ -49,7 +40,7 @@ offset_bottom = 587.0
 mouse_filter = 2
 script = ExtResource("3_face")
 
-[node name="ClickCounter" type="Label" parent="."]
+[node name="ClickCounter" type="Label" parent="." unique_id=753683612]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -60,7 +51,7 @@ offset_bottom = 40.0
 text = "Clicks: 10/10"
 horizontal_alignment = 1
 
-[node name="ButtonContainer" type="HBoxContainer" parent="."]
+[node name="ButtonContainer" type="HBoxContainer" parent="." unique_id=1946640204]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -72,13 +63,54 @@ offset_right = 200.0
 offset_bottom = -30.0
 alignment = 1
 
-[node name="FriendButton" type="Button" parent="ButtonContainer"]
+[node name="FriendButton" type="Button" parent="ButtonContainer" unique_id=1135749381]
 custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
 text = "Friendly"
 
-[node name="Spacer" type="Control" parent="ButtonContainer"]
+[node name="Spacer" type="Control" parent="ButtonContainer" unique_id=1066767893]
 custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
 
-[node name="FoeButton" type="Button" parent="ButtonContainer"]
+[node name="FoeButton" type="Button" parent="ButtonContainer" unique_id=290234872]
 custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
 text = "Enemy"
+
+[node name="NPC" type="Node2D" parent="." unique_id=759593285]
+position = Vector2(-18, -43)
+
+[node name="FaceBase" type="Sprite2D" parent="NPC" unique_id=1213389066]
+position = Vector2(488, 505)
+texture = ExtResource("7_5juj6")
+
+[node name="NpcFaceFoe" type="Sprite2D" parent="NPC" unique_id=80802793]
+position = Vector2(513, 498)
+texture = ExtResource("8_lp08y")
+
+[node name="NpcFaceFriend" type="Sprite2D" parent="NPC" unique_id=2020344183]
+visible = false
+position = Vector2(516, 511)
+texture = ExtResource("9_q811u")
+
+[node name="Mask" type="Sprite2D" parent="NPC" unique_id=2131034779]
+position = Vector2(511, 464)
+texture = ExtResource("5_mask_texture")
+
+[node name="NpcClothes" type="Sprite2D" parent="NPC" unique_id=2064143846]
+position = Vector2(508, 673)
+texture = ExtResource("11_2qu1f")
+
+[node name="Frame" type="Sprite2D" parent="." unique_id=1179825762]
+position = Vector2(490.99994, 435.99997)
+scale = Vector2(0.865, 0.865)
+texture = ExtResource("6_frame_texture")
+
+[node name="MaskGrid" type="GridContainer" parent="." unique_id=387803349]
+offset_left = 344.0
+offset_top = 287.0
+offset_right = 644.0
+offset_bottom = 587.0
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 8

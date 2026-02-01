@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://drlw30gaw4kqt"]
+[gd_scene format=3 uid="uid://cp2diulkys0af"]
 
 [ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="1_0c07c"]
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="1_5wyu1"]
@@ -27,7 +27,7 @@ texture_margin_bottom = 45.0
 axis_stretch_horizontal = 2
 axis_stretch_vertical = 2
 
-[node name="Test" type="Node2D" unique_id=1263056745]
+[node name="Test2" type="Node2D" unique_id=1263056745]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=25282453]
 layer = 0
@@ -95,7 +95,6 @@ text = "Enemy
 scale = Vector2(15.703125, 15.703125)
 texture = ExtResource("1_5wyu1")
 centered = false
-metadata/_edit_lock_ = true
 
 [node name="NPC" type="Node2D" parent="." unique_id=465994016]
 position = Vector2(-18, -43)

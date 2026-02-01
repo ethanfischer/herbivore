@@ -10,8 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://cj67aytu8dwg6" path="res://Assets/Graphics/gradient.tres" id="6_rpdai"]
 [ext_resource type="Texture2D" uid="uid://605rhqylxa44" path="res://Assets/Graphics/NPC_FaceBase.png" id="7_5juj6"]
 [ext_resource type="Texture2D" uid="uid://stvempouskqq" path="res://Assets/Graphics/ButtonHover.png" id="7_q811u"]
-[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFoe.png" id="8_lp08y"]
-[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFriend.png" id="9_q811u"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFoe01.png" id="8_lp08y"]
+[ext_resource type="Texture2D" path="res://Assets/Graphics/NPC_FaceFriend01.png" id="9_q811u"]
 [ext_resource type="Texture2D" uid="uid://q4t23lovx4ri" path="res://Assets/Graphics/NPC_FaceFoe02.png" id="10_y1ofy"]
 [ext_resource type="Texture2D" uid="uid://bcc0tarn4hb0g" path="res://Assets/Graphics/NPC_Clothes.png" id="11_2qu1f"]
 [ext_resource type="Texture2D" uid="uid://drhfakf6do2cp" path="res://Assets/Graphics/NPC_FaceFoe03.png" id="11_sk0fk"]
@@ -200,6 +200,7 @@ position = Vector2(516, 507)
 texture = ExtResource("13_rwx0c")
 
 [node name="NpcFaceFriend03" type="Sprite2D" parent="NPC" unique_id=579507513]
+visible = false
 position = Vector2(510, 506)
 texture = ExtResource("14_fibyd")
 

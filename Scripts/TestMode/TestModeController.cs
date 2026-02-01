@@ -26,8 +26,8 @@ public partial class TestModeController : CanvasLayer
 	private Label _clicksRemainingLabel = null!;
 	private Button _friendButton = null!;
 	private Button _foeButton = null!;
-	private Sprite2D _faceFriend = null!;
-	private Sprite2D _faceFoe = null!;
+	private readonly List<Sprite2D> _faceFriends = new();
+	private readonly List<Sprite2D> _faceFoes = new();
 	private Sprite2D _faceBase = null!;
 
 	private readonly List<MaskSegment> _segments = new();
@@ -59,9 +59,23 @@ public partial class TestModeController : CanvasLayer
 		_clicksRemainingLabel = GetNode<Label>("ClicksRemaining");
 		_friendButton = GetNode<Button>("ButtonContainer/FriendButton");
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
-		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
-		_faceFoe = GetNode<Sprite2D>("NPC/NpcFaceFoe");
 		_faceBase = GetNode<Sprite2D>("NPC/FaceBase");
+
+		// Gather all friend and foe face sprites
+		var npcNode = GetNode("NPC");
+		foreach (var child in npcNode.GetChildren())
+		{
+			if (child is Sprite2D sprite)
+			{
+				var name = sprite.Name.ToString();
+				GD.Print($"Found sprite: {name}");
+				if (name.Contains("Friend"))
+					_faceFriends.Add(sprite);
+				else if (name.Contains("Foe"))
+					_faceFoes.Add(sprite);
+			}
+		}
+		GD.Print($"Found {_faceFriends.Count} friend faces, {_faceFoes.Count} foe faces");
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
@@ -86,9 +100,28 @@ public partial class TestModeController : CanvasLayer
 		var faceRenderer = _faceRenderer as FaceRenderer;
 		faceRenderer?.GenerateFace(_isFriendly);
 
-		// Toggle face sprites based on friendly/foe
-		_faceFriend.Visible = _isFriendly;
-		_faceFoe.Visible = !_isFriendly;
+		// Hide all faces, then show one random face based on friendly/foe
+		foreach (var face in _faceFriends) face.Visible = false;
+		foreach (var face in _faceFoes) face.Visible = false;
+
+		GD.Print($"StartTest: isFriendly={_isFriendly}, friends={_faceFriends.Count}, foes={_faceFoes.Count}");
+
+		if (_isFriendly && _faceFriends.Count > 0)
+		{
+			var idx = _random.RandiRange(0, _faceFriends.Count - 1);
+			_faceFriends[idx].Visible = true;
+			GD.Print($"Showing friend face index {idx}");
+		}
+		else if (!_isFriendly && _faceFoes.Count > 0)
+		{
+			var idx = _random.RandiRange(0, _faceFoes.Count - 1);
+			_faceFoes[idx].Visible = true;
+			GD.Print($"Showing foe face index {idx}");
+		}
+		else
+		{
+			GD.PrintErr("No face to show!");
+		}
 
 		// Randomize skin tone
 		_faceBase.Modulate = SkinTones[_random.RandiRange(0, SkinTones.Length - 1)];

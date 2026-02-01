@@ -44,6 +44,8 @@ public partial class NPCPack : Node2D
     }
 
     private const float MemberSpacing = 60.0f;
+    private const float MinDistance = 40.0f;
+    private const int MaxSpawnAttempts = 30;
 
     private void SpawnMembers()
     {
@@ -66,17 +68,33 @@ public partial class NPCPack : Node2D
         // Each subsequent member spawns adjacent to a random existing member
         for (int i = 1; i < count; i++)
         {
-            // Pick a random existing member to spawn next to
-            var basePosition = positions[random.RandiRange(0, positions.Count - 1)];
+            Vector2 newPosition = Vector2.Zero;
+            bool foundValidPosition = false;
 
-            // Random direction outward from that member
-            var angle = random.RandfRange(0, Mathf.Tau);
-            var newPosition = basePosition + new Vector2(
-                Mathf.Cos(angle) * MemberSpacing,
-                Mathf.Sin(angle) * MemberSpacing
-            );
+            for (int attempt = 0; attempt < MaxSpawnAttempts; attempt++)
+            {
+                // Pick a random existing member to spawn next to
+                var basePosition = positions[random.RandiRange(0, positions.Count - 1)];
 
-            positions.Add(newPosition);
+                // Random direction outward from that member
+                var angle = random.RandfRange(0, Mathf.Tau);
+                newPosition = basePosition + new Vector2(
+                    Mathf.Cos(angle) * MemberSpacing,
+                    Mathf.Sin(angle) * MemberSpacing
+                );
+
+                // Check if this position overlaps with any existing position
+                if (!OverlapsAny(newPosition, positions))
+                {
+                    foundValidPosition = true;
+                    break;
+                }
+            }
+
+            if (foundValidPosition)
+            {
+                positions.Add(newPosition);
+            }
         }
 
         // Calculate center of all positions
@@ -85,8 +103,8 @@ public partial class NPCPack : Node2D
             center += pos;
         center /= positions.Count;
 
-        // Create members at calculated positions
-        for (int i = 0; i < count; i++)
+        // Create members at calculated positions (may be fewer than count if overlaps couldn't be resolved)
+        for (int i = 0; i < positions.Count; i++)
         {
             var member = PackMemberScene.Instantiate<PackMember>();
             member.Position = positions[i];
@@ -120,6 +138,16 @@ public partial class NPCPack : Node2D
         {
             circleShape.Radius = maxDistance + 50.0f; // Add padding for approach distance
         }
+    }
+
+    private bool OverlapsAny(Vector2 position, List<Vector2> existingPositions)
+    {
+        foreach (var existing in existingPositions)
+        {
+            if (position.DistanceTo(existing) < MinDistance)
+                return true;
+        }
+        return false;
     }
 
     private void OnBodyEntered(Node2D body)

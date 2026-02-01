@@ -46,6 +46,10 @@ public partial class Main : Node2D
 	private Control _startScreen = null!;
 	private Button _playButton = null!;
 
+	// Fade transition
+	private ColorRect _fadeOverlay = null!;
+	private const float FadeDuration = 0.3f;
+
 	private NPCPack? _currentTestPack;
 	private RandomNumberGenerator _random = new();
 
@@ -106,6 +110,9 @@ public partial class Main : Node2D
 		// Connect all NPC packs
 		ConnectNPCPacks();
 
+		// Create fade overlay
+		CreateFadeOverlay();
+
 		// Initial UI update
 		UpdateUI();
 
@@ -148,7 +155,7 @@ public partial class Main : Node2D
 		}
 	}
 
-	private void OnPlayerApproachedPack(NPCPack pack)
+	private async void OnPlayerApproachedPack(NPCPack pack)
 	{
 		if (pack.IsTested) return;
 
@@ -159,10 +166,15 @@ public partial class Main : Node2D
 
 		GD.Print($"Starting test. Player pack: {GameManager.Instance?.PackSize}, NPC pack: {pack.MemberCount}, Clicks: {clicks}");
 
+		// Fade to black, start test, then fade back in
+		await FadeToBlack();
+		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
 		_testMode.StartTest(pack, clicks);
+		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
+		await FadeFromBlack();
 	}
 
-	private void OnTestCompleted(bool guessedCorrectly)
+	private async void OnTestCompleted(bool guessedCorrectly)
 	{
 		if (_currentTestPack == null) return;
 
@@ -210,9 +222,13 @@ public partial class Main : Node2D
 		// Return to traversal if not game over or won
 		if (gm.CurrentState != GameState.GameOver && gm.CurrentState != GameState.GameWon)
 		{
+			// Fade transition back to traversal
+			await FadeToBlack();
+			_testMode.EndTest();
 			gm.ChangeState(GameState.Traversal);
 			// Spawn new packs to maintain minimum
 			EnsureMinimumPacks();
+			await FadeFromBlack();
 		}
 	}
 
@@ -373,5 +389,33 @@ public partial class Main : Node2D
 			SpawnNewPack();
 			activePacks++;
 		}
+	}
+
+	private void CreateFadeOverlay()
+	{
+		_fadeOverlay = new ColorRect();
+		_fadeOverlay.Color = new Color(0, 0, 0, 0);
+		_fadeOverlay.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+		_fadeOverlay.MouseFilter = Control.MouseFilterEnum.Ignore;
+
+		// Add to a CanvasLayer so it's always on top
+		var fadeLayer = new CanvasLayer();
+		fadeLayer.Layer = 100;
+		fadeLayer.AddChild(_fadeOverlay);
+		AddChild(fadeLayer);
+	}
+
+	private async System.Threading.Tasks.Task FadeToBlack()
+	{
+		var tween = CreateTween();
+		tween.TweenProperty(_fadeOverlay, "color:a", 1.0f, FadeDuration);
+		await ToSignal(tween, Tween.SignalName.Finished);
+	}
+
+	private async System.Threading.Tasks.Task FadeFromBlack()
+	{
+		var tween = CreateTween();
+		tween.TweenProperty(_fadeOverlay, "color:a", 0.0f, FadeDuration);
+		await ToSignal(tween, Tween.SignalName.Finished);
 	}
 }

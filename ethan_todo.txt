@@ -1,4 +1,4 @@
-[ ] mask particles
+[x] mask particles
 [x] more text when you win: flavor text
 [x] tweak which tiles disappear
 [x] skin tone variations (switch between 3)

@@ -101,11 +101,11 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
-offset_top = 19.0
+offset_top = 235.0
 offset_right = 100.0
-offset_bottom = 49.0
+offset_bottom = 265.0
 grow_horizontal = 2
-text = "Clicks: 10/10"
+text = "click the mask"
 label_settings = SubResource("LabelSettings_rpdai")
 horizontal_alignment = 1
 

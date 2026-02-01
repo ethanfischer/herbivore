@@ -14,6 +14,18 @@
 [ext_resource type="AudioStream" uid="uid://3cl77wjos3lk" path="res://Assets/Sound/Main.mp3" id="12_dfyxd"]
 [ext_resource type="AudioStream" uid="uid://cmlflycsj5qr5" path="res://Assets/Sound/sand_walk.mp3" id="13_1wri0"]
 
+[sub_resource type="Gradient" id="Gradient_uae0t"]
+offsets = PackedFloat32Array(0.59574467, 1)
+colors = PackedColorArray(0, 0, 0, 0, 0.19215687, 0.07058824, 0, 0.7921569)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dfyxd"]
+gradient = SubResource("Gradient_uae0t")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bodta"]
 texture = ExtResource("7_ak8ot")
 texture_margin_left = 47.0
@@ -105,6 +117,12 @@ zoom = Vector2(1.75, 1.75)
 script = ExtResource("3_janrd")
 TargetPath = NodePath("../PlayerDot")
 SmoothSpeed = 8.0
+
+[node name="PointLight2D" type="PointLight2D" parent="TraversalMode/Camera2D" unique_id=211518583]
+scale = Vector2(9.125, 9.125)
+blend_mode = 2
+texture = SubResource("GradientTexture2D_dfyxd")
+texture_scale = 0.5
 
 [node name="World" type="Node2D" parent="TraversalMode" unique_id=359146570]
 

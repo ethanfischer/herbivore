@@ -118,6 +118,10 @@ public partial class NPCPack : Node2D
 
             AddChild(member);
             _members.Add(member);
+
+            // Face towards center of group
+            var directionToCenter = center - positions[i];
+            member.SetFacingDirection(directionToCenter);
         }
 
         // Majority determines if friendly

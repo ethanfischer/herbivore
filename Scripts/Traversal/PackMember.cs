@@ -83,4 +83,12 @@ public partial class PackMember : CharacterBody2D
     {
         Type = type;
     }
+
+    public void SetFacingDirection(Vector2 direction)
+    {
+        if (direction != Vector2.Zero)
+        {
+            _sprite.Rotation = direction.Angle();
+        }
+    }
 }

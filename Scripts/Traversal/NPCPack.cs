@@ -24,13 +24,17 @@ public partial class NPCPack : Node2D
 
 	private readonly List<PackMember> _members = new();
 	private Area2D _detectionArea = null!;
+	private Area2D _awarenessArea = null!;
 	private bool _isTested;
+	private PlayerDot? _trackedPlayer; // Player being tracked while in awareness range
 	private bool _isFriendly; // True if majority herbivore
 
 	public bool IsTested => _isTested;
 	public bool IsFriendly => _isFriendly;
 	public int MemberCount => _members.Count;
 	public IReadOnlyList<PackMember> Members => _members;
+
+	private const float AwarenessRadius = 300.0f;
 
 	public override void _Ready()
 	{
@@ -39,6 +43,20 @@ public partial class NPCPack : Node2D
 		_detectionArea = GetNode<Area2D>("DetectionArea");
 		_detectionArea.AddToGroup("npc_pack");
 		_detectionArea.BodyEntered += OnBodyEntered;
+
+		// Create awareness area (larger, for turning to face player)
+		_awarenessArea = new Area2D();
+		_awarenessArea.CollisionLayer = 0; // Don't need to be detected
+		_awarenessArea.CollisionMask = 1;  // Detect player (layer 1)
+		_awarenessArea.Monitorable = false;
+		var awarenessShape = new CollisionShape2D();
+		var circleShape = new CircleShape2D();
+		circleShape.Radius = AwarenessRadius;
+		awarenessShape.Shape = circleShape;
+		_awarenessArea.AddChild(awarenessShape);
+		_awarenessArea.BodyEntered += OnAwarenessEntered;
+		_awarenessArea.BodyExited += OnAwarenessExited;
+		AddChild(_awarenessArea);
 
 		SpawnMembers();
 	}
@@ -119,6 +137,9 @@ public partial class NPCPack : Node2D
 			AddChild(member);
 			_members.Add(member);
 
+			// Set home position for wandering (global position once added to scene)
+			member.SetHomePosition(GlobalPosition + positions[i]);
+
 			// Face towards center of group
 			var directionToCenter = center - positions[i];
 			member.SetFacingDirection(directionToCenter);
@@ -137,6 +158,7 @@ public partial class NPCPack : Node2D
 		}
 
 		_detectionArea.Position = center;
+		_awarenessArea.Position = center;
 		var collisionShape = _detectionArea.GetNode<CollisionShape2D>("CollisionShape2D");
 		if (collisionShape.Shape is CircleShape2D circleShape)
 		{
@@ -154,6 +176,51 @@ public partial class NPCPack : Node2D
 		return false;
 	}
 
+	public override void _Process(double delta)
+	{
+		if (_isTested || _trackedPlayer == null) return;
+
+		// Continuously rotate all members to face the player
+		foreach (var member in _members)
+		{
+			var directionToPlayer = _trackedPlayer.GlobalPosition - member.GlobalPosition;
+			member.SetFacingDirection(directionToPlayer);
+		}
+	}
+
+	private void OnAwarenessEntered(Node2D body)
+	{
+		if (_isTested) return;
+
+		if (body is PlayerDot player)
+		{
+			_trackedPlayer = player;
+
+			// Stop wandering when player is nearby
+			foreach (var member in _members)
+			{
+				member.SetWandering(false);
+			}
+		}
+	}
+
+	private void OnAwarenessExited(Node2D body)
+	{
+		if (body is PlayerDot)
+		{
+			_trackedPlayer = null;
+
+			// Resume wandering when player leaves (if not tested)
+			if (!_isTested)
+			{
+				foreach (var member in _members)
+				{
+					member.SetWandering(true);
+				}
+			}
+		}
+	}
+
 	private void OnBodyEntered(Node2D body)
 	{
 		if (_isTested) return;
@@ -169,9 +236,16 @@ public partial class NPCPack : Node2D
 	public void MarkTested()
 	{
 		_isTested = true;
+
+		// Darken all members and stop wandering
+		foreach (var member in _members)
+		{
+			member.Modulate = new Color(0.25f, 0.25f, 0.25f);
+			member.SetWandering(false);
+		}
 	}
 
-	public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D lastLeader)
+	public void TransferOneMemberToPlayer(Node2D playerPackContainer, Node2D player)
 	{
 		if (_members.Count == 0) return;
 
@@ -189,14 +263,18 @@ public partial class NPCPack : Node2D
 		// Restore global position so they start from where the pack was
 		member.GlobalPosition = globalPos;
 
-		// Set up following chain
-		member.SetLeader(lastLeader);
+		// Get formation index (current pack size before adding this member)
+		var gm = GameManager.Instance;
+		int formationIndex = gm != null ? gm.PackSize - 1 : 0; // -1 because PackSize includes player
+
+		// Set up formation following
+		member.SetFormation(player, formationIndex);
 
 		// Mark as recruited (turns green)
 		member.MarkRecruited();
 
 		// Add to GameManager
-		GameManager.Instance?.AddToPlayerPack(member);
+		gm?.AddToPlayerPack(member);
 
 		// Pack stays but is now tested (can't be approached again)
 	}

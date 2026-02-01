@@ -27,14 +27,24 @@ public partial class TestModeController : CanvasLayer
 	private Button _foeButton = null!;
 	private Sprite2D _faceFriend = null!;
 	private Sprite2D _faceFoe = null!;
+	private Sprite2D _faceBase = null!;
 
 	private readonly List<MaskSegment> _segments = new();
+
+	// Skin tone colors for randomization
+	private static readonly Color[] SkinTones = new[]
+	{
+		new Color(1.0f, 1.0f, 1.0f),   
+		new Color(1.0f, 0.82f, 0.68f),   
+		new Color(0.87f, 0.67f, 0.49f)
+	};
 	private int _clicksRemaining;
 	private int _totalClicks;
 	private NPCPack? _currentPack;
 	private bool _isFriendly;
 
 	private static Texture2D? _maskTexture;
+	private static bool _hasShownClickInstruction;
 	private RandomNumberGenerator _random = new();
 
 	public override void _Ready()
@@ -46,6 +56,7 @@ public partial class TestModeController : CanvasLayer
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
 		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
 		_faceFoe = GetNode<Sprite2D>("NPC/NpcFaceFoe");
+		_faceBase = GetNode<Sprite2D>("NPC/FaceBase");
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
@@ -70,6 +81,9 @@ public partial class TestModeController : CanvasLayer
 		// Toggle face sprites based on friendly/foe
 		_faceFriend.Visible = _isFriendly;
 		_faceFoe.Visible = !_isFriendly;
+
+		// Randomize skin tone
+		_faceBase.Modulate = SkinTones[_random.RandiRange(0, SkinTones.Length - 1)];
 
 		// Setup mask grid
 		SetupMaskGrid();
@@ -148,8 +162,15 @@ public partial class TestModeController : CanvasLayer
 
 	private void RemoveRandomSegment()
 	{
-		// Get all non-shattered segments
-		var availableSegments = _segments.FindAll(s => !s.IsShattered);
+		// Get all non-shattered, non-edge segments
+		var availableSegments = new System.Collections.Generic.List<MaskSegment>();
+		for (int i = 0; i < _segments.Count; i++)
+		{
+			if (_segments[i].IsShattered) continue;
+			if (IsEdgeSegment(i)) continue;
+			availableSegments.Add(_segments[i]);
+		}
+
 		if (availableSegments.Count == 0) return;
 
 		// Pick a random one
@@ -170,6 +191,13 @@ public partial class TestModeController : CanvasLayer
 		}
 	}
 
+	private bool IsEdgeSegment(int index)
+	{
+		int col = index % GridColumns;
+		int row = index / GridColumns;
+		return col == 0 || col == GridColumns - 1 || row == 0 || row == GridRows - 1;
+	}
+
 	private void OnSegmentClicked(MaskSegment segment)
 	{
 		// No longer used - clicks anywhere remove random segments
@@ -177,7 +205,20 @@ public partial class TestModeController : CanvasLayer
 
 	private void UpdateClickCounter()
 	{
-		_clickCounterLabel.Text = $"Clicks: {_clicksRemaining}/{_totalClicks}";
+		// Show instruction only on first encounter, before first click
+		if (!_hasShownClickInstruction && _clicksRemaining == _totalClicks)
+		{
+			_clickCounterLabel.Text = "click the mask";
+			_clickCounterLabel.Visible = true;
+		}
+		else
+		{
+			if (_clicksRemaining < _totalClicks)
+			{
+				_hasShownClickInstruction = true;
+			}
+			_clickCounterLabel.Visible = false;
+		}
 	}
 
 	private async void OnGuess(bool guessedFriendly)
@@ -193,22 +234,22 @@ public partial class TestModeController : CanvasLayer
 		otherButton.Visible = false;
 		selectedButton.Modulate = correct ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f);
 
-		// Reveal face by shattering all remaining mask segments
+		// Reveal face by shattering all remaining mask segments (sound plays once)
+		bool playedSound = false;
 		foreach (var segment in _segments)
 		{
 			if (!segment.IsShattered)
-				segment.Shatter();
+			{
+				segment.Shatter(playSound: !playedSound);
+				playedSound = true;
+			}
 		}
 
 		// Wait for player to see the revealed face
 		await ToSignal(GetTree().CreateTimer(1.5), SceneTreeTimer.SignalName.Timeout);
 
-		_currentPack?.MarkTested();
-
 		EmitSignal(SignalName.TestCompleted, correct);
-
-		// Hide test mode (Main.cs handles state transitions)
-		Visible = false;
+		// Note: Main.cs handles hiding via fade transition
 	}
 
 	public void EndTest()

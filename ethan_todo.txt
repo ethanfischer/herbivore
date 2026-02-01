@@ -1,11 +1,14 @@
-[ ] encounter, switch between friend/foe (update sprites)
-[ ] reveal face after choice made
-[ ] skin tone variations (swtich between 3)
-[ ] make npcs look at player
-[ ] make npcs darker when you've interacted
-[ ] up clicks to 10
-[ ] more text when you win: flavor text
+[x] mask particles
+[x] more text when you win: flavor text
+[x] tweak which tiles disappear
+[x] skin tone variations (switch between 3)
+[x] make npcs look at player
+[x] make npcs darker when you've interacted
+[x] 10 friends, you win
 
+[x] up clicks to 10
+[x] encounter, switch between friend/foe (update sprites)
+[x] reveal face after choice made
 [x] more distance between group members
 [x] random rotations
 [x] orient towards direciton moving

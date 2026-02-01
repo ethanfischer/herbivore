@@ -47,6 +47,12 @@ public partial class GameManager : Node
     {
         _playerPack.Add(member);
         EmitSignal(SignalName.PackSizeChanged, PackSize);
+
+        // Check for win condition
+        if (PackSize >= 10)
+        {
+            ChangeState(GameState.GameWon);
+        }
     }
 
     public void RemoveFromPlayerPack(PackMember member)

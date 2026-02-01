@@ -40,9 +40,15 @@ public partial class Main : Node2D
 	private Label _packSizeLabel = null!;
 	private Label _scoreLabel = null!;
 	private Panel _gameOverPanel = null!;
+	private Label _gameOverLabel = null!;
+	private Label _flavorTextLabel = null!;
 	private Button _restartButton = null!;
 	private Control _startScreen = null!;
 	private Button _playButton = null!;
+
+	// Fade transition
+	private ColorRect _fadeOverlay = null!;
+	private const float FadeDuration = 0.3f;
 
 	private NPCPack? _currentTestPack;
 	private RandomNumberGenerator _random = new();
@@ -62,6 +68,8 @@ public partial class Main : Node2D
 		_packSizeLabel = GetNode<Label>("UI/PackSizeLabel");
 		_scoreLabel = GetNode<Label>("UI/ScoreLabel");
 		_gameOverPanel = GetNode<Panel>("UI/GameOverPanel");
+		_gameOverLabel = GetNode<Label>("UI/GameOverPanel/Content/GameOverLabel");
+		_flavorTextLabel = GetNode<Label>("UI/GameOverPanel/Content/FlavorText");
 		_restartButton = GetNode<Button>("UI/GameOverPanel/Content/RestartButton");
 		_startScreen = GetNode<Control>("UI/Start");
 		_playButton = GetNode<Button>("UI/Start/Content/MarginContainer/VBoxContainer/Button");
@@ -101,6 +109,9 @@ public partial class Main : Node2D
 
 		// Connect all NPC packs
 		ConnectNPCPacks();
+
+		// Create fade overlay
+		CreateFadeOverlay();
 
 		// Initial UI update
 		UpdateUI();
@@ -144,7 +155,7 @@ public partial class Main : Node2D
 		}
 	}
 
-	private void OnPlayerApproachedPack(NPCPack pack)
+	private async void OnPlayerApproachedPack(NPCPack pack)
 	{
 		if (pack.IsTested) return;
 
@@ -155,10 +166,15 @@ public partial class Main : Node2D
 
 		GD.Print($"Starting test. Player pack: {GameManager.Instance?.PackSize}, NPC pack: {pack.MemberCount}, Clicks: {clicks}");
 
+		// Fade to black, start test, then fade back in
+		await FadeToBlack();
+		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
 		_testMode.StartTest(pack, clicks);
+		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
+		await FadeFromBlack();
 	}
 
-	private void OnTestCompleted(bool guessedCorrectly)
+	private async void OnTestCompleted(bool guessedCorrectly)
 	{
 		if (_currentTestPack == null) return;
 
@@ -199,24 +215,27 @@ public partial class Main : Node2D
 			}
 		}
 
+		// Mark pack as tested (darkens remaining members)
+		_currentTestPack.MarkTested();
 		_currentTestPack = null;
 
-		// Return to traversal if not game over
-		if (gm.CurrentState != GameState.GameOver)
+		// Return to traversal if not game over or won
+		if (gm.CurrentState != GameState.GameOver && gm.CurrentState != GameState.GameWon)
 		{
+			// Fade transition back to traversal
+			await FadeToBlack();
+			_testMode.EndTest();
 			gm.ChangeState(GameState.Traversal);
 			// Spawn new packs to maintain minimum
 			EnsureMinimumPacks();
+			await FadeFromBlack();
 		}
 	}
 
 	private void RecruitPack(NPCPack pack)
 	{
-		// Get the last member in player's chain (or player if empty)
-		Node2D lastLeader = GameManager.Instance?.GetLastPackMember() as Node2D ?? _playerDot;
-
-		// Only recruit one member
-		pack.TransferOneMemberToPlayer(_playerPackContainer, lastLeader);
+		// Recruit one member with triangle formation
+		pack.TransferOneMemberToPlayer(_playerPackContainer, _playerDot);
 	}
 
 	private void LosePackMember()
@@ -264,6 +283,16 @@ public partial class Main : Node2D
 			case GameState.GameOver:
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
 				_testMode.EndTest();
+				_gameOverLabel.Text = "YOU HAVE FAILED!";
+				_flavorTextLabel.Text = "You roam the desert alone\nwondering what it might have\nfelt like having friends....";
+				_gameOverPanel.Visible = true;
+				break;
+
+			case GameState.GameWon:
+				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
+				_testMode.EndTest();
+				_gameOverLabel.Text = "YOU WIN!";
+				_flavorTextLabel.Text = "Your pack roams the desert\ntogether, safe and happy.\nTrue friendship prevails!";
 				_gameOverPanel.Visible = true;
 				break;
 		}
@@ -360,5 +389,33 @@ public partial class Main : Node2D
 			SpawnNewPack();
 			activePacks++;
 		}
+	}
+
+	private void CreateFadeOverlay()
+	{
+		_fadeOverlay = new ColorRect();
+		_fadeOverlay.Color = new Color(0, 0, 0, 0);
+		_fadeOverlay.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+		_fadeOverlay.MouseFilter = Control.MouseFilterEnum.Ignore;
+
+		// Add to a CanvasLayer so it's always on top
+		var fadeLayer = new CanvasLayer();
+		fadeLayer.Layer = 100;
+		fadeLayer.AddChild(_fadeOverlay);
+		AddChild(fadeLayer);
+	}
+
+	private async System.Threading.Tasks.Task FadeToBlack()
+	{
+		var tween = CreateTween();
+		tween.TweenProperty(_fadeOverlay, "color:a", 1.0f, FadeDuration);
+		await ToSignal(tween, Tween.SignalName.Finished);
+	}
+
+	private async System.Threading.Tasks.Task FadeFromBlack()
+	{
+		var tween = CreateTween();
+		tween.TweenProperty(_fadeOverlay, "color:a", 0.0f, FadeDuration);
+		await ToSignal(tween, Tween.SignalName.Finished);
 	}
 }

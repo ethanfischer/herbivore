@@ -24,7 +24,9 @@ dotnet build                   # Build C# solution
 ## Architecture
 
 ### Game States (GameState enum)
-`Traversal` → `Testing` → back to `Traversal` (or `GameOver`)
+`Traversal` → `Testing` → back to `Traversal` (or `GameOver`/`GameWon`)
+
+Win condition: Pack size reaches 10. Lose condition: Pack size drops to 0.
 
 ### Key Systems
 
@@ -47,11 +49,11 @@ dotnet build                   # Build C# solution
 - Click count limited by pack size ratio formula: `5 + (PlayerPackSize/NpcPackSize * 3)`, clamped 3-25
 - Player guesses Friend/Foe after clicks exhausted
 
-**SoundGenerator (Autoload)**: Procedural 16-bit WAV generation for game sounds.
+**SoundGenerator (Static Class)**: Procedural 16-bit WAV generation for game sounds. Not an autoload; called directly via static methods.
 
 ### Namespace Structure
 ```
-Herbivore.Autoloads   # Singletons (GameManager, SoundGenerator)
+Herbivore.Autoloads   # GameManager singleton, SoundGenerator static utility
 Herbivore.Data        # Enums (GameState, DotType)
 Herbivore.TestMode    # Test mode UI/logic
 Herbivore.Traversal   # Movement, packs, camera

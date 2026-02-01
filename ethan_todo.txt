@@ -1,10 +1,10 @@
+[ ] mask particles
+[x] more text when you win: flavor text
 [x] tweak which tiles disappear
 [x] skin tone variations (switch between 3)
 [x] make npcs look at player
 [x] make npcs darker when you've interacted
-[ ] more text when you win: flavor text
 [x] 10 friends, you win
-[ ] mask particles
 
 [x] up clicks to 10
 [x] encounter, switch between friend/foe (update sprites)

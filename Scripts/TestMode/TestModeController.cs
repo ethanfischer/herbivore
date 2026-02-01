@@ -77,9 +77,11 @@ public partial class TestModeController : CanvasLayer
 		// Update UI
 		UpdateClickCounter();
 
-		// Hide buttons until clicks exhausted
+		// Hide buttons until clicks exhausted and reset colors
 		_friendButton.Visible = false;
 		_foeButton.Visible = false;
+		_friendButton.Modulate = Colors.White;
+		_foeButton.Modulate = Colors.White;
 
 		// Show
 		Visible = true;
@@ -184,9 +186,12 @@ public partial class TestModeController : CanvasLayer
 
 		GD.Print($"Guessed: {(guessedFriendly ? "Friend" : "Foe")}, Actual: {(_isFriendly ? "Friend" : "Foe")}, Correct: {correct}");
 
-		// Hide buttons
-		_friendButton.Visible = false;
-		_foeButton.Visible = false;
+		// Show feedback on the selected button
+		var selectedButton = guessedFriendly ? _friendButton : _foeButton;
+		var otherButton = guessedFriendly ? _foeButton : _friendButton;
+
+		otherButton.Visible = false;
+		selectedButton.Modulate = correct ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f);
 
 		// Reveal face by shattering all remaining mask segments
 		foreach (var segment in _segments)

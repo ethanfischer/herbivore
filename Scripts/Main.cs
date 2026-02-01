@@ -74,17 +74,10 @@ public partial class Main : Node2D
 		_failSound.Stream = SoundGenerator.CreateFailSound();
 		_identifyFoeSound.Stream = SoundGenerator.CreateIdentifyFoeSound();
 
-		// Create music players programmatically
-		var soundsNode = GetNode("Sounds");
-
-		_introMusic = new AudioStreamPlayer();
-		_introMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Intro.mp3");
-		soundsNode.AddChild(_introMusic);
+		// Music references
+		_introMusic = GetNode<AudioStreamPlayer>("Sounds/Intro");
+		_encounterMusic = GetNode<AudioStreamPlayer>("Sounds/Main");
 		_introMusic.Play();
-
-		_encounterMusic = new AudioStreamPlayer();
-		_encounterMusic.Stream = GD.Load<AudioStream>("res://Assets/Sound/Main.mp3");
-		soundsNode.AddChild(_encounterMusic);
 
 		// Connect to GameManager signals
 		var gm = GameManager.Instance;

@@ -2,6 +2,9 @@
 [ ] reveal face after choice made
 [ ] skin tone variations (swtich between 3)
 [ ] make npcs look at player
+[ ] make npcs darker when you've interacted
+[ ] up clicks to 10
+[ ] more text when you win: flavor text
 
 [x] more distance between group members
 [x] random rotations

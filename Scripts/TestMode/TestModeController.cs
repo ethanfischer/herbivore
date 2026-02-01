@@ -23,6 +23,7 @@ public partial class TestModeController : CanvasLayer
 	private Control _faceRenderer = null!;
 	private GridContainer _maskGrid = null!;
 	private Label _clickCounterLabel = null!;
+	private Label _clicksRemainingLabel = null!;
 	private Button _friendButton = null!;
 	private Button _foeButton = null!;
 	private Sprite2D _faceFriend = null!;
@@ -52,6 +53,7 @@ public partial class TestModeController : CanvasLayer
 		_faceRenderer = GetNode<Control>("FaceRenderer");
 		_maskGrid = GetNode<GridContainer>("MaskGrid");
 		_clickCounterLabel = GetNode<Label>("ClickCounter");
+		_clicksRemainingLabel = GetNode<Label>("ClicksRemaining");
 		_friendButton = GetNode<Button>("ButtonContainer/FriendButton");
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
 		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
@@ -205,7 +207,7 @@ public partial class TestModeController : CanvasLayer
 
 	private void UpdateClickCounter()
 	{
-		// Show instruction only on first encounter, before first click
+		// Show "click the mask" instruction only on first encounter, before first click
 		if (!_hasShownClickInstruction && _clicksRemaining == _totalClicks)
 		{
 			_clickCounterLabel.Text = "click the mask";
@@ -219,6 +221,10 @@ public partial class TestModeController : CanvasLayer
 			}
 			_clickCounterLabel.Visible = false;
 		}
+
+		// Always show clicks remaining as just a number
+		_clicksRemainingLabel.Text = _clicksRemaining.ToString();
+		_clicksRemainingLabel.Visible = _clicksRemaining > 0;
 	}
 
 	private async void OnGuess(bool guessedFriendly)

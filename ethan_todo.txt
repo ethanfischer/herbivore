@@ -1,10 +1,10 @@
-tweak which tiles disappear
-[ ] skin tone variations (switch between 3)
-[ ] make npcs look at player
-[ ] make npcs darker when you've interacted
-[ ] more text when you win: flavor text
-[ ] 10 friends, you win
 [ ] mask particles
+[x] more text when you win: flavor text
+[x] tweak which tiles disappear
+[x] skin tone variations (switch between 3)
+[x] make npcs look at player
+[x] make npcs darker when you've interacted
+[x] 10 friends, you win
 
 [x] up clicks to 10
 [x] encounter, switch between friend/foe (update sprites)

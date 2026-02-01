@@ -4,5 +4,6 @@ public enum GameState
 {
     Traversal,
     Testing,
-    GameOver
+    GameOver,
+    GameWon
 }

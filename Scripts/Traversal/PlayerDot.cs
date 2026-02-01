@@ -16,6 +16,9 @@ public partial class PlayerDot : CharacterBody2D
 	private Area2D _approachArea = null!;
 	private Sprite2D _sprite = null!;
 	private AudioStreamPlayer _walkSound = null!;
+	private Vector2 _lastFacingDirection = Vector2.Down;
+
+	public Vector2 FacingDirection => _lastFacingDirection;
 
 	public override void _Ready()
 	{
@@ -29,7 +32,21 @@ public partial class PlayerDot : CharacterBody2D
 
 	public override void _Draw()
 	{
+		// Draw shadow first (behind)
+		DrawEllipse(new Vector2(0, 5), new Vector2(30, 30), new Color(0, 0, 0, 0.5f));
+		// Draw player dot
 		DrawCircle(Vector2.Zero, DotRadius, DotColor);
+	}
+
+	private void DrawEllipse(Vector2 center, Vector2 size, Color color)
+	{
+		var points = new Vector2[32];
+		for (int i = 0; i < 32; i++)
+		{
+			float angle = i * Mathf.Tau / 32;
+			points[i] = center + new Vector2(Mathf.Cos(angle) * size.X / 2, Mathf.Sin(angle) * size.Y / 2);
+		}
+		DrawColoredPolygon(points, color);
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -50,6 +67,8 @@ public partial class PlayerDot : CharacterBody2D
 			velocity = velocity.Normalized() * Speed;
 			// Rotate sprite to face movement direction
 			_sprite.Rotation = velocity.Angle();
+			// Track facing direction
+			_lastFacingDirection = velocity.Normalized();
 
 			// Play walk sound if not already playing
 			if (!_walkSound.Playing)

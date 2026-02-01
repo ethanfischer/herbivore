@@ -27,8 +27,17 @@ public partial class TestModeController : CanvasLayer
 	private Button _foeButton = null!;
 	private Sprite2D _faceFriend = null!;
 	private Sprite2D _faceFoe = null!;
+	private Sprite2D _faceBase = null!;
 
 	private readonly List<MaskSegment> _segments = new();
+
+	// Skin tone colors for randomization
+	private static readonly Color[] SkinTones = new[]
+	{
+		new Color(1.0f, 1.0f, 1.0f),   
+		new Color(1.0f, 0.82f, 0.68f),   
+		new Color(0.87f, 0.67f, 0.49f)
+	};
 	private int _clicksRemaining;
 	private int _totalClicks;
 	private NPCPack? _currentPack;
@@ -46,6 +55,7 @@ public partial class TestModeController : CanvasLayer
 		_foeButton = GetNode<Button>("ButtonContainer/FoeButton");
 		_faceFriend = GetNode<Sprite2D>("NPC/NpcFaceFriend");
 		_faceFoe = GetNode<Sprite2D>("NPC/NpcFaceFoe");
+		_faceBase = GetNode<Sprite2D>("NPC/FaceBase");
 
 		_friendButton.Pressed += () => OnGuess(true);
 		_foeButton.Pressed += () => OnGuess(false);
@@ -70,6 +80,9 @@ public partial class TestModeController : CanvasLayer
 		// Toggle face sprites based on friendly/foe
 		_faceFriend.Visible = _isFriendly;
 		_faceFoe.Visible = !_isFriendly;
+
+		// Randomize skin tone
+		_faceBase.Modulate = SkinTones[_random.RandiRange(0, SkinTones.Length - 1)];
 
 		// Setup mask grid
 		SetupMaskGrid();
@@ -207,11 +220,15 @@ public partial class TestModeController : CanvasLayer
 		otherButton.Visible = false;
 		selectedButton.Modulate = correct ? new Color(0.3f, 1f, 0.3f) : new Color(1f, 0.3f, 0.3f);
 
-		// Reveal face by shattering all remaining mask segments
+		// Reveal face by shattering all remaining mask segments (sound plays once)
+		bool playedSound = false;
 		foreach (var segment in _segments)
 		{
 			if (!segment.IsShattered)
-				segment.Shatter();
+			{
+				segment.Shatter(playSound: !playedSound);
+				playedSound = true;
+			}
 		}
 
 		// Wait for player to see the revealed face

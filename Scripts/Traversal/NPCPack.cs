@@ -34,7 +34,7 @@ public partial class NPCPack : Node2D
 	public int MemberCount => _members.Count;
 	public IReadOnlyList<PackMember> Members => _members;
 
-	private const float AwarenessRadius = 400.0f;
+	private const float AwarenessRadius = 300.0f;
 
 	public override void _Ready()
 	{
@@ -137,6 +137,9 @@ public partial class NPCPack : Node2D
 			AddChild(member);
 			_members.Add(member);
 
+			// Set home position for wandering (global position once added to scene)
+			member.SetHomePosition(GlobalPosition + positions[i]);
+
 			// Face towards center of group
 			var directionToCenter = center - positions[i];
 			member.SetFacingDirection(directionToCenter);
@@ -192,6 +195,12 @@ public partial class NPCPack : Node2D
 		if (body is PlayerDot player)
 		{
 			_trackedPlayer = player;
+
+			// Stop wandering when player is nearby
+			foreach (var member in _members)
+			{
+				member.SetWandering(false);
+			}
 		}
 	}
 
@@ -200,6 +209,15 @@ public partial class NPCPack : Node2D
 		if (body is PlayerDot)
 		{
 			_trackedPlayer = null;
+
+			// Resume wandering when player leaves (if not tested)
+			if (!_isTested)
+			{
+				foreach (var member in _members)
+				{
+					member.SetWandering(true);
+				}
+			}
 		}
 	}
 
@@ -219,10 +237,11 @@ public partial class NPCPack : Node2D
 	{
 		_isTested = true;
 
-		// Darken all members to show they've been tested
+		// Darken all members and stop wandering
 		foreach (var member in _members)
 		{
 			member.Modulate = new Color(0.25f, 0.25f, 0.25f);
+			member.SetWandering(false);
 		}
 	}
 

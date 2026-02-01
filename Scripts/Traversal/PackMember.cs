@@ -5,6 +5,8 @@ namespace Herbivore.Traversal;
 
 public partial class PackMember : CharacterBody2D
 {
+	private enum WanderState { Idle, Walking, Paused }
+
 	[Export]
 	public DotType Type { get; set; } = DotType.Herbivore;
 
@@ -13,6 +15,18 @@ public partial class PackMember : CharacterBody2D
 
 	[Export]
 	public float FollowDistance { get; set; } = 25.0f;
+
+	[Export]
+	public float WanderSpeed { get; set; } = 20.0f;
+
+	[Export]
+	public float WanderRadius { get; set; } = 80.0f;
+
+	[Export]
+	public float PauseTimeMin { get; set; } = 1.0f;
+
+	[Export]
+	public float PauseTimeMax { get; set; } = 3.0f;
 
 	private static Texture2D? _playerTexture;
 	private static Texture2D? _enemyTexture;
@@ -24,6 +38,14 @@ public partial class PackMember : CharacterBody2D
 	private bool _isRecruited;
 	private Sprite2D _sprite = null!;
 
+	// Wandering state
+	private Vector2 _homePosition;
+	private Vector2 _wanderTarget;
+	private WanderState _wanderState = WanderState.Idle;
+	private float _pauseTimer;
+	private bool _canWander = true;
+	private RandomNumberGenerator _random = new();
+
 	public bool IsTested => _isTested;
 
 	public override void _Ready()
@@ -34,6 +56,7 @@ public partial class PackMember : CharacterBody2D
 		_playerTexture ??= GD.Load<Texture2D>("res://Assets/Graphics/player.png");
 		_enemyTexture ??= GD.Load<Texture2D>("res://Assets/Graphics/enemy.png");
 
+		_random.Randomize();
 		UpdateSprite();
 	}
 
@@ -113,6 +136,67 @@ public partial class PackMember : CharacterBody2D
 				Velocity = Vector2.Zero;
 			}
 		}
+		else if (_canWander && !_isTested)
+		{
+			// Idle wandering behavior
+			ProcessWander((float)delta);
+		}
+	}
+
+	private void ProcessWander(float delta)
+	{
+		switch (_wanderState)
+		{
+			case WanderState.Idle:
+				// Pick a new target and start walking
+				PickNewWanderTarget();
+				_wanderState = WanderState.Walking;
+				break;
+
+			case WanderState.Walking:
+				var direction = _wanderTarget - GlobalPosition;
+				var distance = direction.Length();
+
+				if (distance > 5f)
+				{
+					// Move toward target
+					Velocity = direction.Normalized() * WanderSpeed;
+					MoveAndSlide();
+
+					// Face movement direction
+					if (direction != Vector2.Zero)
+					{
+						_sprite.Rotation = direction.Angle();
+					}
+				}
+				else
+				{
+					// Arrived at target, start pause
+					Velocity = Vector2.Zero;
+					_pauseTimer = _random.RandfRange(PauseTimeMin, PauseTimeMax);
+					_wanderState = WanderState.Paused;
+				}
+				break;
+
+			case WanderState.Paused:
+				_pauseTimer -= delta;
+				if (_pauseTimer <= 0)
+				{
+					_wanderState = WanderState.Idle;
+				}
+				break;
+		}
+	}
+
+	private void PickNewWanderTarget()
+	{
+		// Pick a random point within wander radius of home position
+		var angle = _random.RandfRange(0, Mathf.Tau);
+		var distance = _random.RandfRange(0, WanderRadius);
+		_wanderTarget = _homePosition + new Vector2(
+			Mathf.Cos(angle) * distance,
+			Mathf.Sin(angle) * distance
+		);
 	}
 
 	private Vector2 GetFormationPosition()
@@ -175,6 +259,21 @@ public partial class PackMember : CharacterBody2D
 		if (direction != Vector2.Zero)
 		{
 			_sprite.Rotation = direction.Angle();
+		}
+	}
+
+	public void SetHomePosition(Vector2 homePosition)
+	{
+		_homePosition = homePosition;
+		_wanderTarget = homePosition;
+	}
+
+	public void SetWandering(bool canWander)
+	{
+		_canWander = canWander;
+		if (!canWander)
+		{
+			Velocity = Vector2.Zero;
 		}
 	}
 }

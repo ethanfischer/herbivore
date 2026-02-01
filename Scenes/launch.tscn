@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://co83jdiawacpy" path="res://Scripts/Main.cs" id="1_hf0u4"]
 [ext_resource type="PackedScene" path="res://Scenes/Traversal/NPCPack.tscn" id="2_s4o75"]
 [ext_resource type="Script" uid="uid://yqoxkx5o1bum" path="res://Scripts/Traversal/CameraFollow.cs" id="3_janrd"]
+[ext_resource type="Texture2D" uid="uid://mimnp3xjsk" path="res://Assets/Graphics/Rocks.png" id="4_1wri0"]
 [ext_resource type="PackedScene" path="res://Scenes/Traversal/PlayerDot.tscn" id="4_ulsxu"]
 [ext_resource type="Texture2D" uid="uid://58edkh2j40qc" path="res://Assets/Graphics/ground.png" id="5_s4o75"]
+[ext_resource type="Texture2D" uid="uid://yqugfkobtukc" path="res://Assets/Graphics/Tree.png" id="5_sv5iu"]
 [ext_resource type="PackedScene" uid="uid://3afib7g3kdys" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_wrwdd"]
 [ext_resource type="Texture2D" uid="uid://d0fp0ihrrp3gn" path="res://Assets/Graphics/IntroBG.png" id="6_6vn7f"]
 [ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/ButtonNormal.png" id="7_ak8ot"]
@@ -25,6 +27,12 @@ height = 128
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fwo23"]
+radius = 40.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iwf2o"]
+radius = 36.81
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bodta"]
 texture = ExtResource("7_ak8ot")
@@ -177,7 +185,492 @@ position = Vector2(-1187, 963)
 [node name="NPCPack16" parent="TraversalMode/World/NPCPackContainer" unique_id=1698035525 instance=ExtResource("2_s4o75")]
 position = Vector2(-137, -1137)
 
+[node name="trees" type="Node2D" parent="TraversalMode/World" unique_id=1683676814]
+
+[node name="tree" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=311385365]
+z_index = 1
+position = Vector2(473, -1157)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree" unique_id=455974637]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree" unique_id=207658268]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree16" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1242052149]
+z_index = 1
+position = Vector2(559, -1053)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree16" unique_id=771838465]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree16" unique_id=754825549]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree17" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=481907436]
+z_index = 1
+position = Vector2(795, -1094)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree17" unique_id=134792833]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree17" unique_id=2018854669]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree18" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1949207896]
+z_index = 1
+position = Vector2(-140, -596)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree18" unique_id=292551586]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree18" unique_id=80972803]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree19" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=725137769]
+z_index = 1
+position = Vector2(-420, -486)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree19" unique_id=124209431]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree19" unique_id=471084698]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree20" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=11338725]
+z_index = 1
+position = Vector2(-674, -244)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree20" unique_id=803984804]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree20" unique_id=1938738195]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree21" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1779373029]
+z_index = 1
+position = Vector2(-602, 217)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree21" unique_id=925890488]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree21" unique_id=792774108]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree22" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=2116298893]
+z_index = 1
+position = Vector2(-102, 506)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree22" unique_id=1780172249]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree22" unique_id=234290918]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree23" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=339008690]
+z_index = 1
+position = Vector2(298, 295)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree23" unique_id=1884509284]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree23" unique_id=1429227946]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree24" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1429630825]
+z_index = 1
+position = Vector2(504, -42)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree24" unique_id=1268483492]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree24" unique_id=397518479]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree25" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1490634828]
+z_index = 1
+position = Vector2(284, -464)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree25" unique_id=991968427]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree25" unique_id=1192457484]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree4" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=567279064]
+z_index = 1
+position = Vector2(1181, 400)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree4" unique_id=754019463]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree4" unique_id=976590077]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree5" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1642333715]
+z_index = 1
+position = Vector2(-573, 840)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree5" unique_id=1805998120]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree5" unique_id=939930]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree2" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1867849086]
+z_index = 1
+position = Vector2(-1265, 253)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree2" unique_id=2133039214]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree2" unique_id=2068062826]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree6" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1582616744]
+z_index = 1
+position = Vector2(-1014, 1849)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree6" unique_id=2044986406]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree6" unique_id=1238100491]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree7" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1383139807]
+z_index = 1
+position = Vector2(-873, 1825)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree7" unique_id=921262559]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree7" unique_id=1801474919]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree8" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1830445365]
+z_index = 1
+position = Vector2(-1082, 1717)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree8" unique_id=687622284]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree8" unique_id=223168184]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree9" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=190856598]
+z_index = 1
+position = Vector2(1330, 346)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree9" unique_id=552268757]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree9" unique_id=1904744705]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree10" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1441447416]
+z_index = 1
+position = Vector2(1446, 415)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree10" unique_id=1330777722]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree10" unique_id=645755628]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree11" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1507086416]
+z_index = 1
+position = Vector2(-638, 713)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree11" unique_id=310306345]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree11" unique_id=417380775]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree12" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1923062629]
+z_index = 1
+position = Vector2(-1205, 382)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree12" unique_id=1047360141]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree12" unique_id=1078967871]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree13" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=1237350196]
+z_index = 1
+position = Vector2(-1405, 201)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree13" unique_id=734361289]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree13" unique_id=1822403711]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree3" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=701710107]
+z_index = 1
+position = Vector2(-947, -1076)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree3" unique_id=757226152]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree3" unique_id=2102792127]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree14" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=703934838]
+z_index = 1
+position = Vector2(-1070, -1093)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree14" unique_id=153145228]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree14" unique_id=37317756]
+texture = ExtResource("5_sv5iu")
+
+[node name="tree15" type="StaticBody2D" parent="TraversalMode/World/trees" unique_id=2076648119]
+z_index = 1
+position = Vector2(-1137, -1229)
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/trees/tree15" unique_id=1451781883]
+position = Vector2(-10, 62)
+shape = SubResource("CircleShape2D_fwo23")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/trees/tree15" unique_id=1316750170]
+texture = ExtResource("5_sv5iu")
+
+[node name="rocks" type="Node2D" parent="TraversalMode/World" unique_id=222879043]
+
+[node name="rocks" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=60829891]
+position = Vector2(629, -941)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks" unique_id=1387970038]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks" unique_id=1727748168]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks10" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=316236814]
+position = Vector2(657, -959)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks10" unique_id=1669490218]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks10" unique_id=2058946927]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks11" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=2036948658]
+position = Vector2(669, -934)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks11" unique_id=989826406]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks11" unique_id=845647814]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks2" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1854590593]
+position = Vector2(-473, -1290)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks2" unique_id=1356925205]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks2" unique_id=1299751971]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks3" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1270204972]
+position = Vector2(-1504, -1113)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks3" unique_id=1200947257]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks3" unique_id=805791118]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks4" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=175672012]
+position = Vector2(-1694, 361)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks4" unique_id=1213973877]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks4" unique_id=18653733]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks9" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1286362245]
+position = Vector2(-1667, 370)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks9" unique_id=1451687228]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks9" unique_id=1747430770]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks5" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=300446230]
+position = Vector2(-842, 757)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks5" unique_id=1357807016]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks5" unique_id=845830995]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks6" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1088270046]
+position = Vector2(321, 1136)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks6" unique_id=782813907]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks6" unique_id=271089479]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks15" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1534393873]
+position = Vector2(288, 1169)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks15" unique_id=1396056748]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks15" unique_id=86018489]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks16" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1537446333]
+position = Vector2(299, 1222)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks16" unique_id=1910562811]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks16" unique_id=1623710978]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks17" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1780558525]
+position = Vector2(401, 1159)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks17" unique_id=153585289]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks17" unique_id=1375162926]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks18" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=431480362]
+position = Vector2(414, 1181)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks18" unique_id=251690885]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks18" unique_id=1870287222]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks7" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1196368868]
+position = Vector2(1120, 499)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks7" unique_id=1127501140]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks7" unique_id=1043051523]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks13" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1486602376]
+position = Vector2(1150, 509)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks13" unique_id=1036699529]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks13" unique_id=205101391]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks14" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=2032015257]
+position = Vector2(1171, 561)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks14" unique_id=1849125757]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks14" unique_id=1233325616]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks8" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=1457140066]
+position = Vector2(1262, -436)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks8" unique_id=238493516]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks8" unique_id=39735135]
+texture = ExtResource("4_1wri0")
+
+[node name="rocks12" type="StaticBody2D" parent="TraversalMode/World/rocks" unique_id=970889012]
+position = Vector2(1224, -446)
+scale = Vector2(0.25, 0.25)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TraversalMode/World/rocks/rocks12" unique_id=1721184567]
+shape = SubResource("CircleShape2D_iwf2o")
+
+[node name="Sprite2D" type="Sprite2D" parent="TraversalMode/World/rocks/rocks12" unique_id=2050573065]
+texture = ExtResource("4_1wri0")
+
 [node name="PlayerDot" parent="TraversalMode" unique_id=490778616 instance=ExtResource("4_ulsxu")]
+y_sort_enabled = true
 
 [node name="PlayerPackContainer" type="Node2D" parent="TraversalMode" unique_id=357382252]
 
@@ -342,7 +835,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(420, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Explore the desert. Interact with stranger. Grow your tribe."
+text = "Explore the desert. Interact with strangers. Grow your tribe."
 label_settings = SubResource("LabelSettings_u0fso")
 horizontal_alignment = 1
 autowrap_mode = 2

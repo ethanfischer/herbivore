@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://yqoxkx5o1bum" path="res://Scripts/Traversal/CameraFollow.cs" id="3_janrd"]
 [ext_resource type="PackedScene" path="res://Scenes/Traversal/PlayerDot.tscn" id="4_ulsxu"]
 [ext_resource type="Texture2D" uid="uid://58edkh2j40qc" path="res://Assets/Graphics/ground.png" id="5_s4o75"]
-[ext_resource type="PackedScene" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_wrwdd"]
+[ext_resource type="PackedScene" uid="uid://3afib7g3kdys" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_wrwdd"]
 [ext_resource type="Texture2D" uid="uid://d0fp0ihrrp3gn" path="res://Assets/Graphics/IntroBG.png" id="6_6vn7f"]
 [ext_resource type="Texture2D" uid="uid://cbrbax2382d0i" path="res://Assets/Graphics/Button.png" id="7_ak8ot"]
 

@@ -127,10 +127,10 @@ scale = Vector2(0.865, 0.865)
 texture = ExtResource("6_frame_texture")
 
 [node name="MaskGrid" type="GridContainer" parent="." unique_id=387803349]
-offset_left = 344.0
-offset_top = 287.0
-offset_right = 644.0
-offset_bottom = 587.0
+offset_left = 375.0
+offset_top = 275.0
+offset_right = 675.0
+offset_bottom = 575.0
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 8

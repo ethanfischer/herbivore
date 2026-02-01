@@ -32,17 +32,8 @@ axis_stretch_vertical = 2
 
 [node name="TestModeOverlay" type="CanvasLayer" unique_id=343691941]
 layer = 10
-visible = false
 script = ExtResource("1_controller")
 MaskSegmentScene = ExtResource("2_segment")
-
-[node name="FaceArea" type="Node2D" parent="." unique_id=1326239894]
-position = Vector2(-18, -43)
-
-[node name="FrameSprite" type="Sprite2D" parent="FaceArea" unique_id=1041562284]
-position = Vector2(509, 479)
-scale = Vector2(0.98, 0.98)
-texture = ExtResource("6_frame_texture")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=130612485]
 scale = Vector2(15.703125, 15.703125)
@@ -76,11 +67,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -100.0
-offset_right = 200.0
-offset_bottom = -30.0
+offset_left = -278.0
+offset_top = -164.0
+offset_right = 279.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
 alignment = 1
+metadata/_edit_group_ = true
 
 [node name="FriendButton" type="Button" parent="ButtonContainer" unique_id=1135749381]
 custom_minimum_size = Vector2(150, 60)

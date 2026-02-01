@@ -17,7 +17,8 @@
 [x] integrate sound: walking loop, background music (traversal and encounter)
 [x] make box fully transparent when clicked
 
-[ ] 7 clicks
+[x] 7 clicks
 [ ] skin tone variations starker
 [ ] quit game button
 [ ] make particles bigger (half the size of the tiles)
+[ ] make mask shake

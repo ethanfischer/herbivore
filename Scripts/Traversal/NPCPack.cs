@@ -20,7 +20,7 @@ public partial class NPCPack : Node2D
     public int MaxMembers { get; set; } = 6;
 
     [Export]
-    public float SpawnRadius { get; set; } = 30.0f;
+    public float SpawnRadius { get; set; } = 120.0f;
 
     private readonly List<PackMember> _members = new();
     private Area2D _detectionArea = null!;
@@ -43,6 +43,10 @@ public partial class NPCPack : Node2D
         SpawnMembers();
     }
 
+    private const float MemberSpacing = 60.0f;
+    private const float MinDistance = 40.0f;
+    private const int MaxSpawnAttempts = 30;
+
     private void SpawnMembers()
     {
         if (PackMemberScene == null)
@@ -56,18 +60,54 @@ public partial class NPCPack : Node2D
 
         int count = random.RandiRange(MinMembers, MaxMembers);
         int herbivoreCount = 0;
+        var positions = new List<Vector2>();
 
-        for (int i = 0; i < count; i++)
+        // First member at center
+        positions.Add(Vector2.Zero);
+
+        // Each subsequent member spawns adjacent to a random existing member
+        for (int i = 1; i < count; i++)
+        {
+            Vector2 newPosition = Vector2.Zero;
+            bool foundValidPosition = false;
+
+            for (int attempt = 0; attempt < MaxSpawnAttempts; attempt++)
+            {
+                // Pick a random existing member to spawn next to
+                var basePosition = positions[random.RandiRange(0, positions.Count - 1)];
+
+                // Random direction outward from that member
+                var angle = random.RandfRange(0, Mathf.Tau);
+                newPosition = basePosition + new Vector2(
+                    Mathf.Cos(angle) * MemberSpacing,
+                    Mathf.Sin(angle) * MemberSpacing
+                );
+
+                // Check if this position overlaps with any existing position
+                if (!OverlapsAny(newPosition, positions))
+                {
+                    foundValidPosition = true;
+                    break;
+                }
+            }
+
+            if (foundValidPosition)
+            {
+                positions.Add(newPosition);
+            }
+        }
+
+        // Calculate center of all positions
+        var center = Vector2.Zero;
+        foreach (var pos in positions)
+            center += pos;
+        center /= positions.Count;
+
+        // Create members at calculated positions (may be fewer than count if overlaps couldn't be resolved)
+        for (int i = 0; i < positions.Count; i++)
         {
             var member = PackMemberScene.Instantiate<PackMember>();
-
-            // Random position within spawn radius
-            var angle = random.RandfRange(0, Mathf.Tau);
-            var distance = random.RandfRange(0, SpawnRadius);
-            member.Position = new Vector2(
-                Mathf.Cos(angle) * distance,
-                Mathf.Sin(angle) * distance
-            );
+            member.Position = positions[i];
 
             // Random type
             var type = random.Randf() > 0.5f ? DotType.Herbivore : DotType.Carnivore;
@@ -78,10 +118,40 @@ public partial class NPCPack : Node2D
 
             AddChild(member);
             _members.Add(member);
+
+            // Face towards center of group
+            var directionToCenter = center - positions[i];
+            member.SetFacingDirection(directionToCenter);
         }
 
         // Majority determines if friendly
         _isFriendly = herbivoreCount > count / 2;
+
+        // Center detection area on the group and resize to cover all members
+        float maxDistance = 0;
+        foreach (var pos in positions)
+        {
+            var dist = pos.DistanceTo(center);
+            if (dist > maxDistance)
+                maxDistance = dist;
+        }
+
+        _detectionArea.Position = center;
+        var collisionShape = _detectionArea.GetNode<CollisionShape2D>("CollisionShape2D");
+        if (collisionShape.Shape is CircleShape2D circleShape)
+        {
+            circleShape.Radius = maxDistance + 50.0f; // Add padding for approach distance
+        }
+    }
+
+    private bool OverlapsAny(Vector2 position, List<Vector2> existingPositions)
+    {
+        foreach (var existing in existingPositions)
+        {
+            if (position.DistanceTo(existing) < MinDistance)
+                return true;
+        }
+        return false;
     }
 
     private void OnBodyEntered(Node2D body)

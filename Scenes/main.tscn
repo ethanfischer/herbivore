@@ -1,48 +1,49 @@
-[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+[gd_scene format=3 uid="uid://c8wxa8wylwlfa"]
 
-[ext_resource type="Script" path="res://Scripts/Main.cs" id="1_main"]
-[ext_resource type="PackedScene" uid="uid://player_dot" path="res://Scenes/Traversal/PlayerDot.tscn" id="2_player"]
-[ext_resource type="Script" path="res://Scripts/Traversal/CameraFollow.cs" id="3_camera"]
-[ext_resource type="PackedScene" uid="uid://npc_pack" path="res://Scenes/Traversal/NPCPack.tscn" id="4_npcpack"]
-[ext_resource type="PackedScene" uid="uid://test_mode_overlay" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_testmode"]
+[ext_resource type="Script" uid="uid://co83jdiawacpy" path="res://Scripts/Main.cs" id="1_main"]
+[ext_resource type="PackedScene" path="res://Scenes/Traversal/PlayerDot.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://yqoxkx5o1bum" path="res://Scripts/Traversal/CameraFollow.cs" id="3_camera"]
+[ext_resource type="PackedScene" path="res://Scenes/Traversal/NPCPack.tscn" id="4_npcpack"]
+[ext_resource type="PackedScene" path="res://Scenes/TestMode/TestModeOverlay.tscn" id="5_testmode"]
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" unique_id=1104557932]
 script = ExtResource("1_main")
 NPCPackScene = ExtResource("4_npcpack")
 
-[node name="TraversalMode" type="Node2D" parent="."]
+[node name="TraversalMode" type="Node2D" parent="." unique_id=458179165]
 
-[node name="Camera2D" type="Camera2D" parent="TraversalMode"]
+[node name="Camera2D" type="Camera2D" parent="TraversalMode" unique_id=323620797]
 script = ExtResource("3_camera")
 TargetPath = NodePath("../PlayerDot")
 SmoothSpeed = 8.0
 
-[node name="World" type="Node2D" parent="TraversalMode"]
+[node name="World" type="Node2D" parent="TraversalMode" unique_id=964591632]
 
-[node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World"]
+[node name="NPCPackContainer" type="Node2D" parent="TraversalMode/World" unique_id=1130152939]
 
-[node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
+[node name="NPCPack1" parent="TraversalMode/World/NPCPackContainer" unique_id=2010888335 instance=ExtResource("4_npcpack")]
 position = Vector2(200, 150)
 
-[node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
-position = Vector2(600, 200)
+[node name="NPCPack2" parent="TraversalMode/World/NPCPackContainer" unique_id=2039777621 instance=ExtResource("4_npcpack")]
+position = Vector2(811, 39)
 
-[node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
-position = Vector2(300, 450)
+[node name="NPCPack3" parent="TraversalMode/World/NPCPackContainer" unique_id=102289130 instance=ExtResource("4_npcpack")]
+position = Vector2(124, 674)
+SpawnRadius = 60.0
 
-[node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" instance=ExtResource("4_npcpack")]
-position = Vector2(550, 400)
+[node name="NPCPack4" parent="TraversalMode/World/NPCPackContainer" unique_id=232234926 instance=ExtResource("4_npcpack")]
+position = Vector2(871, 488)
 
-[node name="PlayerDot" parent="TraversalMode" instance=ExtResource("2_player")]
+[node name="PlayerDot" parent="TraversalMode" unique_id=947678229 instance=ExtResource("2_player")]
 position = Vector2(400, 300)
 
-[node name="PlayerPackContainer" type="Node2D" parent="TraversalMode"]
+[node name="PlayerPackContainer" type="Node2D" parent="TraversalMode" unique_id=135087600]
 
-[node name="TestMode" parent="." instance=ExtResource("5_testmode")]
+[node name="TestMode" parent="." unique_id=1819929278 instance=ExtResource("5_testmode")]
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=2083535925]
 
-[node name="PackSizeLabel" type="Label" parent="UI"]
+[node name="PackSizeLabel" type="Label" parent="UI" unique_id=185673514]
 visible = false
 offset_left = 10.0
 offset_top = 10.0
@@ -50,7 +51,7 @@ offset_right = 150.0
 offset_bottom = 30.0
 text = "Pack: 1"
 
-[node name="ScoreLabel" type="Label" parent="UI"]
+[node name="ScoreLabel" type="Label" parent="UI" unique_id=1445114058]
 visible = false
 offset_left = 10.0
 offset_top = 35.0
@@ -58,7 +59,7 @@ offset_right = 150.0
 offset_bottom = 55.0
 text = "Score: 0"
 
-[node name="GameOverPanel" type="Panel" parent="UI"]
+[node name="GameOverPanel" type="Panel" parent="UI" unique_id=1209228143]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,7 +71,7 @@ offset_top = -100.0
 offset_right = 150.0
 offset_bottom = 100.0
 
-[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel"]
+[node name="GameOverLabel" type="Label" parent="UI/GameOverPanel" unique_id=1598461038]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -79,10 +80,11 @@ offset_left = -50.0
 offset_top = 30.0
 offset_right = 50.0
 offset_bottom = 53.0
+grow_horizontal = 2
 text = "GAME OVER"
 horizontal_alignment = 1
 
-[node name="RestartButton" type="Button" parent="UI/GameOverPanel"]
+[node name="RestartButton" type="Button" parent="UI/GameOverPanel" unique_id=1473563151]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -93,12 +95,14 @@ offset_left = -60.0
 offset_top = 20.0
 offset_right = 60.0
 offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
 text = "Restart"
 
-[node name="Sounds" type="Node" parent="."]
+[node name="Sounds" type="Node" parent="." unique_id=1502339721]
 
-[node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="SuccessSound" type="AudioStreamPlayer" parent="Sounds" unique_id=956491932]
 
-[node name="FailSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="FailSound" type="AudioStreamPlayer" parent="Sounds" unique_id=719558062]
 
-[node name="IdentifyFoeSound" type="AudioStreamPlayer" parent="Sounds"]
+[node name="IdentifyFoeSound" type="AudioStreamPlayer" parent="Sounds" unique_id=924597744]

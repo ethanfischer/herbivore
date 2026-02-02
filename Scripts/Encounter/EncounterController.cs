@@ -6,7 +6,7 @@ using Herbivore.Traversal;
 
 namespace Herbivore.TestMode;
 
-public partial class TestModeController : CanvasLayer
+public partial class EncounterController : CanvasLayer
 {
 	[Signal]
 	public delegate void TestCompletedEventHandler(bool guessedCorrectly);

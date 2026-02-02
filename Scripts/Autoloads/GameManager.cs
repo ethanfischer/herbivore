@@ -59,12 +59,6 @@ public partial class GameManager : Node
     {
         _playerPack.Remove(member);
         EmitSignal(SignalName.PackSizeChanged, PackSize);
-
-        // Check for game over
-        if (PackSize <= 0)
-        {
-            ChangeState(GameState.GameOver);
-        }
     }
 
     public PackMember? GetLastPackMember()

@@ -14,10 +14,10 @@ public partial class PlayerDot : CharacterBody2D
 	public float DotRadius { get; set; } = 8.0f;
 
 	[Export]
-	public Vector2 BoundaryMin { get; set; } = new Vector2(-1500, -1500);
+	public Vector2 BoundaryMin { get; set; } = new Vector2(-1700, -1700);
 
 	[Export]
-	public Vector2 BoundaryMax { get; set; } = new Vector2(1500, 1500);
+	public Vector2 BoundaryMax { get; set; } = new Vector2(1700, 1700);
 
 	private Area2D _approachArea = null!;
 	private Sprite2D _sprite = null!;

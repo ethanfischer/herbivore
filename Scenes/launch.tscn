@@ -162,28 +162,28 @@ position = Vector2(500, 1133)
 position = Vector2(-395, 1489)
 
 [node name="NPCPack9" parent="TraversalMode/World/NPCPackContainer" unique_id=722367650 instance=ExtResource("2_s4o75")]
-position = Vector2(-1073, -412)
+position = Vector2(-916, -315)
 
 [node name="NPCPack10" parent="TraversalMode/World/NPCPackContainer" unique_id=4422483 instance=ExtResource("2_s4o75")]
-position = Vector2(1247, -1063)
+position = Vector2(1233, -906)
 
 [node name="NPCPack11" parent="TraversalMode/World/NPCPackContainer" unique_id=2135074753 instance=ExtResource("2_s4o75")]
 position = Vector2(1890, -347)
 
 [node name="NPCPack12" parent="TraversalMode/World/NPCPackContainer" unique_id=1814689581 instance=ExtResource("2_s4o75")]
-position = Vector2(1939, 1045)
+position = Vector2(1825, 1073)
 
 [node name="NPCPack13" parent="TraversalMode/World/NPCPackContainer" unique_id=589575694 instance=ExtResource("2_s4o75")]
-position = Vector2(1296, 1997)
+position = Vector2(1293, 1821)
 
 [node name="NPCPack14" parent="TraversalMode/World/NPCPackContainer" unique_id=672043558 instance=ExtResource("2_s4o75")]
-position = Vector2(-1089, 2013)
+position = Vector2(-875, 1851)
 
 [node name="NPCPack15" parent="TraversalMode/World/NPCPackContainer" unique_id=949074878 instance=ExtResource("2_s4o75")]
-position = Vector2(-1187, 963)
+position = Vector2(-1053, 972)
 
 [node name="NPCPack16" parent="TraversalMode/World/NPCPackContainer" unique_id=1698035525 instance=ExtResource("2_s4o75")]
-position = Vector2(-137, -1137)
+position = Vector2(-131, -989)
 
 [node name="trees" type="Node2D" parent="TraversalMode/World" unique_id=1683676814]
 

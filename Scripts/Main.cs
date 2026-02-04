@@ -31,7 +31,7 @@ public partial class Main : Node2D
 	private AudioStreamPlayer _walkSound = null!;
 
 	private Node2D _traversalMode = null!;
-	private TestModeController _testMode = null!;
+	private EncounterController _encounter = null!;
 	private Node2D _playerPackContainer = null!;
 	private Node2D _npcPackContainer = null!;
 	private PlayerDot _playerDot = null!;
@@ -59,7 +59,7 @@ public partial class Main : Node2D
 
 		// Get references
 		_traversalMode = GetNode<Node2D>("TraversalMode");
-		_testMode = GetNode<TestModeController>("TestMode");
+		_encounter = GetNode<EncounterController>("TestMode");
 		_playerPackContainer = GetNode<Node2D>("TraversalMode/PlayerPackContainer");
 		_npcPackContainer = GetNode<Node2D>("TraversalMode/World/NPCPackContainer");
 		_playerDot = GetNode<PlayerDot>("TraversalMode/PlayerDot");
@@ -99,7 +99,7 @@ public partial class Main : Node2D
 		}
 
 		// Connect test mode completion
-		_testMode.TestCompleted += OnTestCompleted;
+		_encounter.TestCompleted += OnTestCompleted;
 
 		// Connect restart button
 		_restartButton.Pressed += OnRestartPressed;
@@ -173,7 +173,7 @@ public partial class Main : Node2D
 		// Fade to black, start test, then fade back in
 		await FadeToBlack();
 		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
-		_testMode.StartTest(pack, clicks);
+		_encounter.StartTest(pack, clicks);
 		await ToSignal(GetTree().CreateTimer(0.1), SceneTreeTimer.SignalName.Timeout);
 		await FadeFromBlack();
 	}
@@ -220,7 +220,7 @@ public partial class Main : Node2D
 		{
 			// Fade transition back to traversal
 			await FadeToBlack();
-			_testMode.EndTest();
+			_encounter.EndTest();
 			gm.ChangeState(GameState.Traversal);
 			// Spawn new packs to maintain minimum
 			EnsureMinimumPacks();
@@ -239,7 +239,7 @@ public partial class Main : Node2D
 		var gm = GameManager.Instance;
 		if (gm == null) return;
 
-		// Game over if player is already alone and trusts a foe
+		// Game over if player is already alone
 		if (gm.PackSize <= 1)
 		{
 			gm.ChangeState(GameState.GameOver);
@@ -247,19 +247,26 @@ public partial class Main : Node2D
 		}
 
 		var lastMember = gm.GetLastPackMember();
-		if (lastMember == null) return;
+		if (lastMember == null)
+		{
+			GD.PrintErr("No last member found");
+			return;
+		}
 
 		gm.RemoveFromPlayerPack(lastMember);
+
+		// Stop the member's physics process so it doesn't override rotation
+		lastMember.SetPhysicsProcess(false);
 
 		// Animate the member walking away before removing
 		var walkDirection = (lastMember.GlobalPosition - _playerDot.GlobalPosition).Normalized();
 		var targetPos = lastMember.GlobalPosition + walkDirection * 200f;
 
-		// Face the direction they're walking
+		// Rotate sprite to face movement direction
 		var sprite = lastMember.GetNodeOrNull<Sprite2D>("Sprite2D");
 		if (sprite != null)
 		{
-			sprite.FlipH = walkDirection.X < 0;
+			sprite.Rotation = walkDirection.Angle();
 		}
 
 		var tween = CreateTween();
@@ -293,7 +300,7 @@ public partial class Main : Node2D
 
 			case GameState.GameOver:
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
-				_testMode.EndTest();
+				_encounter.EndTest();
 				_gameOverLabel.Text = "YOU HAVE FAILED!";
 				_flavorTextLabel.Text = "You roam the desert alone\nwondering what it might have\nfelt like having friends....";
 				_gameOverPanel.Visible = true;
@@ -301,7 +308,7 @@ public partial class Main : Node2D
 
 			case GameState.GameWon:
 				_traversalMode.ProcessMode = ProcessModeEnum.Disabled;
-				_testMode.EndTest();
+				_encounter.EndTest();
 				_gameOverLabel.Text = "YOU WIN!";
 				_flavorTextLabel.Text = "Your pack roams the desert\ntogether, safe and happy.\nTrue friendship prevails!";
 				_gameOverPanel.Visible = true;
